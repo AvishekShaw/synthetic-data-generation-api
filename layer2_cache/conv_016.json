@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer raises only the unrecognized charge and never bundles additional concerns like cancellation or refund timelines into any single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In the turn 'not sure honestly. could be a subscription or maybe my kid did it,' the customer hedges perfectly, matching the 'uncertain' scenario without over-committing.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer opens with only 'a charge I don't recognize' and only identifies the Adobe transaction after the agent lists recent transactions, never front-loading merchant, amount, or date.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yeah the adobe one' and 'yeah just look into it for now' are colloquial and contextually appropriate, reading like real caller speech rather than scripted dialogue.",
+  "persona_score": 5,
+  "persona_rationale": "The terse, calm, intermediate persona is consistently present — responses are short and unfussy, the customer uses card terminology correctly ('sapphire'), and there is no emotional escalation throughout.",
+  "standout_issue": "",
+  "standout_quality": "The uncertainty turn ('not sure honestly. could be a subscription or maybe my kid did it') is exceptionally realistic, offering a plausible real-world explanation without false certainty."
+}

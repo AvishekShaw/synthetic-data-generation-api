@@ -1,0 +1,52 @@
+============================================================
+CONVERSATION 62
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+------------------------------------------------------------
+
+Customer: following up on a fraud dispute. already called last week
+
+Agent: I'm sorry to hear you're still waiting for a resolution. I'd be happy to help look into this for you. Can you please verify the last 4 digits of your account number or the card involved?
+
+Customer: just pull up my account. uber eats $215 aug 10
+
+Agent: Thank you for those details. I can see your account. You have the following cards on file: - Chase Freedom ****4521 - Chase Sapphire ****8832 Which card was the unauthorized charge on?
+
+Customer: freedom
+
+Agent: Got it. I can see the transaction in question: - Date: 2025-08-10 | Merchant: Uber Eats | Amount: $215.00 Can you confirm — you're saying you did not authorize this transaction?
+
+Customer: correct. never made it. already reported this
+
+Agent: Understood, and I apologize for the delay since your first contact. I'm showing a dispute was opened, but no provisional credit has been issued yet. I can escalate this now. Would you also like your Freedom card cancelled and a replacement issued?
+
+Customer: yes. both. when do i get provisional credit
+
+Agent: Provisional credit typically posts within 5 business days of the dispute being escalated, which I'm doing now. I'll also cancel your Freedom card ****4521 and order a replacement. You should receive it in 5-7 business days.
+
+Customer: 5 days is too long. reg e requires 10 days max for provisional credit
+
+Agent: You're correct, and I appreciate you knowing your rights. Under Regulation E the provisional credit must be issued within 10 business days, and we aim to process well before that. I've escalated the dispute and flagged it for priority review given the prior contact. A case number will be sent to your email on file.
+
+Customer: fine. confirmation number?
+
+Agent: Your dispute escalation confirmation number is **DSP-20250817-7742**. Your card ****4521 has been cancelled and a replacement is on the way. Is there anything else you need?
+
+Customer: no. just make sure credit posts
+
+Agent: Noted. The escalation is flagged and you should see the provisional credit within the timeframe. Feel free to reach back out with that confirmation number if there are any delays.

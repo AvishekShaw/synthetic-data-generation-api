@@ -1,0 +1,52 @@
+============================================================
+CONVERSATION 20
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+------------------------------------------------------------
+
+Customer: hey so i noticed something weird on my account, not sure if it's a big deal but wanted to check
+
+Agent: Of course, I'm happy to help look into that! What seems to be the issue?
+
+Customer: there's a charge i don't really recognize. could be nothing but it's been bugging me for a few days
+
+Agent: Understood. Would you like to dispute a transaction, or are you looking to lock your card as a precaution?
+
+Customer: just want someone to look into it i guess. don't wanna go straight to dispute if it turns out i just forgot about it
+
+Agent: Got it, we can definitely take a closer look. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8809 Which card did you see this charge on?
+
+Customer: the freedom one
+
+Agent: Got it. Here are your recent transactions on that card: - Date: 2025-08-12 - Merchant: StreamVault - Amount: $34.99 - Date: 2025-08-11 - Merchant: Whole Foods - Amount: $67.20 - Date: 2025-08-10 - Merchant: Shell Gas Station - Amount: $48.00 - Date: 2025-08-09 - Merchant: Netflix - Amount: $15.49 - Date: 2025-08-08 - Merchant: Target - Amount: $112.30 Do any of these look like the charge you're referring to?
+
+Customer: yeah that first one, StreamVault. that's the one. never heard of them but the amount sounds right
+
+Agent: Got it. Do you suspect this was an unauthorized charge, or are you unsure — for example, it could be a subscription or a purchase someone else in your household made?
+
+Customer: yeah that's the thing, i'm not 100% sure. my partner sometimes buys stuff without telling me. but i don't wanna just let it go either in case it's not them
+
+Agent: That makes sense. Just so you know, you don't need to be certain it's fraud to open a dispute — we can start an investigation and look into the charge on your behalf. Would you like to proceed with disputing this transaction so we can investigate further?
+
+Customer: oh i didn't know that, i thought i had to like prove it first. yeah let's do that then
+
+Agent: No worries at all — that's a common misconception! We'll take it from here and look into it. To confirm, I'll be filing a dispute for the following transaction: - Card: Chase Freedom \*\*\*\* 3421 - Date: August 12th - Merchant: StreamVault - Amount: $34.99 - Reason: Unrecognized charge Does that all look correct before I submit?
+
+Customer: yep that's it
+
+Agent: Perfect. Your dispute has been submitted and our team will investigate the charge. You'll receive an update within 5–7 business days. In the meantime, feel free to reach out if anything else comes up!

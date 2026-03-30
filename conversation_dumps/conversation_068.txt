@@ -1,0 +1,52 @@
+============================================================
+CONVERSATION 68
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize, need someone to look into it
+
+Agent: I'm sorry to hear that. I'd be happy to help look into that for you. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire Reserve, \*\*\*\* \*\*\*\* \*\*\*\* 8807 Which card shows the charge?
+
+Customer: the sapphire
+
+Agent: Got it. Here are your recent transactions on the Chase Sapphire Reserve ****8807: - Aug 12 — $34.99 — CLARITY APPS INC - Aug 11 — $62.00 — WHOLE FOODS #0847 - Aug 10 — $15.50 — NETFLIX.COM - Aug 9 — $112.43 — UNITED AIRLINES Does any of these match the charge you're referring to?
+
+Customer: yeah probably that clarity apps one. no idea what that is
+
+Agent: Understood. Do you suspect this was unauthorized, or are you unsure — for example, it could be a subscription or a purchase made by someone else on your account?
+
+Customer: honestly not sure. could be something my wife signed up for. but i don't want it just sitting there unlooked at
+
+Agent: That makes sense. I can open an investigation on that transaction so our team can look into it further. Just to confirm — you'd like us to investigate the $34.99 charge from CLARITY APPS INC on August 12th. Is that right?
+
+Customer: yes exactly, not asking for a refund yet just want eyes on it
+
+Agent: Understood, noted. Can you briefly describe why you're flagging it — for example, that you don't recognize the merchant and haven't confirmed whether it was authorized by you or anyone on your account?
+
+Customer: yeah basically that. unrecognized charge, haven't been able to verify it on my end yet
+
+Agent: Perfect. I've flagged the $34.99 charge from CLARITY APPS INC on August 12th for investigation on your Chase Sapphire Reserve ****8807. Our team will review it and you'll receive an update within 3–5 business days. No provisional credit will be issued at this stage since no dispute has been formally filed yet.
+
+Customer: fine, and if it turns out nobody authorized it i can escalate to a full dispute after?
+
+Agent: Correct. Once the investigation is complete, if the charge is confirmed as unauthorized you can escalate to a formal dispute at that time and we can discuss next steps including chargeback options. Is there anything else I can help you with today?
+
+Customer: nope that's it thanks
+
+Agent: You're welcome. We'll be in touch within 3–5 business days with an update. Have a good day!

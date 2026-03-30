@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer raises the card cancellation only after the dispute is confirmed as opened, never bundling both concerns in a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain-fraud scenario the customer states 'i did not make this' without hedging, which is appropriately assertive without sounding robotic.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer volunteers merchant, amount, and date all in one second turn ('it's a $215 charge from uber eats on august 10th'), which is slightly front-loaded but is plausible since the agent asked for 'more about the charge' — a minor proactive bundle that stops short of being unrealistic.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'ugh fine yes please just sort it out' and 'just hope this actually gets resolved this time' are colloquial and emotionally authentic, sounding like a real frustrated caller rather than a scripted prompt.",
+  "persona_score": 5,
+  "persona_rationale": "Mild frustration surfaces consistently through 'ugh', the double question mark in 'i already did this over the phone??', and the resigned closing, while the direct style shows in short, to-the-point turns that never over-explain.",
+  "standout_issue": "",
+  "standout_quality": "The closing line 'just hope this actually gets resolved this time' is the single most realistic moment — it captures the weary skepticism of a follow-up caller without any theatrical emotion or scripted phrasing."
+}

@@ -1,0 +1,60 @@
+============================================================
+CONVERSATION 77
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+------------------------------------------------------------
+
+Customer: saw something sketchy on my statement, need my card frozen now
+
+Agent: I can help you with that right away. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678. Which card would you like to freeze?
+
+Customer: sapphire
+
+Agent: Got it. Please confirm you'd like to lock your Chase Sapphire card ending in 5678.
+
+Customer: yes, do it
+
+Agent: Done. Your Chase Sapphire card ending in 5678 has been locked. No new transactions can be made on this card. Would you also like to dispute the transaction you noticed?
+
+Customer: yes. and i want a chargeback initiated today, not tomorrow
+
+Agent: Understood. Let me pull up your recent transactions on the Sapphire card. Here are your recent transactions: - Date: 2025-07-05 - Merchant: Marriott Hotels - Amount: $489.00 - Date: 2025-07-04 - Merchant: Delta Airlines - Amount: $312.50 - Date: 2025-07-03 - Merchant: Netflix - Amount: $15.99 - Date: 2025-07-02 - Merchant: Whole Foods - Amount: $67.20 - Date: 2025-07-01 - Merchant: Shell Gas Station - Amount: $54.00 Which transaction would you like to dispute?
+
+Customer: marriott. never booked anything with them
+
+Agent: Got it. To confirm — you'd like to dispute the $489.00 charge from Marriott Hotels on 2025-07-05 as fraudulent, correct?
+
+Customer: correct. 100% not me
+
+Agent: Understood. I've opened a fraud dispute for the $489.00 Marriott Hotels charge on 2025-07-05. A provisional credit is typically applied within 5 business days while the investigation is underway.
+
+Customer: 5 days is too long. i know my reg e rights, this needs to be escalated
+
+Agent: I understand your concern. I've flagged this as a high-priority fraud case and noted your request for escalation. A specialist from our fraud team will follow up within 24 hours. You'll receive a confirmation number for your dispute shortly.
+
+Customer: fine. and i want a replacement card issued today too
+
+Agent: Absolutely. I'll request a replacement Chase Sapphire card to be issued now. Would you like it sent to the address we have on file, or a different address?
+
+Customer: address on file is fine
+
+Agent: Perfect. Your replacement card has been requested and will arrive within 3–5 business days. To summarize: your Sapphire card is locked, the $489.00 Marriott charge has been flagged as fraud and escalated, and a new card is on its way. Is there anything else you need?
+
+Customer: no. but if that provisional credit isn't there in 5 days im calling the CFPB
+
+Agent: Noted, and that's completely within your rights. We take fraud cases seriously and will do our best to resolve this promptly. Your dispute reference number is #FR-2025-084471. Don't hesitate to reach out if you need an update before then.

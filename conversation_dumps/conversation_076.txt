@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 76
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+------------------------------------------------------------
+
+Customer: hey i see a charge i don't recognize. $34.99 around aug 12th. need someone to look into it
+
+Agent: I'd be happy to help you investigate that. Which card was the charge on?
+
+Customer: i have two cards with you. sapphire and freedom. let me think... probably sapphire
+
+Agent: Got it. Here are your recent transactions on your Chase Sapphire ****5678: - Aug 12 — NFLX.COM — $34.99 - Aug 12 — WHOLEFDS #0472 — $67.23 - Aug 13 — SHELL OIL — $48.10 - Aug 14 — AMZN MKTP — $19.95 Do any of these look like the charge you're referring to?
+
+Customer: not netflix thats mine. nothing else there matches. can you pull up the freedom card too
+
+Agent: Of course. Here are your recent transactions on your Chase Freedom ****1234: - Aug 11 — SPOTIFY — $9.99 - Aug 12 — SETAPP.COM — $34.99 - Aug 12 — TARGET — $112.40 - Aug 13 — UBER EATS — $23.17 Does the SETAPP.COM charge look like the one you're questioning?
+
+Customer: yeah that's probably it. don't recognize it but could be my kid. want you to open an investigation before i decide on a dispute
+
+Agent: Understood. Do you suspect this could be unauthorized use, or are you still unsure at this point?
+
+Customer: unsure. could be a forgotten sub or my son. just want it flagged and looked at before i commit to a chargeback
+
+Agent: Got it. I can open an inquiry on the SETAPP.COM charge of $34.99 on Aug 12 from your Chase Freedom ****1234. This will log the transaction for review without formally initiating a dispute yet. Would you like to proceed with that?
+
+Customer: yes do it. how long does this take
+
+Agent: The inquiry has been opened. A specialist will review it within 3–5 business days and may reach out if additional information is needed. You'll receive an update via the email on file.
+
+Customer: ok. and if it does turn out to be fraud whats my timeline for filing the dispute
+
+Agent: Under Regulation E and standard card network rules, you generally have 60 days from the statement date to formally dispute a charge. If fraud is confirmed, provisional credit is typically applied within 10 business days of filing. You have time, but I wouldn't wait too long.
+
+Customer: good. if this drags on ill be escalating to the CFPB. just so thats noted
+
+Agent: Noted, and I've added that to the inquiry record. We take that seriously and will do our best to resolve this promptly. Is there anything else I can help you with today?
+
+Customer: no thats it for now
+
+Agent: Understood. The inquiry on the $34.99 SETAPP.COM charge is open and under review. Don't hesitate to reach out if anything changes. Have a good day.

@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 3,
+  "depth_first_rationale": "In the turn 'yes. $215. did not make that charge. want a chargeback opened and the card cancelled', the customer bundles the dispute request and card cancellation together, though this occurs relatively naturally given the context of a follow-up call where the customer knows what they want.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "Given the 'certain_fraud' scenario, the customer's assertive phrasing 'did not make that charge' and 'yes obviously' is perfectly calibrated — no hedging where none is warranted, no robotic over-commitment either.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer does not volunteer the merchant, amount, or date upfront, instead waiting for the agent to pull up transactions and confirm, only then affirming 'yes. $215.' which is appropriately reactive rather than front-loaded.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes obviously. I already told the last rep that' and 'just make sure someone actually follows up this time. last call went nowhere' sound unmistakably like a real frustrated caller rather than a scripted response.",
+  "persona_score": 5,
+  "persona_rationale": "The expert knowledge level shows in the customer immediately using correct terminology ('chargeback') and knowing to request both card cancellation and a replacement, while the mildly frustrated and direct tone is sustained consistently throughout all turns.",
+  "standout_issue": "",
+  "standout_quality": "The callback complaint 'just make sure someone actually follows up this time. last call went nowhere' is exceptionally realistic — it captures the frustration of a follow-up call and sounds nothing like an LLM prompt."
+}

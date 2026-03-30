@@ -1,0 +1,15 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer handles one concern at a time — first identifying the charge, then clarifying uncertainty, then declining the provisional credit — never bundling issues.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer's turn 'unsure. could be a subscription someone in my household set up' perfectly matches the uncertain scenario with natural hedging.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer reveals nothing upfront — only says 'got a charge I don't recognize' and waits to be prompted before confirming the Adobe transaction and card number.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'no just the investigation for now. if it's legit I don't want the hassle of reversing a credit' sound exactly like a pragmatic, real caller reasoning through consequences.",
+  "persona_score": 5,
+  "persona_score_rationale": "The expert, calm, terse persona is consistently evident — short responses, no emotional escalation, and the provisional credit refusal shows financial sophistication about reversal friction.",
+  "persona_rationale": "Short clipped answers ('correct', '8807', 'nope that's it') and the knowledgeable credit-reversal comment strongly manifest the terse, expert, calm persona.",
+  "standout_issue": "",
+  "standout_quality": "The reasoning behind declining the provisional credit ('if it's legit I don't want the hassle of reversing a credit') is a strikingly realistic expert-user insight that feels genuinely human."
+}

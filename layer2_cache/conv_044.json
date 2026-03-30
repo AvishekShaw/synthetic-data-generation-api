@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer sequentially moves from investigation request → identifying the card → flagging the charge → reacting to timeline → locking the card, never bundling multiple concerns in a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "Consistent hedging throughout — 'not sure if i did it or not', 'maybe? i dunno' — perfectly matches the 'uncertain' scenario without ever over-committing to fraud claims.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The opening turn naturally provides amount and date but omits the merchant, which is then only identified after the agent surfaces the transaction list — a mostly realistic drip, though the scenario lists Netflix as the merchant but the transcript resolves to DigitalServ Pro, suggesting slight front-loading of partial scenario facts.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'thats why i want it looked into not just dismissed' and 'just make sure someone actually looks at it' sound like authentic caller frustration rather than scripted phrasing.",
+  "persona_score": 5,
+  "persona_rationale": "Escalation is clearly charted from mild uncertainty early on to 'i'm gonna have to call the CFPB or something' mid-conversation, and the direct communication style shows in short, clipped turns throughout.",
+  "standout_issue": "The scenario metadata names Netflix as the merchant but the customer never mentions Netflix and the charge resolves to 'DigitalServ Pro', creating a minor internal inconsistency that a real caller briefed on their own situation would not produce.",
+  "standout_quality": "The CFPB threat in response to the 3–5 day timeline is a highly realistic escalation move that reflects genuine intermediate financial knowledge and mounting frustration without sounding coached."
+}

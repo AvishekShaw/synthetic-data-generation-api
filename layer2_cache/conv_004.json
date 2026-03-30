@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer addresses one concern at a time throughout — first identifying the charge, then confirming the investigation, then asking about next steps — never bundling multiple issues into a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer consistently hedges appropriately for an uncertain scenario, saying 'probably the 3847 one', 'not really but like... it could be my husband? idk', perfectly matching the uncertain certainty metadata.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer opens with only 'there's a charge I don't recognize' and only identifies the specific transaction ('that first one, aug 12') after the agent presents a list, never volunteering merchant, amount, or date unprompted.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'no its fine I think it might be legit. just want to know what it is' sound genuinely colloquial and contextually appropriate, reflecting a real caller reconsidering their concern mid-conversation.",
+  "persona_score": 5,
+  "persona_rationale": "The novice level shows in 'idk what that even is', the mild frustration in the opening 'hey there's a charge on my account I don't recognize', and the direct style in short, focused turns that stay on one point at a time.",
+  "standout_issue": "",
+  "standout_quality": "The turn 'not really but like... it could be my husband? idk. I just want someone to look into it' is exceptionally realistic — it captures genuine uncertainty, deflection to a household partner, and hedged pragmatic intent all in one natural utterance."
+}

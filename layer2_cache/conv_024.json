@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer addresses one concern at a time throughout — first identifying the charge, then clarifying their uncertainty, then asking about the dispute process — never bundling multiple concerns in a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "Uncertainty is sustained and layered throughout, with phrases like 'i'm not 100% sure i didn't make it', 'my husband might have? i'm not sure honestly', perfectly matching the 'uncertain' scenario and 'wrong_mental_model' goal clarity.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer does not volunteer merchant, amount, or date upfront — they only identify the Adobe charge after the agent displays recent transactions, allowing information to emerge naturally through agent prompting.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'easier than i thought it would be' and 'idk if that counts' are colloquial and contextually appropriate, sounding like a real caller rather than a scripted template.",
+  "persona_score": 5,
+  "persona_rationale": "The indirect communication style manifests clearly — the customer approaches the dispute tentatively ('i think dispute maybe?') and frames concerns through hedging and deference, while the intermediate knowledge level shows in recognizing the concept of disputing but misunderstanding the proof requirement.",
+  "standout_issue": "",
+  "standout_quality": "The wrong_mental_model persona is executed exceptionally well — the customer's mistaken belief that they must prove fraud before disputing ('i thought i had to like prove it was fraud first') surfaces organically mid-conversation rather than being telegraphed upfront."
+}

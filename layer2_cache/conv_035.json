@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 3,
+  "depth_first_rationale": "In the second turn the customer bundles dispute + card replacement ('all of it. I want my money back and a new card') rather than focusing on one issue at a time, though subsequent turns are appropriately sequential.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "Given the certain_fraud scenario, the customer's assertive 'yes obviously' and 'never heard of them before this' are appropriately confident without sounding robotic or over-committed.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The first turn front-loads merchant, amount, and date all at once, but this is realistic for someone reporting a specific fraudulent charge they've already identified, so it reads as natural rather than scripted.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes obviously. already told techhub and they refused to help so here I am' and 'just make sure it gets sorted' are colloquial and context-appropriate in a way that does not feel templated.",
+  "persona_score": 5,
+  "persona_rationale": "The terse, mildly frustrated intermediate persona is consistently evident — short answers, mild irritation ('yes obviously'), and a closing demand ('just make sure it gets sorted') without dramatic escalation or technical jargon.",
+  "standout_issue": "Bundling the refund request and card replacement in one early turn ('all of it. I want my money back and a new card') is the most LLM-like behaviour, as real callers typically focus on the primary complaint before pivoting to card replacement.",
+  "standout_quality": "'yes obviously. already told techhub and they refused to help so here I am' is the most realistic customer turn — it conveys frustration, prior effort, and context economically in a genuinely colloquial way."
+}

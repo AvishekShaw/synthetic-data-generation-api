@@ -1,0 +1,52 @@
+============================================================
+CONVERSATION 47
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my card i definitely didn't make. need this sorted asap
+
+Agent: I'm sorry to hear that. I'd be happy to help you with that. Here are your credit cards on file: - Chase Freedom, **** **** **** 2291 - Chase Sapphire, **** **** **** 8847 Which card was the transaction on?
+
+Customer: the second one
+
+Agent: Got it. Can you tell me the merchant name and amount for the transaction you'd like to dispute?
+
+Customer: Apple Store, $1,249.00. August 19th. I did not make this purchase.
+
+Agent: Understood. I'm sorry this happened to you. To confirm — you're saying this transaction was completely unauthorized, and you did not make or approve this purchase?
+
+Customer: yes that's exactly what i said. i want my money back and i want that card cancelled
+
+Agent: Understood completely. I'll take care of both of those for you. First, I'm opening a dispute for the unauthorized transaction of $1,249.00 at Apple Store on August 19th. You should receive a decision within 5–10 business days.
+
+Customer: 5-10 days?? that's a lot of money to just be sitting gone. is there anything faster
+
+Agent: I completely understand your concern. Unfortunately, the investigation period is standard and required before a refund can be issued. In the meantime, would you like me to go ahead and cancel your Chase Sapphire **** 8847 and order a replacement card?
+
+Customer: yes do that. and if i don't hear back in a few days im calling the CFPB so you guys better actually handle this
+
+Agent: Noted, and I completely understand your frustration. We take unauthorized transactions very seriously. Your Chase Sapphire **** 8847 has been cancelled and a replacement card is on its way — you should receive it within 5–7 business days. Your dispute case number is **DSP-4402817**. You can reference this if you need to follow up.
+
+Customer: ok. will i get updates or do i have to keep chasing you guys
+
+Agent: You'll receive email updates at the address on file as your dispute progresses. You can also call us anytime and reference case number **DSP-4402817** for a status update. Is there anything else I can help you with today?
+
+Customer: no that's it. just actually fix it
+
+Agent: Understood. We'll do our best to resolve this as quickly as possible. Take care.

@@ -1,0 +1,60 @@
+============================================================
+CONVERSATION 18
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+------------------------------------------------------------
+
+Customer: hey so i noticed something weird on my account, been trying to figure it out for a couple days now
+
+Agent: I'm sorry to hear that. I'm here to help! Can you tell me a bit more about what you're seeing?
+
+Customer: yeah there's a charge on my card that i definitely didn't make. like 100% wasn't me
+
+Agent: I understand. There are a few ways I can help — I can dispute a transaction, lock your card, or arrange a replacement. What would you like to do?
+
+Customer: well i want the money back but i'm not sure if i can even do anything yet, like do i need to prove it was fraud first before you guys do anything?
+
+Agent: Not at all! You can file a dispute right away and we'll investigate on your behalf. You don't need to prove anything upfront. Would you like to start a dispute for that transaction?
+
+Customer: oh ok that's good to know. yeah lets do that
+
+Agent: Got it. Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: the 1234 one
+
+Agent: Thanks. Can you tell me the date of the transaction?
+
+Customer: it was around august 18th i think
+
+Agent: Got it. Here are transactions from around that date on your Chase Freedom \*\*\*\*1234: - Aug 17 — Amazon — $34.99 - Aug 18 — Zephyr Digital LLC — $89.21 - Aug 19 — Starbucks — $6.45 Do any of these look like the charge you're referring to?
+
+Customer: yeah that's it, zephyr whatever. never heard of them
+
+Agent: Understood. I'll go ahead and log a dispute for the $89.21 charge from Zephyr Digital LLC on August 18th. Is that correct?
+
+Customer: yes. and i also want to cancel the card and get a new one sent, i don't feel comfortable keeping it
+
+Agent: Absolutely. I'll dispute that transaction and cancel your Chase Freedom \*\*\*\*1234 and order a replacement card. Can you confirm your mailing address is still up to date for us to send the new card?
+
+Customer: yeah same address you have on file should be fine
+
+Agent: Perfect. Here's a summary of what I've done: - ✅ Dispute filed for $89.21 — Zephyr Digital LLC — Aug 18 - ✅ Chase Freedom \*\*\*\*1234 cancelled - ✅ Replacement card ordered — arrives in 5–7 business days You'll receive an email confirmation shortly. Is there anything else I can help you with?
+
+Customer: no that's it, thanks
+
+Agent: You're welcome! We'll keep you updated on the dispute as it progresses. Have a good day!

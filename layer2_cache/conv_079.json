@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 2,
+  "depth_first_rationale": "In the very first turn the customer simultaneously demands a dispute, card replacement, and provisional credit — front-loading three distinct concerns before the agent has responded to any of them.",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "The assertive 'I 100% did not make' and 'I did not authorize that charge' are appropriately confident for a certain-fraud scenario, and the customer never over-hedges, though 'I 100%' reads slightly performative rather than naturally assertive.",
+  "info_drip_score": 2,
+  "info_drip_rationale": "The opening turn volunteers all three key facts — merchant (Apple Store), amount ($1,249), and date (August 19th) — in a single unprompted message before the agent has asked for any details.",
+  "pragmatic_score": 4,
+  "pragmatic_rationale": "Most turns are terse and colloquial ('yes cancel it and send a new one', 'yes expedite it'), fitting a direct caller well, though 'i want provisional credit while the investigation runs' sounds slightly rehearsed for a first-contact caller.",
+  "persona_score": 4,
+  "persona_rationale": "The escalating persona emerges clearly in 'if this isn't resolved fast i'm filing a CFPB complaint and closing my accounts,' and expert knowledge shows through the unprompted mention of provisional credit and CFPB, though the escalation arc could have been more gradual.",
+  "standout_issue": "The very first customer turn bundles all three goals (dispute + card replacement + provisional credit) simultaneously, which is classic LLM breadth-first behaviour rather than how a real caller would open a conversation.",
+  "standout_quality": "The CFPB threat paired with the account-closure warning is a highly realistic and persona-consistent escalation move that an expert, frustrated customer would actually deploy."
+}

@@ -1,0 +1,52 @@
+============================================================
+CONVERSATION 15
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+------------------------------------------------------------
+
+Customer: i have a charge i didn't make. apple store $1249
+
+Agent: I'm sorry to hear that. Let me help you with that right away. Would you like to dispute the transaction, lock your card, or replace it?
+
+Customer: all of it. dispute and replace the card
+
+Agent: Got it. Let's start with the dispute. Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8809 Which card was the charge on?
+
+Customer: 8809
+
+Agent: Got it. Do you confirm the transaction details are: Apple Store, $1,249.00, on August 19th?
+
+Customer: yes that's it
+
+Agent: And just to confirm — you did not authorize this transaction in any way?
+
+Customer: no i didn't. that's why i'm here
+
+Agent: Understood. I've opened a dispute for that transaction. You should receive a decision within 5–10 business days. Now, would you like to cancel your Chase Sapphire card ending in 8809 and request a replacement?
+
+Customer: yes please
+
+Agent: Your Chase Sapphire card ending in 8809 has been cancelled. A replacement card will arrive in 5–7 business days. Is there anything else I can help you with?
+
+Customer: will i get the money back
+
+Agent: Since you've confirmed this as an unauthorized transaction, it will be investigated as fraud. If the dispute is approved, the $1,249.00 will be credited back to your account. You'll receive updates by email.
+
+Customer: ok good. that's all
+
+Agent: Thank you for reaching out. Your dispute is open and your new card is on the way. Don't hesitate to contact us if you need anything else. Take care!

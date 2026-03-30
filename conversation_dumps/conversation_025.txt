@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 25
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my account i definitely did not make
+
+Agent: I'm sorry to hear that. I can help you with that. Could you please provide more details about the transaction you're concerned about?
+
+Customer: amazon, $127.43, august 20th. i did not make this charge
+
+Agent: Thank you for those details. I want to make sure I understand — are you saying this is a fraudulent transaction?
+
+Customer: yes thats exactly what im saying
+
+Agent: Got it. Let's get this sorted for you. Here are your cards on file: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card was this charge made on?
+
+Customer: freedom, the 1234 one
+
+Agent: Thank you. Would you like me to go ahead and file a dispute for this transaction?
+
+Customer: yes but i also want the card cancelled. i don't want more weird charges showing up
+
+Agent: Understood, we can do both. Let me start with the dispute first. Can you confirm you did not authorize this Amazon charge of $127.43 on August 20th?
+
+Customer: look, yes i already said that. i did not make it
+
+Agent: Apologies for the repetition. I've noted that. I've filed a dispute for the $127.43 Amazon transaction on August 20th on your Chase Freedom card ending in 1234. You should receive a confirmation by email shortly. Would you like me to cancel your Chase Freedom card ending in 1234 and request a replacement now?
+
+Customer: yes please. how long does the replacement take
+
+Agent: Your Chase Freedom card ending in 1234 has been cancelled. A replacement card will be issued and should arrive within 5–7 business days. Is there anything else I can help you with today?
+
+Customer: what about my money, when do i get it back
+
+Agent: Good question. Once your dispute is reviewed, our team will investigate the transaction. This process typically takes 5–10 business days. You'll be notified of the outcome by email. Is there anything else I can help you with?
+
+Customer: ok fine. just make sure it actually gets resolved
+
+Agent: Absolutely. Your dispute has been filed and your card has been cancelled and a replacement is on the way. You're all set. If you have any further concerns, don't hesitate to reach out. Have a good day!

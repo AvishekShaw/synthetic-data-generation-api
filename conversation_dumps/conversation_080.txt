@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 80
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account I don't recognize, need someone to look into it
+
+Agent: I'd be happy to help you with that. Would you like to dispute a transaction, lock your card, or something else?
+
+Customer: dispute, or at least open an investigation. not sure yet
+
+Agent: Got it. Here are your credit cards on file: - Chase Freedom \*\*\*\* 1234 - Chase Sapphire \*\*\*\* 5678 Which card was charged?
+
+Customer: sapphire
+
+Agent: Here are your recent transactions on your Chase Sapphire \*\*\*\* 5678: - Aug 14 — Adobe — $54.99 - Aug 13 — Whole Foods — $67.20 - Aug 12 — Delta Airlines — $320.00 - Aug 11 — Netflix — $15.49 - Aug 10 — Shell Gas Station — $88.00 Is the Adobe charge the one you're referring to?
+
+Customer: yeah that one. aug 14, $54.99
+
+Agent: Do you suspect this is fraudulent, or is it possible it was authorized — for example, a subscription or a purchase by a family member?
+
+Customer: thats the thing, not 100% sure. could be my kid. but i don't remember authorizing anything from adobe recently
+
+Agent: Understood. I can open a preliminary investigation on that transaction while you look into it further. You won't lose your chargeback rights during that time. Would you like me to go ahead and flag it?
+
+Customer: yes. and if it turns out it wasn't authorized whats the timeline on provisional credit
+
+Agent: For transactions under investigation, provisional credit is typically issued within 5 business days under Regulation E guidelines, assuming the investigation supports the claim.
+
+Customer: ok. and what if this drags out, i've had disputes sit for 45 days before with no update. not doing that again
+
+Agent: That's a fair concern. Once the investigation is opened, you'll receive a case reference number and can track status through the app. If there's no resolution within 10 business days, provisional credit would be applied automatically.
+
+Customer: fine. open it up then
+
+Agent: Done. I've flagged the Adobe charge of $54.99 on August 14th for investigation on your Chase Sapphire \*\*\*\* 5678. - **Case reference:** #INV-2024-08471 - **Next update:** Within 3-5 business days Is there anything else I can help with?
+
+Customer: no thats it. just make sure someone actually looks at it
+
+Agent: Understood. The case is logged and assigned for review. You'll receive updates via email and in the app. Don't hesitate to reach back out if you don't hear anything within the stated timeframe.

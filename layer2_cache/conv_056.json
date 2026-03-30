@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer sequentially follows the agent's lead — confirming the card, confirming the transaction, then only asking about other charges after the agent prompts it — never bundling multiple concerns in one turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The second turn 'not sure yet, could be a sub someone in my household set up' perfectly mirrors the 'uncertain' scenario tag with natural hedging language.",
+  "info_drip_score": 3,
+  "info_drip_rationale": "The opening turn front-loads merchant (Adobe), amount ($54.99), and date (Aug 14th) all at once without any prompting, which is slightly unnatural even for an expert caller.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'ok so it's been going on 3 months. yeah flag all of them' sound genuinely colloquial and reactive — exactly how a real person would process new information mid-conversation.",
+  "persona_score": 5,
+  "persona_rationale": "The expert/direct/calm persona manifests consistently — short decisive confirmations ('sapphire', 'yes that's the one'), no emotional outbursts, and familiarity with banking terminology like recurring charges and flagging.",
+  "standout_issue": "Front-loading all three key facts (merchant, amount, date) in the very first message reads slightly templated for an 'uncertain' caller who doesn't yet know what the charge is.",
+  "standout_quality": "'ok so it's been going on 3 months. yeah flag all of them' — a genuinely reactive, colloquial turn that captures how a real person processes unexpected information mid-call."
+}

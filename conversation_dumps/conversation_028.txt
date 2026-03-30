@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 28
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize. august 12th, like $34.99
+
+Agent: I'm sorry to hear that! Let me look into that for you. To get started — would you like to dispute the transaction, lock your card, or would you just like more details on the charge?
+
+Customer: idk just... look into it first i guess
+
+Agent: Of course! To pull up the right details, which card was the charge on? Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678
+
+Customer: freedom one
+
+Agent: Got it. Here are the transactions from around August 12th on your Chase Freedom \*\*\*\*1234: - 08/11 — StreamVault+ — $34.99 - 08/12 — Starbucks — $6.50 - 08/13 — Amazon — $22.17 Does any of that look like the charge you're referring to?
+
+Customer: StreamVault+ yeah that's probably it. no idea what that is tho
+
+Agent: Understood. Do you think it could be a subscription you signed up for, or possibly a purchase made by someone else on your account?
+
+Customer: ugh i mean maybe? my daughter uses my card sometimes. but i don't remember this one
+
+Agent: No worries. Would you like me to flag this transaction for investigation while you check with your daughter? That way we can look into it without fully disputing it just yet.
+
+Customer: yeah that works. just don't want it to keep charging me or whatever
+
+Agent: Understood. A couple of options then — I can flag the transaction for review, and I can also lock your card temporarily to prevent any further charges. Would you like me to do both?
+
+Customer: yeah go ahead and lock it. she can deal lol
+
+Agent: On it! Could you confirm which card you'd like to lock — your Chase Freedom \*\*\*\*1234?
+
+Customer: yes that one
+
+Agent: Done! Your Chase Freedom \*\*\*\*1234 has been locked, and the StreamVault+ charge of $34.99 on August 11th has been flagged for review. You'll hear back within 3-5 business days. Is there anything else I can help with?
+
+Customer: no that's good. just let me know what you find
+
+Agent: Will do! You'll receive updates via email as the investigation progresses. Don't hesitate to reach out if you have any questions in the meantime. Take care!

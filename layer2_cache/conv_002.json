@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "In the second turn the customer says 'both. but lets do the charge first', which shows mild bundling of two concerns upfront but immediately prioritises sequentially — a borderline but mostly human-like move.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "Given the certain_fraud scenario, the customer's assertive 'i did not make that' and the mildly exasperated 'yes?? i literally just said i didn't make it' are appropriately confident without sounding robotic.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer reveals no specific details (merchant, amount, date) upfront and only confirms the transaction after the agent displays the list, which is natural information drip behaviour.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yeah do it. and make sure nothing else goes through on the old one' are colloquial and contextually grounded, sounding like a real caller rather than a scripted template.",
+  "persona_score": 5,
+  "persona_rationale": "The mild frustration surfaces clearly in 'yes?? i literally just said i didn't make it', the direct style is consistent throughout with short, imperative turns, and the novice level shows in the absence of any technical dispute terminology.",
+  "standout_issue": "The early bundling of 'both' concerns (dispute and card cancel) in the second turn, while quickly sequenced, still slightly undermines pure depth-first human behaviour.",
+  "standout_quality": "The exasperated callback 'yes?? i literally just said i didn't make it' is the single most realistic moment — it captures genuine mild frustration at an agent asking a redundant clarifying question."
+}

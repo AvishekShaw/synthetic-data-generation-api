@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer handles the investigation request fully before raising the separate question about provisional credit, never bundling concerns in a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The turn 'look i'm not 100% sure — could be a subscription i forgot about' perfectly matches the uncertain scenario without over-committing or under-hedging.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer waits to be asked for the date before providing it, but then volunteers the amount ($54.99) alongside the merchant name without being prompted for it — a minor proactive reveal that is still quite natural.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'just make sure someone actually looks at it' and 'i don't need a refund yet' are distinctly colloquial and contextually grounded, sounding nothing like a script.",
+  "persona_score": 5,
+  "persona_rationale": "The expert knowledge level is clearly shown when the customer unprompted asks about provisional credit and correctly distinguishes the concept, while mild frustration surfaces in 'i just want someone to actually investigate it' and the closing 'just make sure someone actually looks at it'.",
+  "standout_issue": "Volunteering the dollar amount alongside the merchant name without being asked is a minor but noticeable information bundle that slightly breaks the natural drip pattern.",
+  "standout_quality": "The provisional credit question is the most realistic moment — an expert customer would genuinely know to ask this, and the phrasing 'kicks in while you investigate right?' sounds authentically conversational rather than scripted."
+}

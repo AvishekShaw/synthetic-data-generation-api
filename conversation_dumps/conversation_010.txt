@@ -1,0 +1,60 @@
+============================================================
+CONVERSATION 10
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my card i didnt make
+
+Agent: Sorry to hear that. I can help you with that. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678. Which card has the charge?
+
+Customer: the freedom one
+
+Agent: Got it. Do you suspect this is a fraudulent transaction?
+
+Customer: yes 100% wasnt me
+
+Agent: Understood. I'll help you dispute this. What date was the transaction?
+
+Customer: august 18th
+
+Agent: Got it. And what was the amount?
+
+Customer: like $89.21 i think
+
+Agent: Thank you. What's the name of the merchant?
+
+Customer: thats the thing i dont recognize it at all. something weird i've never heard of
+
+Agent: No problem. Let me pull up the transactions on your Chase Freedom card around August 18th. Here are transactions from that date: - Aug 18 — SYNCRO MEDIA LLC — $89.21 - Aug 18 — WALGREENS #4021 — $12.45 - Aug 18 — NETFLIX.COM — $15.99 Does SYNCRO MEDIA LLC look like the one?
+
+Customer: yes thats it. never heard of them
+
+Agent: Got it. I've noted this as an unauthorized transaction — SYNCRO MEDIA LLC, $89.21, August 18th, on your Chase Freedom card ending in 1234. Would you also like to cancel and replace this card to prevent further unauthorized charges?
+
+Customer: yes please that too. want a new card sent
+
+Agent: Perfect. I'll file the dispute for the $89.21 charge and cancel your Chase Freedom card ending in 1234. A replacement card will be mailed to your address on file within 5-7 business days. Is there anything else you'd like me to help with?
+
+Customer: when do i get my money back
+
+Agent: Once the dispute is filed, our team will investigate the claim. If the transaction is confirmed as unauthorized, a refund will be applied to your account — this typically takes 3 to 5 business days to resolve. Your dispute has been submitted and your card is now cancelled. Is there anything else?
+
+Customer: no that's it thanks
+
+Agent: You're all set. Take care!

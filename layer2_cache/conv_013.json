@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer sequentially handles card locking completely before moving to the dispute, saying 'lock it first' and only raising the dispute after the agent prompts with 'Is there anything else you'd like to do, such as disputing the transaction?'",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "The scenario is certain_fraud and the customer appropriately asserts 'def not me' for the disputed charge, though the use of 'i think someones used my card' in the opener is a slight hedge that could be more assertive given the certainty level — but this borderline hedging actually reads naturally for a first contact.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer provides no proactive details upfront, admits 'i dont have it in front of me rn' when asked, and only identifies the transaction after the agent surfaces a list — perfectly mimicking gradual, prompted information disclosure.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes do it', 'yeah that 312 one. def not me', and 'no thats it thanks' are colloquial shorthand that sounds exactly like a real caller, with no scripted or formulaic phrasing anywhere.",
+  "persona_score": 5,
+  "persona_rationale": "The terse, calm, intermediate-knowledge persona is consistently evident — short confirmatory turns ('correct', 'yes do it'), no emotional outbursts, and vocabulary that neither over-explains nor sounds naive.",
+  "standout_issue": "The word 'def' (definitely) in 'def not me' carries a mild over-commitment flag per Wang et al., though in this brief, casual form it is borderline rather than clearly LLM-like.",
+  "standout_quality": "Admitting 'i dont have it in front of me rn' is a highly realistic naturalistic detail that breaks from the typical LLM pattern of having all information ready and is a strong marker of genuine human behaviour."
+}

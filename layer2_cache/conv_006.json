@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer fully resolves the dispute concern across several turns before raising the card cancellation request ('ugh fine. ok i also want a new card'), demonstrating mostly depth-first behavior with only a minor sequential shift.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain fraud scenario, the customer is appropriately assertive without robotic over-commitment — 'i didn't order anything' is confident but natural, never using LLM markers like 'I definitely did not' or 'I absolutely'.",
+  "info_drip_score": 3,
+  "info_drip_rationale": "The customer front-loads the merchant (Uber Eats), amount ($215), and date (August 10th) all in one unprompted second turn before the agent asks for any of these specifics, which is more efficient than a real novice caller would typically be.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'ugh fine. ok i also want a new card. if someone used my number once they'll do it again' and 'no just make sure someone actually looks at this one' sound genuinely colloquial and contextually grounded.",
+  "persona_score": 5,
+  "persona_rationale": "Mild frustration is consistently present ('i already called about this last week and nobody did anything', 'i was told that last week too'), direct communication style shows in terse, to-the-point turns, and novice level shows in asking a simple practical question ('is there anything that actually speeds this up') rather than citing policy.",
+  "standout_issue": "The customer volunteers all three key transaction details (merchant, amount, date) in a single unprompted turn, which is unusually well-organized for a novice caller and reads more like filling out a form than a real phone call.",
+  "standout_quality": "The closing line 'no just make sure someone actually looks at this one. last time nothing happened' is highly realistic — it captures the mildly frustrated follow-up caller's distrust without being melodramatic."
+}

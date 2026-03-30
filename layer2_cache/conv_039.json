@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 3,
+  "depth_first_rationale": "In the second turn 'both. charge is fraud' the customer bundles the dispute and card cancellation requests together, though this is early and brief; subsequent turns are more sequential.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "Given the certain_fraud scenario, the customer's assertive 'apple store. $1249. did NOT make that' and 'yes that's what i said' are appropriately confident without sounding robotic or over-committed.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer does not volunteer merchant, amount, or date upfront — they identify the card first, then confirm the Apple Store transaction only after the agent presents the list, which is natural and graduated.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'just make sure someone actually looks at it' and 'how long for the money tho' read as genuinely colloquial expressions a real frustrated caller would use, not scripted phrasing.",
+  "persona_score": 5,
+  "persona_rationale": "The terse style is consistently evident (single-phrase turns like 'freedom one', 'text. how long for the money tho'), mild frustration surfaces in 'yes that's what i said', and intermediate knowledge shows in understanding fraud/dispute concepts without needing explanation.",
+  "standout_issue": "The second turn bundles two distinct requests ('both. charge is fraud') slightly early, which leans breadth-first, though it is minimal.",
+  "standout_quality": "'just make sure someone actually looks at it' — a highly naturalistic expression of mild distrust and frustration that captures a real human caller's anxiety without sounding scripted."
+}

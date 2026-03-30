@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 3,
+  "depth_first_rationale": "The opening turn bundles both the dispute request and card replacement together ('need it disputed and my card replaced'), though subsequent turns are mostly sequential and depth-first.",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "The customer appropriately hedges on the merchant name ('something like VPX or VPX Services maybe') while remaining assertive about the fraud itself ('100% unauthorized'), which fits the certain_fraud/partial_information scenario well.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "Amount and date are held back until prompted, though the opening turn preemptively signals the date ('august 18th') before being asked, which is slightly proactive but not unrealistically so.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "The turn 'yes. that's what i said at the start' is a perfectly colloquial, irritated callback to the opening request that sounds unmistakably like a real frustrated caller rather than a scripted response.",
+  "persona_score": 5,
+  "persona_rationale": "Expert knowledge manifests in the unprompted mention of provisional credit ('i know that's standard'), escalating tone builds naturally to the CFPB threat, and the direct style is consistent throughout in terse, no-filler phrasing.",
+  "standout_issue": "Bundling dispute and card replacement in the very first turn is a minor breadth-first signal that slightly undermines the otherwise depth-first questioning pattern.",
+  "standout_quality": "The CFPB escalation threat combined with the terse 'yes. that's what i said at the start' feels authentically human — a knowledgeable, increasingly impatient caller who knows their rights."
+}

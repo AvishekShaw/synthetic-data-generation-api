@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer mostly resolves one concern before moving to the next, though the turn 'yes. and if it turns out it wasn't authorized whats the timeline on provisional credit' bundles confirmation with a follow-up question in one message — a mild but not egregious breach of depth-first flow.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer's uncertainty is perfectly calibrated throughout, exemplified by 'thats the thing, not 100% sure. could be my kid. but i don't remember authorizing anything from adobe recently', which naturally hedges without over-committing.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer opens with only a vague 'charge I don't recognize' and only confirms 'aug 14, $54.99' after the agent surfaces the transaction list, never front-loading merchant, date, or amount unprompted.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Every turn is colloquial and context-appropriate, with phrases like 'fine. open it up then' and 'just make sure someone actually looks at it' sounding like genuine caller speech rather than scripted input.",
+  "persona_score": 5,
+  "persona_rationale": "The expert knowledge level shows clearly in the unprompted reference to provisional credit timelines and Reg E implications, the direct style is evident in terse confirmations like 'sapphire', and the escalating emotional state builds naturally with 'i've had disputes sit for 45 days before with no update. not doing that again'.",
+  "standout_issue": "",
+  "standout_quality": "The customer's unprompted invocation of past dispute experience and implicit knowledge of provisional credit rights ('whats the timeline on provisional credit') authentically signals expert-level banking familiarity without sounding coached or scripted."
+}

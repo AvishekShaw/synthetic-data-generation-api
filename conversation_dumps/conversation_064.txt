@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 64
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+------------------------------------------------------------
+
+Customer: hey got a charge I don't recognize
+
+Agent: Sorry to hear that. Would you like to dispute a transaction, lock your card, or something else?
+
+Customer: dispute, maybe. want it investigated first
+
+Agent: Got it. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire Reserve, \*\*\*\* \*\*\*\* \*\*\*\* 8807 Which card was charged?
+
+Customer: 8807
+
+Agent: Thanks. Here are your recent transactions on the Chase Sapphire Reserve ****8807: - Aug 14 — Adobe — $54.99 - Aug 13 — Whole Foods — $31.20 - Aug 12 — Shell Gas — $48.00 - Aug 11 — Netflix — $15.49 Do any of these look unfamiliar?
+
+Customer: yeah the adobe one
+
+Agent: Understood. Do you believe this charge was unauthorized, or are you unsure?
+
+Customer: unsure. could be a subscription someone in my household set up
+
+Agent: Got it — no problem. I can open an investigation on that charge without formally disputing it yet. Just to confirm: Adobe, $54.99, August 14th?
+
+Customer: correct
+
+Agent: To proceed, can you tell me — have you contacted Adobe directly to ask about the charge?
+
+Customer: no not yet. just want the investigation opened on your end first
+
+Agent: Understood. I've flagged the Adobe charge of $54.99 on August 14th for investigation on your account. You'll typically see an update within 3–5 business days. Would you also like a provisional credit applied while we look into it?
+
+Customer: no just the investigation for now. if it's legit I don't want the hassle of reversing a credit
+
+Agent: Makes sense. Investigation is open. You'll receive an email confirmation shortly. Is there anything else I can help you with?
+
+Customer: nope that's it
+
+Agent: All set. We'll be in touch within 3–5 business days. Take care!

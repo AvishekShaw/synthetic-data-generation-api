@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer raises one concern at a time — first reporting the charge, then asking about investigation timeline only after the agent asks about locking the card, never bundling multiple issues.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer's second turn ('not sure honestly. could be something my kid set up idk. but i don't remember authorizing it') perfectly reflects the uncertain scenario with natural hedging language.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer volunteers merchant, amount, and date in the first turn, which is somewhat front-loaded, though the scenario specifies full information completeness and the combination of all three in the opening is plausible for someone reading from a bank statement.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'fine yes. open it' and 'no thats it for now' are colloquially natural responses that reflect a real caller's resigned frustration after being told the timeline cannot be expedited.",
+  "persona_score": 5,
+  "persona_rationale": "The escalation arc is clearly visible — the customer moves from casual uncertainty to threatening to close the account and contact the CFPB when the 10-day timeline is revealed, demonstrating both the escalating emotional state and direct communication style.",
+  "standout_issue": "",
+  "standout_quality": "The threat to contact the CFPB is a highly realistic detail that signals intermediate financial knowledge and genuine escalation, something a real frustrated banking customer might invoke but an LLM-generated persona rarely produces spontaneously."
+}

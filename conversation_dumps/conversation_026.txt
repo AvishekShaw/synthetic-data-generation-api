@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 26
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my account i definitely didn't make
+
+Agent: I'm sorry to hear that! I can help you look into this. Which card was the charge on?
+
+Customer: i have a few cards, not sure how to tell you that
+
+Agent: No problem! Here are the cards on your account: - Chase Freedom ****1234 - Chase Sapphire ****5678 - Chase Slate ****9012 Which one do you think the charge appeared on?
+
+Customer: sapphire i think
+
+Agent: Got it. Let me pull up the recent transactions on your Chase Sapphire ****5678. Can you tell me roughly when the charge was made?
+
+Customer: around august 18th, it was like $89 something
+
+Agent: Thank you. Here are transactions around that date on your Chase Sapphire ****5678: - Aug 17 — Spotify — $9.99 - Aug 18 — MerchPro Online — $89.21 - Aug 19 — Shell Gas Station — $43.00 Do any of these look like the charge you're concerned about?
+
+Customer: yeah that MerchPro one. never heard of them, 100% didn't do that
+
+Agent: Understood. I'll flag that as a potentially fraudulent transaction. Would you like to dispute the $89.21 charge from MerchPro Online on August 18th?
+
+Customer: yes and i want my money back, how does that work
+
+Agent: Once your dispute is submitted, our fraud team will review it. If confirmed as fraud, the $89.21 will be returned to your account. This typically takes 5–10 business days.
+
+Customer: ugh fine. and i want the card cancelled too, i don't want anyone using it again
+
+Agent: Absolutely, that's a smart move. I can cancel your Chase Sapphire ****5678 and order a replacement card right away. Your new card should arrive within 5–7 business days. Shall I go ahead with both — the dispute and the card replacement?
+
+Customer: yes please just get it sorted
+
+Agent: Done! Here's a summary of what I've done: - ✅ Dispute submitted for MerchPro Online — $89.21 on Aug 18th - ✅ Chase Sapphire ****5678 cancelled and replacement card ordered You'll receive a confirmation email shortly. Is there anything else I can help you with?
+
+Customer: no thats it thanks
+
+Agent: You're welcome! Sorry for the hassle. Take care!

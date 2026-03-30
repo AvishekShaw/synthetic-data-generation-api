@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer opens with 'need to dispute a charge and get a new card' — a mild bundle in the first turn — but then immediately defers to the agent's sequencing and handles each concern fully before moving on.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain-fraud scenario the customer's flat 'wasn't me' and 'never authorized it' are assertive without being robotically emphatic, which is exactly right for someone confident about fraud.",
+  "info_drip_score": 3,
+  "info_drip_rationale": "The customer front-loads all three key facts (amount, merchant, date) in a single unprompted turn — 'dispute first. $127.43 amazon august 20th. wasn't me' — rather than waiting to be asked for specifics.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'nope just get it filed' and 'yes done' are colloquial, contextually appropriate, and sound like a real caller who is in a hurry rather than a scripted template.",
+  "persona_score": 5,
+  "persona_rationale": "The terse, lowercase, clipped responses ('freedom', 'correct', 'nope good') consistently reflect all four persona attributes — expert, calm, terse, and goal-clear — throughout the entire conversation.",
+  "standout_issue": "All three key transaction details (merchant, amount, date) are volunteered in one unprompted burst in the second turn, which feels more like a form submission than a natural human recall of a fraudulent charge.",
+  "standout_quality": "The minimalist confirmations ('correct', 'nope just get it filed', 'yes done') are strikingly realistic for a calm, expert, terse caller and never tip into robotic over-commitment."
+}

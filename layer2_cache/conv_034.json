@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The second turn bundles both the refund and card replacement ('I want my money back and a new card'), but this occurs in direct response to the agent explicitly offering multiple options, making it somewhat forgivable; all subsequent turns are focused on one concern at a time.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer appropriately hedges on the amount ('like $89 something. 89.21 i think') while remaining assertive about the fraud itself ('never used them in my life'), perfectly matching both the partial information scenario and certain_fraud certainty.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer reveals the date, amount, and merchant only when directly prompted by the agent, and notably cannot recall the merchant name until shown a transaction list, which is a realistic and natural information-drip pattern.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes that's what i said at the start lol' and 'that's the thing i don't really remember. something online' sound authentically colloquial and contextually grounded rather than scripted.",
+  "persona_score": 5,
+  "persona_rationale": "The terse, mildly frustrated persona comes through consistently — short responses, minimal elaboration, a light jab at the agent for asking again about the card ('yes that's what i said at the start lol'), and a closing check ('just want to make sure the refund actually happens') that signals intermediate knowledge without being expert-level.",
+  "standout_issue": "",
+  "standout_quality": "The customer's inability to recall the merchant name and the hedged amount ('like $89 something') together create an exceptionally realistic portrayal of a genuine fraud victim working from partial memory."
+}

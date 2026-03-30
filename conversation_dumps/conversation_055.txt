@@ -1,0 +1,48 @@
+============================================================
+CONVERSATION 55
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+------------------------------------------------------------
+
+Customer: hey there's a fraudulent charge on my account i need to dispute
+
+Agent: I'm sorry to hear that. I can help you with that. Can you tell me more about the charge?
+
+Customer: apple store, $1,249.00, august 19th. definitely wasn't me
+
+Agent: Thank you for those details. I'd like to pull up the transaction. Which card was this charged to? Here are the cards on your account: - Chase Freedom ****1234 - Chase Sapphire ****5678
+
+Customer: sapphire, 5678
+
+Agent: Got it. I can see the transaction — Apple Store, $1,249.00 on August 19th. Would you like to dispute this transaction, or is there anything else you'd like to do first?
+
+Customer: dispute it and cancel the card. want a replacement sent too
+
+Agent: Understood. Let me take care of both. For the dispute — can you confirm you had the card in your possession on August 19th and did not authorize this charge?
+
+Customer: yes, card's been in my wallet. didn't authorize it
+
+Agent: Perfect, that's noted. I've opened a fraud dispute for the $1,249.00 Apple Store charge. You should receive a provisional credit within 5 business days while we investigate. Now for the replacement — can you confirm your delivery address is 123 Main Street, New York, NY 10001?
+
+Customer: correct
+
+Agent: Great. Here's a summary of everything: - **Dispute opened:** Apple Store, $1,249.00 — August 19th - **Provisional credit:** Expected within 5 business days - **Card cancelled:** Chase Sapphire ****5678 - **Replacement card:** New number, delivery to 123 Main Street, New York, NY 10001 — Standard 5–7 business days, no cost Is there anything else you need?
+
+Customer: nope that covers it. just make sure the dispute is flagged as unauthorized not just a billing error
+
+Agent: Noted — the dispute has been flagged as an unauthorized transaction. You'll receive a confirmation email shortly with your case reference number.

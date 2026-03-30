@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 3,
+  "depth_first_rationale": "In the turn 'dispute it and cancel the card. want a replacement sent too', the customer bundles three related actions simultaneously, though this occurs after the agent explicitly invited action, making it somewhat forgivable.",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "The phrase 'definitely wasn't me' in the second customer turn is slightly robotic for a certain-fraud scenario but the rest of the conversation is appropriately assertive without overusing commitment language.",
+  "info_drip_score": 2,
+  "info_drip_rationale": "In the second turn, the customer front-loads all three key facts — merchant (Apple Store), amount ($1,249.00), and date (August 19th) — unprompted in a single message before the agent asked for any details.",
+  "pragmatic_score": 4,
+  "pragmatic_rationale": "Most turns are colloquial and natural (e.g., 'card's been in my wallet'), and the final turn 'just make sure the dispute is flagged as unauthorized not just a billing error' is a particularly realistic detail an experienced caller would add.",
+  "persona_score": 4,
+  "persona_rationale": "The expert knowledge level clearly manifests in the final turn where the customer distinguishes between unauthorized transaction and billing error — a nuanced distinction that signals domain fluency and direct communication style.",
+  "standout_issue": "Volunteering all three key transaction details (merchant, amount, date) in one unprompted turn is the most LLM-like behaviour, as real callers typically provide details incrementally in response to agent prompts.",
+  "standout_quality": "The final customer turn requesting the dispute be flagged as 'unauthorized not just a billing error' is the most realistic moment — it reflects genuine domain knowledge and the kind of specific follow-up a real experienced caller would think to add."
+}

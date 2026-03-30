@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer says 'all of the above basically' early on when asked to choose between dispute/lock/replace, which bundles concerns, but then sequentially addresses the dispute first and only raises the card replacement after the dispute is handled ('ok good. now the card').",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain-fraud scenario, 'techhub. def wasn't me' is assertive without being robotic, appropriately matching the certainty level of the scenario.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer opens with only 'got a charge on my card i didn't make' and reveals the specific merchant, card, and details only when prompted by the agent, never front-loading facts.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'ok good. now the card' and 'nope thats it' are natural, colloquial, and contextually appropriate for a caller who is calm and in a hurry to get things resolved.",
+  "persona_score": 5,
+  "persona_rationale": "The terse style is consistently evident throughout — single-word or short-phrase responses ('freedom', 'yes', 'yep', 'nope thats it') — and the intermediate knowledge level shows in the customer knowing to mention they already tried the merchant without needing prompting.",
+  "standout_issue": "The early bundling of 'all of the above basically' is slightly LLM-like in that it anticipates multiple resolution paths before the agent has even begun, though it is softened by the casual phrasing.",
+  "standout_quality": "The sequential handling of dispute before card replacement, signalled naturally with 'ok good. now the card', is a strong example of realistic depth-first conversational behaviour."
+}

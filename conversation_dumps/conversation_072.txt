@@ -1,0 +1,52 @@
+============================================================
+CONVERSATION 72
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+------------------------------------------------------------
+
+Customer: hey i need to dispute a charge, pretty sure it's unauthorized
+
+Agent: I'd be happy to help you with that. Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire Reserve, \*\*\*\* \*\*\*\* \*\*\*\* 8809 Which card are we looking at?
+
+Customer: sapphire
+
+Agent: Got it, Chase Sapphire Reserve ending in 8809. Do you suspect this charge is fraudulent, or is there another reason for the dispute?
+
+Customer: look i'm not 100% sure — could be a subscription i forgot about. i just want someone to actually investigate it
+
+Agent: Understood. I can open an investigation on the transaction. What's the date of the charge?
+
+Customer: august 14th
+
+Agent: And the merchant name?
+
+Customer: Adobe. it's $54.99
+
+Agent: Got it — Adobe, $54.99, August 14th. Just to confirm: you're not certain whether you or someone else authorized this charge, and you'd like us to investigate before any dispute is filed. Is that right?
+
+Customer: yes exactly. just open the investigation, i don't need a refund yet
+
+Agent: Understood. I've flagged the Adobe charge of $54.99 on August 14th for investigation on your Sapphire Reserve ending in 8809. Our team will review the transaction and follow up within 3–5 business days. You'll be notified of any findings before any further action is taken.
+
+Customer: ok good. and if it does turn out to be unauthorized, provisional credit kicks in while you investigate right?
+
+Agent: That's correct. If the investigation determines the charge is unauthorized, provisional credit would typically be applied to your account within 5 business days under Regulation E guidelines — though since this is a credit card, Regulation Z would apply, and timelines may vary slightly. Is there anything else I can help you with?
+
+Customer: no that covers it. just make sure someone actually looks at it
+
+Agent: Absolutely. The investigation is logged and assigned. You'll hear back within 3–5 business days. Thank you for reaching out, and have a good day.

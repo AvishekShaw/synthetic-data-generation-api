@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 57
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge and get a new card
+
+Agent: I can help with both of those. Let me pull up your account. Which would you like to start with — the dispute or the card replacement?
+
+Customer: dispute first. $127.43 amazon august 20th. wasn't me
+
+Agent: Sorry to hear that. Here are your cards on file: - Chase Freedom ****1234 - Chase Sapphire ****5678 Which card had the unauthorized charge?
+
+Customer: freedom
+
+Agent: Got it. I can see a charge of **$127.43** from Amazon.com on **August 20th** on your Chase Freedom ****1234. I'll open a dispute for this transaction. Can you confirm you did not authorize this charge and have no knowledge of what was purchased?
+
+Customer: correct. never authorized it
+
+Agent: Understood. I've flagged this as an unauthorized transaction. A provisional credit of $127.43 will be applied to your account within 1-2 business days while we investigate. Is there anything else you'd like to add about the charge before I submit?
+
+Customer: nope just get it filed
+
+Agent: Done. Your dispute has been submitted. You'll receive a confirmation by email, and the investigation typically completes within 10 business days. Now, would you like to cancel and replace your Chase Freedom ****1234?
+
+Customer: yes. new number too
+
+Agent: Got it. I'll cancel your Chase Freedom ****1234 and issue a replacement with a new card number. Can you confirm your delivery address is 123 Main Street, New York, NY 10001?
+
+Customer: correct
+
+Agent: Perfect. Here's a summary of your replacement order: - Card: Chase Freedom ****1234 (cancelled) - New card number will be issued - Delivery Address: 123 Main Street, New York, NY 10001 - Delivery Speed: Standard (5-7 business days) - Cost: Free Shall I confirm this?
+
+Customer: yes done
+
+Agent: All set. Your dispute is filed and your new Chase Freedom card is on the way. Is there anything else I can help you with?
+
+Customer: nope good
+
+Agent: Got it. Take care!

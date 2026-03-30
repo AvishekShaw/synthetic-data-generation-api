@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 3,
+  "depth_first_rationale": "The early turn 'all of the above honestly' bundles dispute, lock, and replacement together before any concern is resolved, though subsequent turns are mostly sequential and depth-first.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain-fraud scenario the customer's assertive 'yes obviously' when asked about fraud is appropriately confident without sounding robotic or over-committed.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer waits until the agent displays the transaction list before specifying 'amazon aug 20. $127.43', rather than volunteering all details unprompted in the opening turn.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes. and when do i get my money back' and 'no. just sort it out fast' are colloquial, contextually appropriate, and sound like a real caller rather than a scripted prompt.",
+  "persona_score": 5,
+  "persona_rationale": "The terse, mildly-frustrated intermediate persona is consistently present — short clipped replies ('freedom', 'yep that's right'), mild irritation ('look that's too long'), and comfort with banking vocabulary without over-explaining.",
+  "standout_issue": "Bundling dispute, card lock, and replacement in a single early turn ('all of the above honestly') is the one moment that feels slightly LLM-like, as a real first-time caller would more likely focus on the fraudulent charge before thinking about card replacement.",
+  "standout_quality": "'yes obviously' in response to being asked whether the charge is fraudulent is a highly naturalistic, emotionally congruent reaction that perfectly captures mild frustration without sounding scripted."
+}

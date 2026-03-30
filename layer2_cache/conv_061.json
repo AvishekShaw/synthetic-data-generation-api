@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer raises the replacement card request only after the fraud dispute is confirmed ('yes and i want a replacement card too'), which is appropriately sequential, though it is bundled into the same turn as affirming the dispute — a minor instance of combining.",
+  "uncertainty_score": 3,
+  "uncertainty_rationale": "The 'certain_fraud' scenario justifies assertiveness, but '100% wasn't me' and 'definitely didn't book any flights' are slightly robotic over-commitments even for a certain scenario — a real expert caller might still say 'no way that's mine' rather than percentage language.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer does not volunteer merchant, amount, or date upfront and waits to identify the transaction from a list, though the scenario's Unknown merchant and $300 amount never actually appear — the resolved transaction ($489 Delta) diverges from scenario facts, which slightly obscures the drip pattern.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'need my card frozen asap', 'sapphire', and 'nope that covers it' are authentically terse and colloquial, sounding exactly like a no-nonsense expert caller under minimal information conditions.",
+  "persona_score": 5,
+  "persona_rationale": "The expert/calm/terse persona is strongly sustained throughout — single-word responses ('sapphire'), clipped affirmations ('yes and i want a replacement card too'), and the absence of filler or hedging all consistently reflect the assigned profile.",
+  "standout_issue": "The use of '100%' as a certainty marker reads slightly scripted/LLM-like rather than naturally human, even for a confident caller.",
+  "standout_quality": "The opening 'need my card frozen asap' is a near-perfect terse, expert, calm opener — no pleasantries, no over-explanation, just a direct imperative that fits every persona dimension at once."
+}

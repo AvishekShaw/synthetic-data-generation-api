@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer fully resolves the card freeze before mentioning the dispute, and requests a case number only after the dispute is already filed, never bundling concerns across turns.",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "For a certain_fraud scenario the assertive language ('def wasn't me', 'yes 100%') is appropriate, though 'yes 100%' edges slightly toward LLM-style over-commitment; the opening hedge 'doesn't look right / think someone used my card' is a nice authentic touch.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer volunteers no merchant, amount, or date upfront — they explicitly say 'i don't have my statement in front of me rn' and wait for the agent to surface transactions before identifying the one in question.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'freeze it. right now', 'yes lock it', and '3-5 days?? that's too long. if this isn't sorted fast i'm calling the CFPB' all sound like authentic, pressured caller speech rather than scripted responses.",
+  "persona_score": 5,
+  "persona_rationale": "The escalating emotional arc is clearly tracked — calm concern at opening, curt commands mid-conversation, a CFPB threat and account-closure warning when given the timeline — while direct, short turns consistently reflect the assigned communication style.",
+  "standout_issue": "The scenario specifies an Unknown merchant, $300.00 amount, and August 17th date, but the conversation uses TechMart Online, $189.99, and 11/12 — the metadata mismatch means the 'certain fraud / minimal information' framing is never actually tested against the customer's behaviour.",
+  "standout_quality": "The customer's admission 'i don't have my statement in front of me rn but i know i didn't make it' is a highly realistic detail that naturally motivates the information-drip dynamic and sounds exactly like a genuine caller."
+}

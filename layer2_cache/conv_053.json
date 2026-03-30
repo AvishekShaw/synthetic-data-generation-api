@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer handles concerns sequentially — freezing card first, then dispute, then provisional credit, then investigation timeline, then replacement card — with only mild bundling in 'yeah, i'll need to file a dispute. prob want a provisional credit too' which is a natural pair of related concerns.",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "In the certain_fraud scenario the customer is appropriately assertive ('definitely not mine', 'never heard of them') without sounding robotic, though the opening 'definitely' slightly edges toward LLM over-commitment.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer withholds transaction details until explicitly prompted by the agent, then takes a moment ('gimme a sec') before providing them, which is natural information-retrieval behaviour.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'gimme a sec', 'prob want a provisional credit too', and 'nope that covers it, thanks' are colloquial and contextually appropriate, sounding like a real caller rather than a scripted response.",
+  "persona_score": 4,
+  "persona_rationale": "The expert knowledge level shows clearly — the customer proactively knows to request provisional credit and ask about investigation timelines — and the direct, calm style is consistent throughout without over-elaboration.",
+  "standout_issue": "The transaction details provided ($312, 'Veltro Digital', the 14th) don't match the scenario metadata ($300, Unknown merchant, August 17th), which undermines scenario authenticity even if the customer behaviour itself is naturalistic.",
+  "standout_quality": "'gimme a sec' before providing transaction details is the single most realistic customer behaviour, mimicking the natural pause of someone actually looking up their statement."
+}

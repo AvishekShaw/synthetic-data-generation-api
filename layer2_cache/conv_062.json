@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 3,
+  "depth_first_rationale": "In the turn 'yes. both. when do i get provisional credit', the customer bundles card cancellation confirmation and a new concern (provisional credit timing) in one message, though this is mild and occurs only once.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain-fraud follow-up scenario, the customer's flat assertive statements like 'correct. never made it. already reported this' match exactly — no hedging where none is warranted, no over-commitment phrases.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer front-loads merchant, amount, and date in a single second turn ('uber eats $215 aug 10'), but this is defensible given the follow-up context where the customer wants to be identified quickly and already called before; still slightly premature.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Every turn sounds like a real terse caller — 'just pull up my account' and 'fine. confirmation number?' are exactly the kind of clipped, impatient phrasing a repeat caller would use.",
+  "persona_score": 5,
+  "persona_rationale": "The Regulation E citation ('reg e requires 10 days max for provisional credit') is a standout expert-level move, and the consistently short turns perfectly embody the terse, calm persona throughout.",
+  "standout_issue": "",
+  "standout_quality": "The unprompted Regulation E correction is the single most realistic moment — a genuinely expert, calm customer would know and cite this statute without emotion, exactly as written."
+}

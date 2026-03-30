@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 35
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+------------------------------------------------------------
+
+Customer: there's a $340 charge from TechHub on aug 15 that I did not make
+
+Agent: I'm sorry to hear that. I can help you with this. Would you like to dispute the transaction, lock your card, or replace it?
+
+Customer: all of it. I want my money back and a new card
+
+Agent: Understood. Let's take this one step at a time. First, let's get the dispute started. Here are your cards on file: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card was the $340 charge on?
+
+Customer: freedom
+
+Agent: Got it. Do you believe this was an unauthorized transaction?
+
+Customer: yes obviously. already told techhub and they refused to help so here I am
+
+Agent: I understand, and I'm sorry you had to go through that. I'll open a dispute for the $340.00 charge from TechHub on August 15th on your Chase Freedom card. Can you confirm — have you ever done business with TechHub before?
+
+Customer: no never heard of them before this
+
+Agent: Thank you. Your dispute has been opened and our fraud team will investigate. Would you now like to cancel and replace your Chase Freedom card?
+
+Customer: yes please
+
+Agent: Done. Your Chase Freedom card ending in 1234 has been cancelled. Your replacement card will arrive in 5–7 business days. Would you like expedited delivery?
+
+Customer: yes
+
+Agent: Your replacement card will arrive within 1–2 business days. Is there anything else I can help you with today?
+
+Customer: how long does the refund take
+
+Agent: The investigation typically takes up to 10 business days. You'll be notified of the outcome by email or mail.
+
+Customer: ok fine. just make sure it gets sorted
+
+Agent: Absolutely. Your dispute is on file and your new card is on the way. Don't hesitate to reach out if you have any questions.

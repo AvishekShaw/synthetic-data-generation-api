@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer handles the fraud dispute first, then separately requests card cancellation only after the agent asks if there's anything else, showing mostly sequential concern-raising with no bundling.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain-fraud scenario, the customer's assertive 'yes obviously. i didnt make it' is perfectly calibrated — no hedging where none is needed, no robotic over-commitment either.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer front-loads merchant, amount, and date together in one turn ('uber eats charge that wasnt me. $215 on aug 10th'), but this is plausible for a follow-up caller who already rehearsed the key facts and is mildly frustrated at repeating themselves.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'look i already called about this' and 'just make sure it actually gets resolved this time' are colloquial, contextually appropriate, and sound like a real frustrated repeat caller rather than a scripted user.",
+  "persona_score": 5,
+  "persona_rationale": "The terse style (short clipped sentences), intermediate knowledge (knows the card number, references prior contact, asks for card replacement unprompted), and mild frustration ('that's not good enough', 'i was told to wait last time and nothing happened') are all consistently present throughout.",
+  "standout_issue": "Bundling merchant + amount + date in a single turn early on slightly undermines the natural information-drip pattern, though it is partially justified by the follow-up context.",
+  "standout_quality": "'so whats actually happening with the $215. i was told to wait last time and nothing happened' is highly realistic — it captures the frustration of a repeat caller who feels ignored without sounding scripted."
+}

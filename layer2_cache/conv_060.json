@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer raises one concern at a time — first identifying the charge, then agreeing to investigation, then asking about provisional credit only after the investigation is confirmed, never bundling topics.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer's hedging language perfectly matches the uncertain scenario — 'streamvault maybe. not sure i authorized it' reflects genuine ambiguity rather than asserting clear fraud.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer only provides the date and amount in response to the agent's prompt, and merchant identification ('streamvault maybe') only emerges after the agent presents transaction options.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'no i'll hold off on that. provisional credit timeline?' and 'ok that works. just keep me posted' are colloquial, contextually appropriate, and sound like a real caller rather than a scripted response.",
+  "persona_score": 5,
+  "persona_rationale": "The expert knowledge level is demonstrated by the unprompted 'provisional credit timeline?' query referencing Reg E implicitly, while terse communication is evident throughout in minimal-word responses like 'yes', 'yeah', and 'nope that's it'.",
+  "standout_issue": "",
+  "standout_quality": "The unsolicited 'provisional credit timeline?' question authentically signals domain expertise while remaining terse and calm, making it the most convincingly human moment in the transcript."
+}

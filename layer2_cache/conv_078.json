@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer sequentially resolves the provisional credit issue before raising the card cancellation, and the fraud classification correction only comes after the card issue is handled — though the transition to 'now i need the card cancelled' is slightly abrupt, it remains depth-first overall.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain fraud scenario, the customer's assertive 'i did not make this charge' and citation of Reg E rights are appropriately confident without sounding robotic or over-committed.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer waits until prompted to confirm the transaction details ('uber eats, $215, august 10th') rather than front-loading them in the opening turn, which is natural for a follow-up call.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'under review means nothing to me' and 'yes obviously' are colloquial and contextually sharp in a way that reads as genuinely human rather than scripted.",
+  "persona_score": 5,
+  "persona_rationale": "The escalating emotional arc builds naturally from impatient opener to Reg E threat to explicit warning 'if i don't see that credit by tomorrow i'm calling back,' while expert knowledge shows in the CFPB reference and the fraud-vs-billing-error distinction.",
+  "standout_issue": "",
+  "standout_quality": "The customer's unprompted correction 'make sure that dispute gets flagged as fraud not just a billing error' is a highly realistic expert-level detail that a genuine knowledgeable caller would raise and most simulated users would omit."
+}

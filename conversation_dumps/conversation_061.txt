@@ -1,0 +1,48 @@
+============================================================
+CONVERSATION 61
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+------------------------------------------------------------
+
+Customer: need my card frozen asap
+
+Agent: I can help you with that right away. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678. Which card would you like to freeze?
+
+Customer: sapphire
+
+Agent: Got it. Your Chase Sapphire card ending in 5678 has been frozen. No new transactions will be processed on this card. Is there a transaction you'd like to report as well?
+
+Customer: yeah something looks off on my statement
+
+Agent: Understood. Do you suspect this is a fraudulent transaction?
+
+Customer: 100% wasn't me
+
+Agent: Got it. I'd like to pull up your recent transactions to help identify it. Here are your recent transactions on the Sapphire card: - Date: 2025-07-06 - Merchant: Delta Airlines - Amount: $489.00 - Date: 2025-07-05 - Merchant: Whole Foods - Amount: $63.40 - Date: 2025-07-04 - Merchant: Netflix - Amount: $15.99 - Date: 2025-07-03 - Merchant: Shell Gas Station - Amount: $54.20 - Date: 2025-07-02 - Merchant: Apple.com - Amount: $299.99 Which one looks unfamiliar?
+
+Customer: delta. definitely didn't book any flights
+
+Agent: Got it. I'll open a fraud dispute for the Delta Airlines charge of $489.00 on July 6th. You should receive provisional credit within 5 business days while we investigate. Does that sound right?
+
+Customer: yes and i want a replacement card too
+
+Agent: Understood. I'll issue a replacement Chase Sapphire card. You should receive it within 5–7 business days. Is there anything else you need on this?
+
+Customer: nope that covers it
+
+Agent: Perfect. To summarize: your Sapphire card ending in 5678 is frozen, a fraud dispute has been opened for the $489.00 Delta Airlines transaction, and a replacement card is on the way. You'll receive updates via email. Take care!

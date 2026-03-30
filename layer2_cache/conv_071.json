@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 4,
+  "depth_first_rationale": "The customer largely resolves the dispute concern before raising card replacement, though the opening turn bundles both 'dispute a charge' and 'get my card replaced' together — a mild breadth-first moment that slightly detracts from full depth-first behaviour.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "In a certain-fraud scenario, the customer's assertive 'yes, 100%. charge at apple store for $1,249 on august 19th. did not make it' is appropriately confident without being robotically over-committed.",
+  "info_drip_score": 3,
+  "info_drip_rationale": "The customer front-loads merchant, amount, and date all in one unprompted turn ('charge at apple store for $1,249 on august 19th. did not make it') before the agent asks for any of those details, which is more LLM-like than a natural gradual reveal.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "The turn 'just make sure the provisional credit actually shows up, last time with another bank it took forever' is a convincingly colloquial, context-appropriate remark that no script would generate.",
+  "persona_score": 4,
+  "persona_rationale": "The direct, terse style ('sapphire, the 5678'; 'yes that's it') and the expert-level unprompted mention of provisional credit tracking and prior-bank experience all reflect the expert/direct/mildly-frustrated persona well, though frustration is subtle rather than clearly sustained.",
+  "standout_issue": "All three key facts (merchant, amount, date) are volunteered in a single unprompted turn, which real callers typically reveal only as the agent probes for them.",
+  "standout_quality": "The unsolicited comment about a bad experience with provisional credit at another bank ('last time with another bank it took forever') is a highly realistic, human-sounding aside that strongly anchors the conversation in lived experience."
+}

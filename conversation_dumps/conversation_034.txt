@@ -1,0 +1,60 @@
+============================================================
+CONVERSATION 34
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account i didn't make
+
+Agent: I'm sorry to hear that. I can help you dispute a transaction, lock your card, or replace it. What would you like to do first?
+
+Customer: I want my money back and a new card
+
+Agent: Understood, let's get started. Which card was the charge made on? Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8876
+
+Customer: the freedom one
+
+Agent: Got it. Do you know the date of the transaction you'd like to dispute?
+
+Customer: august 18th
+
+Agent: Thank you. And what was the amount?
+
+Customer: like $89 something. 89.21 i think
+
+Agent: Got it, $89.21 on August 18th. What's the name of the merchant?
+
+Customer: that's the thing i don't really remember. something online
+
+Agent: No problem. Let me pull up your recent transactions for that card. Here are transactions around August 18th on your Chase Freedom \*\*\*\* 3421: - Aug 18 — VaultShop Online — $89.21 - Aug 18 — Starbucks — $6.40 - Aug 17 — Amazon — $34.99 Does any of those look like the one you didn't authorize?
+
+Customer: yeah that first one. never heard of it
+
+Agent: Got it. Just to confirm — you did not authorize the $89.21 charge from VaultShop Online on August 18th?
+
+Customer: correct. never used them in my life
+
+Agent: Understood. I've opened a dispute for that transaction. You'll receive an update within 3–5 business days. Now, would you like me to cancel your Chase Freedom \*\*\*\* 3421 and send a replacement card?
+
+Customer: yes that's what i said at the start lol
+
+Agent: Apologies for the delay! Your Chase Freedom \*\*\*\* 3421 has been cancelled and a replacement card will arrive in 5–7 business days. Is there anything else I can help you with?
+
+Customer: no that's it. just want to make sure the refund actually happens
+
+Agent: Completely understood. Once the dispute is reviewed, if it's found in your favor the funds will be returned to your account. You'll get a notification with the outcome. Take care!

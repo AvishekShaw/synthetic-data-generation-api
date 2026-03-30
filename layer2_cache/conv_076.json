@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer sequentially exhausts the card identification question before asking about the Freedom card, then resolves the transaction identification before moving to inquiry creation, then asks about dispute timeline only after confirming the inquiry is open.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer consistently hedges with 'probably sapphire', 'that's probably it', 'could be my kid', 'could be a forgotten sub or my son', perfectly matching the 'uncertain' scenario without over-committing.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The first turn provides amount and approximate date but withholds merchant, which is appropriate since the customer genuinely doesn't know it yet; the drip feels organic though the opening turn is slightly information-dense for a first contact.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'just want it flagged and looked at before i commit to a chargeback' and 'if this drags on ill be escalating to the CFPB' sound like natural, colloquial phrasing a real financially-savvy caller would use rather than scripted language.",
+  "persona_score": 5,
+  "persona_rationale": "The expert knowledge level shows clearly in references to 'chargeback', Regulation E awareness (implicitly), and CFPB escalation threat; the escalating emotional arc builds naturally from neutral inquiry to a regulatory warning by the final substantive turn; directness is evident in short, imperative turns like 'yes do it. how long does this take'.",
+  "standout_issue": "",
+  "standout_quality": "The CFPB escalation threat at the end feels entirely earned and human — it arrives at the right conversational moment, uses the correct regulatory body, and is stated matter-of-factly rather than dramatically, which is exactly how a knowledgeable, escalating customer would deploy it."
+}

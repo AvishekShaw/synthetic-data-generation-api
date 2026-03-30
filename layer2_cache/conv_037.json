@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer fully resolves the card freeze before pivoting to the dispute, and even pauses mid-dispute to retrieve their statement ('gonna grab my statement one sec') rather than bundling everything upfront.",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "The customer is appropriately assertive for a certain-fraud scenario ('100% didn't make this') but the scenario metadata specifies $300/Aug 17th while the customer reports $212/the 3rd — the assertiveness itself is fitting, though the discrepancy is notable.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer explicitly withholds details in the first turn ('i don't have the details in front of me rn') and only supplies merchant, amount, and date after stepping away to retrieve the statement, demonstrating natural, prompted information release.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes obviously' and 'just make sure someone actually looks into it' are colloquial, contextually appropriate, and sound like something a real mildly-frustrated caller would say rather than a scripted response.",
+  "persona_score": 5,
+  "persona_rationale": "The terse, mildly-frustrated intermediate persona is consistently evident — short clipped turns, mild impatience ('yes obviously'), intermediate vocabulary (knows to ask for a freeze and a dispute without needing them explained), and no over-politeness or excessive hedging.",
+  "standout_issue": "The transaction details reported by the customer ($212, 'VLT Services', 'the 3rd') do not match the scenario metadata ($300, Unknown merchant, August 17th), creating an internal inconsistency that undermines realism.",
+  "standout_quality": "The natural pause to retrieve the statement ('gonna grab my statement one sec') is a highly realistic human behaviour that effectively justifies the delayed information drip and avoids front-loading."
+}

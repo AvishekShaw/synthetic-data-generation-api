@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer addresses one concern at a time throughout — first identifying the charge, then confirming the card, then the merchant, then asking about timeline — never bundling multiple concerns in a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer consistently hedges with phrases like 'probably', 'not 100%', 'no idea what that is tbh', and 'could be something my wife signed up for but not sure yet', perfectly matching the 'uncertain' scenario.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The opening turn naturally provides the date and amount but withholds the card and merchant, with those details revealed only when prompted — though volunteering both date and amount upfront is slightly proactive.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes exactly. don't need a chargeback opened right now, just want it looked at' and 'ok works for me. no need to freeze the card for now' read as genuine, colloquial caller speech rather than scripted responses.",
+  "persona_score": 5,
+  "persona_rationale": "The expert, direct, calm persona is clearly manifest — the customer uses banking-specific terminology ('chargeback', 'inquiry', 'freeze the card') without explanation, keeps turns concise, and never becomes emotional even under uncertainty.",
+  "standout_issue": "",
+  "standout_quality": "The customer's spontaneous mention of 'could be something my wife signed up for' is a highly realistic, human touch that explains why they want an inquiry rather than an immediate dispute — reflecting genuine domestic ambiguity rather than scripted certainty."
+}

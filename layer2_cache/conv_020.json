@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer handles one concern at a time throughout — first establishing the vague issue, then identifying the card, then identifying the merchant, never bundling multiple requests in a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer consistently hedges with 'could be nothing', 'not 100% sure', and 'don't wanna go straight to dispute if it turns out i just forgot about it', perfectly matching the uncertain scenario.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer does not volunteer the merchant name or amount upfront — they only identify 'StreamVault' and '$34.99' after the agent presents a list of transactions and prompts recognition.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yeah that's the thing, i'm not 100% sure. my partner sometimes buys stuff without telling me' sound colloquial, contextually grounded, and read like a real caller rather than a scripted template.",
+  "persona_score": 5,
+  "persona_rationale": "The calm, indirect, intermediate-knowledge persona is sustained throughout — the customer avoids direct demands, uses softening language ('i guess', 'don't wanna'), and demonstrates a plausible but incorrect mental model about needing to 'prove' fraud before disputing.",
+  "standout_issue": "",
+  "standout_quality": "The wrong mental model ('i thought i had to like prove it first') is organically surfaced mid-conversation rather than announced upfront, making it feel genuinely discovered rather than scripted."
+}

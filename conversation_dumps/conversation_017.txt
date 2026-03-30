@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 17
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+------------------------------------------------------------
+
+Customer: hey so I noticed something weird on my statement from last week
+
+Agent: I'd be happy to help you with that! Could you tell me more about what you noticed?
+
+Customer: yeah there's a charge on there that I definitely didn't make. like 100% wasn't me
+
+Agent: Got it. Would you like to dispute a transaction or lock your card?
+
+Customer: well I want to dispute it but I'm not sure if you can do anything yet — like do I need a police report first or something? I don't really know how this works
+
+Agent: No police report needed to get started! I can file the dispute right away. Do you have the transaction details handy?
+
+Customer: yeah so it's amazon, $127.43, showed up on August 20th. I haven't ordered anything from amazon in like two months so it's definitely not mine
+
+Agent: Got it. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was this transaction on?
+
+Customer: sapphire I think. the one ending in 5678
+
+Agent: Got it. Do you suspect this is a fraudulent transaction?
+
+Customer: yes definitely. I did not make this charge at all
+
+Agent: Understood. I've flagged this as a fraudulent transaction and opened a dispute for $127.43 at Amazon on August 20th from your Chase Sapphire card ending in 5678. You'll receive a confirmation by email shortly.
+
+Customer: ok good. and I also want to cancel that card and get a new one sent to me — don't want whoever has my info using it again
+
+Agent: Absolutely. I'll cancel your Chase Sapphire card ending in 5678 and order a replacement. Could you confirm your mailing address is still up to date, or would you like to use a different address for the new card?
+
+Customer: no the address on file is fine
+
+Agent: Perfect. Your Chase Sapphire card ending in 5678 has been cancelled and a replacement card is on its way — typically arrives within 5–7 business days. Is there anything else I can help you with?
+
+Customer: no that's it, thanks
+
+Agent: You're welcome! Your dispute is in progress and your new card is on the way. Don't hesitate to reach out if you have any other questions. Take care!

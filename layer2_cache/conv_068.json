@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer addresses one concern at a time — first identifying the charge, then confirming the investigation request, then asking about escalation only after the investigation is established, never bundling multiple concerns in a single turn.",
+  "uncertainty_score": 5,
+  "uncertainty_rationale": "The customer's turn 'honestly not sure. could be something my wife signed up for. but i don't want it just sitting there unlooked at' perfectly mirrors the 'uncertain' scenario tag with natural hedging and a practical reason for acting despite uncertainty.",
+  "info_drip_score": 5,
+  "info_drip_rationale": "The customer opens with only a vague 'charge I don't recognize' and supplies no merchant, amount, or date unprompted — all specifics are confirmed only after the agent surfaces them from transaction data.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "'not asking for a refund yet just want eyes on it' is a colloquial, contextually precise phrase that sounds exactly like a savvy caller who knows how disputes work and wants to set appropriate expectations without sounding scripted.",
+  "persona_score": 5,
+  "persona_rationale": "The expert knowledge level shows clearly in 'if it turns out nobody authorized it i can escalate to a full dispute after?' — correct use of dispute-process vocabulary — while the direct style and mild frustration come through in clipped, no-fuss turns like 'the sapphire' and 'nope that's it thanks'.",
+  "standout_issue": "",
+  "standout_quality": "'not asking for a refund yet just want eyes on it' — this single phrase simultaneously conveys expert knowledge of the dispute escalation process, direct communication style, and mild but controlled frustration, making it one of the most authentically human customer utterances possible in this context."
+}

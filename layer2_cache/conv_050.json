@@ -1,0 +1,15 @@
+{
+  "depth_first_score": 2,
+  "depth_first_rationale": "In the very first turn, the customer bundles two concerns together — disputing the charge AND requesting card replacement — before any dialogue has occurred, which is classic LLM breadth-first front-loading.",
+  "uncertainty_score": 3,
+  "uncertainty_rationale": "The customer says 'that's probably it' and 'I think' appropriately for partial information, but 'def fraud' in the same turn is an oddly casual over-commitment that slightly mismatches the expert/calm persona rather than being a natural hedge.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer withholds the exact amount and merchant until prompted by the agent's transaction list, only offering a rough amount ('around $89') and date ('august 18th') initially, which feels relatively natural.",
+  "pragmatic_score": 4,
+  "pragmatic_rationale": "Most turns are colloquial and brief ('yeah that one', 'yep', 'nope that's all I needed'), though 'I want a provisional credit while this is investigated' reads slightly scripted for a casual phone call, even from an expert.",
+  "persona_score": 4,
+  "persona_score_rationale": "The expert knowledge level shows clearly in the unprompted request for provisional credit with implicit awareness of Reg E, and the direct style is evident in short, unambiguous confirmations throughout.",
+  "persona_rationale": "The customer's unprompted mention of 'provisional credit' signals financial expertise, and the consistently short, affirmative responses ('yep', 'yeah that one') reflect a direct, calm communication style.",
+  "standout_issue": "Bundling the fraud dispute and card replacement request in the opening turn is the most unrealistic behaviour — real callers typically lead with one problem and raise the card replacement only after the agent acknowledges the dispute.",
+  "standout_quality": "The natural information drip around the transaction amount ('around $89') before confirming the exact figure once the agent surfaces the transaction list feels convincingly human."
+}

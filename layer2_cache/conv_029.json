@@ -1,0 +1,14 @@
+{
+  "depth_first_score": 5,
+  "depth_first_rationale": "The customer prioritizes locking the card first before pivoting to the dispute, cleanly sequencing concerns rather than bundling them in a single turn.",
+  "uncertainty_score": 4,
+  "uncertainty_rationale": "The customer appropriately asserts '100% wasnt me' given the certain-fraud scenario, but the initial opener 'pretty sure i didnt make this charge' introduces slight hedging that slightly undersells the certainty level — though this reads as realistic human caution in a first-contact moment.",
+  "info_drip_score": 4,
+  "info_drip_rationale": "The customer waits to be prompted before providing transaction details and even pauses to look up the statement ('hang on let me pull up my statement'), though the scenario specifies an unknown merchant and $300 amount while the customer volunteers 'TechZone Online' and '$212' — details that mismatch the scenario metadata but are revealed naturally within the flow.",
+  "pragmatic_score": 5,
+  "pragmatic_rationale": "Turns like 'yes thats the whole point' and 'just make sure it gets sorted' are idiomatic, contextually appropriate expressions of mild frustration that no script would generate.",
+  "persona_score": 5,
+  "persona_rationale": "The direct communication style and mildly frustrated tone are consistently evident — short, clipped confirmations ('the freedom one', 'yes thats the one') and impatient remarks ('ugh i dont have it right in front of me') authentically reflect both attributes throughout.",
+  "standout_issue": "The transaction details the customer provides (TechZone Online, $212) contradict the scenario metadata (Unknown merchant, $300, August 17th), suggesting the customer turn content was not grounded in the assigned scenario facts.",
+  "standout_quality": "'hang on let me pull up my statement' is a highly realistic mid-turn pause that mimics genuine real-time information retrieval behavior rarely seen in LLM-generated customer turns."
+}

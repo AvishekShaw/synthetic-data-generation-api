@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 74
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+------------------------------------------------------------
+
+Customer: i have an unauthorized charge on my account from august 18th. need it disputed and my card replaced
+
+Agent: I'm sorry to hear that. I'd be happy to help you dispute the transaction and get a new card issued. Which card was the transaction made on? Here are the cards on your account: - Chase Freedom ****1234 - Chase Sapphire ****5678
+
+Customer: freedom card, 1234
+
+Agent: Got it. Can you provide the amount of the transaction you'd like to dispute?
+
+Customer: $89.21. and i want provisional credit while this gets investigated — i know that's standard
+
+Agent: Understood. I'll note your request for provisional credit. Do you have the merchant name for this transaction?
+
+Customer: that's the thing, i don't remember exactly. something like "VPX" or "VPX Services" maybe. august 18th, $89.21
+
+Agent: Thank you. To confirm — you did not authorize this transaction in any way?
+
+Customer: correct. 100% unauthorized. i want the dispute opened and the card cancelled today
+
+Agent: Understood. I'm opening a dispute for the transaction on August 18th for $89.21 on your Chase Freedom ****1234. To complete this, can you briefly describe why you believe this is fraudulent? For example — card was lost, stolen, or you simply never made this purchase?
+
+Customer: never made the purchase. card is still in my possession so someone probably skimmed it
+
+Agent: Got it, that's noted. Your dispute has been opened for investigation. Provisional credit eligibility will be assessed within 1–2 business days per standard policy. Would you like me to cancel your Chase Freedom ****1234 and order a replacement card now?
+
+Customer: yes. that's what i said at the start
+
+Agent: Apologies for the delay in getting to that. Your Chase Freedom ****1234 has been cancelled and a replacement card will be mailed to your address on file within 5–7 business days. Is there anything else you need?
+
+Customer: how long does the dispute actually take. and if it drags out i'm escalating to the CFPB, just so you know
+
+Agent: The dispute investigation typically takes up to 10 business days, or up to 45 days in some cases. Provisional credit may be applied sooner if the transaction is flagged as likely fraudulent. You'll receive updates via email or the app. Is there anything else I can help you with today?
+
+Customer: no. just make sure it's documented that i expect this resolved fast
+
+Agent: Noted. Your dispute is logged, card replacement is in progress, and your expectation for timely resolution has been documented on the case. You can track the status in your app under "Dispute Center." Thank you, and I hope this gets resolved quickly for you.
