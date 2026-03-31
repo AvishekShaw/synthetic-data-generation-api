@@ -768,6 +768,9 @@ class ExampleMetrics:
     certainty:           str = ""
     information_completeness: str = ""
     expected_resolution: str = ""
+    merchant_name:       str = ""
+    amount:              str = ""
+    transaction_date:    str = ""
 
     # Turn type
     is_eos_example: bool = False
@@ -901,6 +904,9 @@ def compute_metrics_for_example(
         certainty               = scenario.get("certainty", ""),
         information_completeness= scenario.get("information_completeness", ""),
         expected_resolution     = scenario.get("expected_resolution", ""),
+        merchant_name           = scenario.get("merchant_name", ""),
+        amount                  = scenario.get("amount", ""),
+        transaction_date        = scenario.get("transaction_date", ""),
         is_eos_example          = is_eos,
         is_first_turn           = is_first,
         loss                    = raw_metrics.get("loss", 0.0) or 0.0,
