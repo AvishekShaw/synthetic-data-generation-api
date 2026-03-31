@@ -271,18 +271,67 @@ def section_eos(category_rows: list[dict], detailed_rows: list[dict]) -> str:
         fp_rate  = pct(text_row.get("eos_false_pos_rate"))
         lines.append(f"| {v} | {n_eos} | {recall} | {fp_rate} |")
 
-    # Missed EOS sample
+    # Missed EOS sample — group by example_idx, show base + LoRA side by side
     wrong = [
         r for r in detailed_rows
         if r.get("is_eos_example") == "True" and r.get("eos_correct") == "False"
     ]
     if wrong:
-        lines.append("\n### Missed EOS predictions (sample)\n")
-        lines.append("| Model | Example idx | Predicted output |")
-        lines.append("|-------|-------------|-----------------|")
-        for r in wrong[:10]:
-            pred = r["predicted_output"][:80].replace("|", "\\|")
-            lines.append(f"| {r['model_variant']} | {r['example_idx']} | `{pred}` |")
+        # Group all predictions (correct or not) for EOS examples by (model_size, example_idx)
+        eos_by_key: dict[tuple[str, str], dict[str, dict]] = {}
+        for r in detailed_rows:
+            if r.get("is_eos_example") != "True":
+                continue
+            size = r.get("model_size", r.get("model_variant", "").split("_")[-1])
+            key = (size, r["example_idx"])
+            eos_by_key.setdefault(key, {})[r["model_variant"]] = r
+
+        # Collect example_idxs that have at least one wrong prediction
+        wrong_idxs = sorted({r["example_idx"] for r in wrong})
+
+        lines.append("\n### Missed EOS predictions\n")
+        lines.append(
+            "Showing both base and LoRA outputs for each example where at least one "
+            "model failed to predict EOS (empty string).\n"
+        )
+        lines.append("| Example | Base model | Base output | LoRA model | LoRA output |")
+        lines.append("|---------|-----------|-------------|-----------|-------------|")
+
+        shown = 0
+        for idx in wrong_idxs:
+            if shown >= 15:
+                break
+            for size in ["4b", "12b", "27b"]:
+                key = (size, idx)
+                pair = eos_by_key.get(key, {})
+                base_r = pair.get(f"base_{size}")
+                lora_r = pair.get(f"lora_{size}")
+                if not base_r and not lora_r:
+                    continue
+                # Only show rows where at least one of the pair got it wrong
+                base_wrong = base_r and base_r.get("eos_correct") == "False"
+                lora_wrong = lora_r and lora_r.get("eos_correct") == "False"
+                if not base_wrong and not lora_wrong:
+                    continue
+
+                base_pred = ""
+                if base_r:
+                    p = base_r.get("predicted_output", "")[:60].replace("|", "\\|")
+                    marker = " ✗" if base_wrong else " ✓"
+                    base_pred = f"`{p}`{marker}" if p else f'`""`{marker}'
+
+                lora_pred = ""
+                if lora_r:
+                    p = lora_r.get("predicted_output", "")[:60].replace("|", "\\|")
+                    marker = " ✗" if lora_wrong else " ✓"
+                    lora_pred = f"`{p}`{marker}" if p else f'`""`{marker}'
+
+                base_name = f"base_{size}" if base_r else "—"
+                lora_name = f"lora_{size}" if lora_r else "—"
+                lines.append(
+                    f"| {idx} | {base_name} | {base_pred} | {lora_name} | {lora_pred} |"
+                )
+                shown += 1
     else:
         lines.append("\n> All models correctly predicted EOS for every EOS example.")
 
