@@ -147,11 +147,6 @@ def normalize(text: str) -> str:
     return text.replace("<eos>", "").strip().lower()
 
 
-def is_eos_prediction(predicted: str) -> bool:
-    """True if the model output decodes to an empty string (conversation end)."""
-    return normalize(predicted) == ""
-
-
 def word_count(text: str) -> int:
     return len(text.split()) if text.strip() else 0
 
@@ -343,8 +338,11 @@ def compute_metrics_for_example(
     norm_exp  = normalize(expected)
     norm_pred = normalize(predicted)
 
-    is_eos  = norm_exp == ""
-    pred_is_eos = is_eos_prediction(predicted)
+    # Explicit EOS check: expected_output is exactly "<eos>" and correct prediction
+    # is exactly "" (empty string).  Both checks are strict — "<eos>" only on the
+    # expected side, "" only on the predicted side.
+    is_eos      = expected.strip() == "<eos>"
+    pred_is_eos = predicted == ""
 
     # Turn type: first turn prompt contains "first prompt" or doesn't have conversation history
     is_first = ("first prompt" in inp.lower() or
@@ -353,6 +351,21 @@ def compute_metrics_for_example(
 
     # Existing metrics
     token_ratio = raw_metrics.get("token_ratio", 0.0) or 0.0
+
+    # For EOS examples the upstream BLEU/ROUGE were computed by comparing "" vs "<eos>"
+    # and produce meaningless values.  Replace them with 1.0 (correct) or 0.0 (wrong).
+    if is_eos:
+        bleu_score        = 1.0 if pred_is_eos else 0.0
+        rouge_l_f1        = 1.0 if pred_is_eos else 0.0
+        rouge_l_precision = 1.0 if pred_is_eos else 0.0
+        rouge_l_recall    = 1.0 if pred_is_eos else 0.0
+        meteor            = 1.0 if pred_is_eos else 0.0
+    else:
+        bleu_score        = raw_metrics.get("bleu_score", 0.0) or 0.0
+        rouge_l_f1        = raw_metrics.get("rouge_l_f1", 0.0) or 0.0
+        rouge_l_precision = raw_metrics.get("rouge_l_precision", 0.0) or 0.0
+        rouge_l_recall    = raw_metrics.get("rouge_l_recall", 0.0) or 0.0
+        meteor            = compute_meteor(norm_exp, norm_pred)
 
     m = ExampleMetrics(
         example_idx             = example_idx,
@@ -371,10 +384,10 @@ def compute_metrics_for_example(
         loss                    = raw_metrics.get("loss", 0.0) or 0.0,
         perplexity              = raw_metrics.get("perplexity", 0.0) or 0.0,
         avg_token_confidence    = raw_metrics.get("avg_token_confidence", 0.0) or 0.0,
-        bleu_score              = raw_metrics.get("bleu_score", 0.0) or 0.0,
-        rouge_l_f1              = raw_metrics.get("rouge_l_f1", 0.0) or 0.0,
-        rouge_l_precision       = raw_metrics.get("rouge_l_precision", 0.0) or 0.0,
-        rouge_l_recall          = raw_metrics.get("rouge_l_recall", 0.0) or 0.0,
+        bleu_score              = bleu_score,
+        rouge_l_f1              = rouge_l_f1,
+        rouge_l_precision       = rouge_l_precision,
+        rouge_l_recall          = rouge_l_recall,
         exact_match             = bool(raw_metrics.get("exact_match", False)),
         token_ratio             = token_ratio,
         length_difference       = raw_metrics.get("length_difference", 0) or 0,
@@ -382,12 +395,12 @@ def compute_metrics_for_example(
         expected_tokens         = raw_metrics.get("expected_tokens", 0) or 0,
         generation_time_sec     = model_data.get("generation_time_seconds", 0.0) or 0.0,
         # New metrics
-        normalized_exact_match  = (norm_pred == norm_exp),
+        normalized_exact_match  = pred_is_eos if is_eos else (norm_pred == norm_exp),
         eos_correct             = pred_is_eos if is_eos else None,
         eos_false_pos           = pred_is_eos if not is_eos else None,
         length_ratio_error      = abs(1.0 - token_ratio) if token_ratio > 0 else 1.0,
         style_compliance_score  = style_compliance(norm_pred, persona),
-        meteor_score            = compute_meteor(norm_exp, norm_pred) if not is_eos else 0.0,
+        meteor_score            = meteor,
         predicted_output        = predicted,
         expected_output         = expected,
     )
