@@ -417,7 +417,7 @@ def reconstruct_conversations(rows: list[dict]) -> dict[tuple[str, str], ReconvC
     print("  → Reconstructing conversations from CSV rows …")
 
     # Filter to text-only turns (exclude EOS turns — no content to evaluate)
-    text_rows = [r for r in rows if r.get("is_eos_example") != "True"]
+    text_rows = [r for r in rows if str(r.get("is_eos_example", "")).strip().lower() not in ("true", "1")]
 
     # Sort by (model_variant, generation_idx, example_idx)
     try:

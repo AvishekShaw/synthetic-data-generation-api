@@ -28,7 +28,7 @@ Primary semantic metric: **METEOR** (first available in hierarchy: BERTScore F1 
 
 ## 2. EOS Prediction Analysis
 
-EOS examples are turns where the expected output is `<eos>` — the conversation should end. Correct prediction = empty string.
+EOS examples are turns where the expected output is `<eos>` — the conversation should end. Correct prediction = empty string `""`. False positives = text turns where the model wrongly predicted empty string.
 
 | Model | EOS examples | EOS Recall | False Positive Rate |
 |-------|-------------|------------|---------------------|
@@ -39,7 +39,9 @@ EOS examples are turns where the expected output is `<eos>` — the conversation
 | base_27b | 16 | 100.0% | 0.0% |
 | lora_27b | 16 | 100.0% | 0.0% |
 
-> All models correctly predicted EOS for every EOS example.
+> ✓ All models correctly predicted EOS for every EOS example (0 missed).
+
+> ✓ No false positive EOS predictions (no text turns predicted as empty).
 
 ![15_eos_analysis.png](images/15_eos_analysis.png)
 

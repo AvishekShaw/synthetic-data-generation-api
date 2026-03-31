@@ -273,6 +273,15 @@ def section_semantic(overall: dict[str, dict], detailed_rows: list[dict]) -> str
     return "\n".join(lines)
 
 
+def _is_true(val) -> bool:
+    """Robust CSV boolean check — handles 'True', 'true', '1', True."""
+    return str(val).strip().lower() in ("true", "1")
+
+def _is_false(val) -> bool:
+    """Robust CSV boolean check — handles 'False', 'false', '0', False."""
+    return str(val).strip().lower() in ("false", "0")
+
+
 def section_eos(category_rows: list[dict], detailed_rows: list[dict]) -> str:
     """Section 3: EOS prediction analysis."""
     turn_slice = get_slice(category_rows, "turn_type")
@@ -280,8 +289,9 @@ def section_eos(category_rows: list[dict], detailed_rows: list[dict]) -> str:
 
     lines = [
         "## 3. EOS Prediction Analysis\n",
-        "EOS examples are turns where the expected output is `<eos>` — "
-        "the conversation should end. Correct prediction = empty string.\n",
+        "EOS examples are turns where the expected output is `<eos>` — the conversation "
+        "should end. Correct prediction = empty string `\"\"`. "
+        "False positives = text turns where the model wrongly predicted empty string.\n",
         "| Model | EOS examples | EOS Recall | False Positive Rate |",
         "|-------|-------------|------------|---------------------|",
     ]
@@ -294,69 +304,140 @@ def section_eos(category_rows: list[dict], detailed_rows: list[dict]) -> str:
         fp_rate  = pct(text_row.get("eos_false_pos_rate"))
         lines.append(f"| {v} | {n_eos} | {recall} | {fp_rate} |")
 
-    # Missed EOS sample — group by example_idx, show base + LoRA side by side
-    wrong = [
+    # ── Missed EOS (false negatives): EOS turns predicted as non-empty ───────
+    missed = [
         r for r in detailed_rows
-        if r.get("is_eos_example") == "True" and r.get("eos_correct") == "False"
+        if _is_true(r.get("is_eos_example")) and _is_false(r.get("eos_correct", ""))
     ]
-    if wrong:
-        # Group all predictions (correct or not) for EOS examples by (model_size, example_idx)
-        eos_by_key: dict[tuple[str, str], dict[str, dict]] = {}
+
+    if missed:
+        # Index all EOS rows by (size, example_idx) for side-by-side display
+        eos_by_key: dict[tuple, dict] = {}
         for r in detailed_rows:
-            if r.get("is_eos_example") != "True":
+            if not _is_true(r.get("is_eos_example")):
                 continue
-            size = r.get("model_size", r.get("model_variant", "").split("_")[-1])
-            key = (size, r["example_idx"])
+            size = r.get("model_size", "").strip() or r.get("model_variant", "").split("_")[-1]
+            key  = (size, str(r["example_idx"]))
             eos_by_key.setdefault(key, {})[r["model_variant"]] = r
 
-        # Collect example_idxs that have at least one wrong prediction
-        wrong_idxs = sorted({r["example_idx"] for r in wrong})
+        missed_idxs = sorted({str(r["example_idx"]) for r in missed}, key=lambda x: int(x))
 
-        lines.append("\n### Missed EOS predictions\n")
+        lines.append("\n### Missed EOS Predictions (false negatives)\n")
         lines.append(
-            "Showing both base and LoRA outputs for each example where at least one "
-            "model failed to predict EOS (empty string).\n"
+            "The model predicted non-empty text on a turn that should have ended the "
+            "conversation. ✗ = wrong, ✓ = correct (empty string). "
+            "Expected output for all rows is `<eos>` → empty string.\n"
         )
-        lines.append("| Example | Base model | Base output | LoRA model | LoRA output |")
-        lines.append("|---------|-----------|-------------|-----------|-------------|")
+        lines.append(
+            "| Example | Expected | Base model | Base predicted | LoRA model | LoRA predicted |"
+        )
+        lines.append(
+            "|---------|---------|-----------|---------------|-----------|---------------|"
+        )
 
         shown = 0
-        for idx in wrong_idxs:
-            if shown >= 15:
+        for idx in missed_idxs:
+            if shown >= 20:
+                lines.append(f"\n_... {len(missed_idxs) - shown} more missed examples not shown._")
                 break
             for size in ["4b", "12b", "27b"]:
-                key = (size, idx)
-                pair = eos_by_key.get(key, {})
+                key    = (size, idx)
+                pair   = eos_by_key.get(key, {})
                 base_r = pair.get(f"base_{size}")
                 lora_r = pair.get(f"lora_{size}")
                 if not base_r and not lora_r:
                     continue
-                # Only show rows where at least one of the pair got it wrong
-                base_wrong = base_r and base_r.get("eos_correct") == "False"
-                lora_wrong = lora_r and lora_r.get("eos_correct") == "False"
+
+                base_wrong = base_r and _is_false(base_r.get("eos_correct", ""))
+                lora_wrong = lora_r and _is_false(lora_r.get("eos_correct", ""))
                 if not base_wrong and not lora_wrong:
-                    continue
+                    continue  # both correct for this size — skip
 
-                base_pred = ""
-                if base_r:
-                    p = base_r.get("predicted_output", "")[:60].replace("|", "\\|")
-                    marker = " ✗" if base_wrong else " ✓"
-                    base_pred = f"`{p}`{marker}" if p else f'`""`{marker}'
+                def _fmt_pred(r, is_wrong):
+                    if not r:
+                        return "—"
+                    p = r.get("predicted_output", "").strip()[:70].replace("|", "\\|")
+                    marker = " ✗" if is_wrong else " ✓"
+                    return f'`"{p}"`{marker}' if p else f'`""`{marker}'
 
-                lora_pred = ""
-                if lora_r:
-                    p = lora_r.get("predicted_output", "")[:60].replace("|", "\\|")
-                    marker = " ✗" if lora_wrong else " ✓"
-                    lora_pred = f"`{p}`{marker}" if p else f'`""`{marker}'
-
-                base_name = f"base_{size}" if base_r else "—"
-                lora_name = f"lora_{size}" if lora_r else "—"
                 lines.append(
-                    f"| {idx} | {base_name} | {base_pred} | {lora_name} | {lora_pred} |"
+                    f"| {idx} | `<eos>` "
+                    f"| {'base_'+size if base_r else '—'} | {_fmt_pred(base_r, base_wrong)} "
+                    f"| {'lora_'+size if lora_r else '—'} | {_fmt_pred(lora_r, lora_wrong)} |"
                 )
                 shown += 1
     else:
-        lines.append("\n> All models correctly predicted EOS for every EOS example.")
+        lines.append("\n> ✓ All models correctly predicted EOS for every EOS example (0 missed).")
+
+    # ── False positives: text turns predicted as empty ────────────────────────
+    false_pos = [
+        r for r in detailed_rows
+        if _is_false(r.get("is_eos_example", "")) and _is_true(r.get("eos_false_pos", ""))
+    ]
+
+    if false_pos:
+        # Index all non-EOS rows by (size, example_idx)
+        text_by_key: dict[tuple, dict] = {}
+        for r in detailed_rows:
+            if _is_true(r.get("is_eos_example")):
+                continue
+            size = r.get("model_size", "").strip() or r.get("model_variant", "").split("_")[-1]
+            key  = (size, str(r["example_idx"]))
+            text_by_key.setdefault(key, {})[r["model_variant"]] = r
+
+        fp_idxs = sorted({str(r["example_idx"]) for r in false_pos}, key=lambda x: int(x))
+
+        lines.append("\n### False Positive EOS Predictions\n")
+        lines.append(
+            "The model predicted empty string on a turn that should have produced text. "
+            "This means the model ended the conversation prematurely. "
+            "✗ = wrongly predicted empty, ✓ = correctly predicted text.\n"
+        )
+        lines.append(
+            "| Example | Base model | Base predicted | LoRA model | LoRA predicted | Expected output |"
+        )
+        lines.append(
+            "|---------|-----------|---------------|-----------|---------------|----------------|"
+        )
+
+        shown_fp = 0
+        for idx in fp_idxs:
+            if shown_fp >= 20:
+                lines.append(f"\n_... {len(fp_idxs) - shown_fp} more false positives not shown._")
+                break
+            for size in ["4b", "12b", "27b"]:
+                key    = (size, idx)
+                pair   = text_by_key.get(key, {})
+                base_r = pair.get(f"base_{size}")
+                lora_r = pair.get(f"lora_{size}")
+                if not base_r and not lora_r:
+                    continue
+
+                base_fp = base_r and _is_true(base_r.get("eos_false_pos", ""))
+                lora_fp = lora_r and _is_true(lora_r.get("eos_false_pos", ""))
+                if not base_fp and not lora_fp:
+                    continue
+
+                def _fmt_fp(r, is_fp):
+                    if not r:
+                        return "—"
+                    p = r.get("predicted_output", "").strip()[:50].replace("|", "\\|")
+                    marker = " ✗" if is_fp else " ✓"
+                    return f'`"{p}"`{marker}' if p else f'`""`{marker}'
+
+                # Expected output from either row
+                ref_r    = lora_r or base_r
+                expected = ref_r.get("expected_output", "").strip()[:60].replace("|", "\\|")
+
+                lines.append(
+                    f"| {idx} "
+                    f"| {'base_'+size if base_r else '—'} | {_fmt_fp(base_r, base_fp)} "
+                    f"| {'lora_'+size if lora_r else '—'} | {_fmt_fp(lora_r, lora_fp)} "
+                    f"| `{expected}` |"
+                )
+                shown_fp += 1
+    else:
+        lines.append("\n> ✓ No false positive EOS predictions (no text turns predicted as empty).")
 
     eos_img = img("15_eos_analysis.png")
     if eos_img:
