@@ -34,10 +34,14 @@ Outputs:
 import csv
 import json
 import math
+import os
 import re
+import time
+import argparse
 from collections import defaultdict
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from typing import Optional
 
 import matplotlib
 matplotlib.use("Agg")
@@ -47,10 +51,35 @@ import matplotlib.ticker as mticker
 from matplotlib.gridspec import GridSpec
 import numpy as np
 import seaborn as sns
-from scipy.stats import wilcoxon
+from scipy.stats import wilcoxon, spearmanr
 
 import nltk
+for _res in ("wordnet", "omw-1.4"):
+    nltk.download(_res, quiet=True)
 from nltk.translate.meteor_score import meteor_score as _nltk_meteor
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+
+# ── Optional heavy dependencies (graceful fallback) ─────────────────────
+_HAS_BERTSCORE = False
+try:
+    from bert_score import score as _bert_score_fn
+    _HAS_BERTSCORE = True
+except ImportError:
+    pass
+
+_HAS_BLEURT = False
+try:
+    from bleurt_pytorch import BleurtForSequenceClassification, BleurtTokenizer
+    _HAS_BLEURT = True
+except ImportError:
+    pass
+
+_HAS_ANTHROPIC = False
+try:
+    import anthropic
+    _HAS_ANTHROPIC = True
+except ImportError:
+    pass
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  HARDCODED PATHS — update these three lines before running
@@ -86,6 +115,17 @@ IMAGES_DIR        = BASE_DIR / "images"
 DETAILED_CSV      = BASE_DIR / "prediction_metrics_detailed.csv"
 CATEGORY_CSV      = BASE_DIR / "category_summary.csv"
 COMPARISON_CSV    = BASE_DIR / "model_comparison.csv"
+JUDGE_CACHE_DIR   = BASE_DIR / "judge_cache"
+CONVERSATION_CSV  = BASE_DIR / "conversation_metrics.csv"
+
+# ── LLM-as-judge config ─────────────────────────────────────────────────
+JUDGE_MODEL       = "claude-sonnet-4-6"
+
+# ── BERTScore config ────────────────────────────────────────────────────
+BERTSCORE_MODEL   = "microsoft/deberta-xlarge-mnli"
+
+# ── BLEURT config ───────────────────────────────────────────────────────
+BLEURT_CHECKPOINT = "lucadiliello/BLEURT-20"
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Visual style  (mirrors existing eval scripts)
@@ -239,6 +279,435 @@ def compute_meteor(reference: str, hypothesis: str) -> float:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+#  Entity-level precision / recall  (banking domain)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Regex patterns for banking entities
+_AMOUNT_RE   = re.compile(r"\$?\d+(?:\.\d{1,2})?")
+_DATE_RE     = re.compile(
+    r"(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|"
+    r"jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|"
+    r"dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?",
+    re.IGNORECASE,
+)
+_CARD_RE     = re.compile(r"\d{4}(?:\s*[\*x]+\s*){0,3}\d{4}")
+_MERCHANT_NAMES = [
+    "netflix", "amazon", "spotify", "apple", "google", "uber", "lyft",
+    "paypal", "venmo", "zelle", "walmart", "target", "costco", "chase",
+    "wells fargo", "bank of america", "citi", "capital one",
+]
+
+
+def extract_entities(text: str) -> set:
+    """Extract normalised banking entities from text."""
+    text_lower = text.lower()
+    entities = set()
+    for m in _AMOUNT_RE.finditer(text_lower):
+        # Normalise: strip $ and trailing .00
+        val = m.group().replace("$", "").strip()
+        entities.add(f"AMT:{val}")
+    for m in _DATE_RE.finditer(text_lower):
+        entities.add(f"DATE:{m.group().strip()}")
+    for m in _CARD_RE.finditer(text):
+        digits = re.sub(r"[^\d]", "", m.group())
+        if len(digits) >= 4:
+            entities.add(f"CARD:{digits[-4:]}")
+    for merchant in _MERCHANT_NAMES:
+        if merchant in text_lower:
+            entities.add(f"MERCHANT:{merchant}")
+    return entities
+
+
+def entity_precision_recall(reference: str, predicted: str) -> dict:
+    """Compute entity-level precision, recall, F1 between reference and predicted."""
+    ref_ents  = extract_entities(reference)
+    pred_ents = extract_entities(predicted)
+    if not ref_ents and not pred_ents:
+        return {"entity_precision": 1.0, "entity_recall": 1.0, "entity_f1": 1.0,
+                "entity_count_ref": 0, "entity_count_pred": 0}
+    if not pred_ents:
+        return {"entity_precision": 1.0, "entity_recall": 0.0, "entity_f1": 0.0,
+                "entity_count_ref": len(ref_ents), "entity_count_pred": 0}
+    if not ref_ents:
+        return {"entity_precision": 0.0, "entity_recall": 1.0, "entity_f1": 0.0,
+                "entity_count_ref": 0, "entity_count_pred": len(pred_ents)}
+    tp = len(ref_ents & pred_ents)
+    p  = tp / len(pred_ents) if pred_ents else 0.0
+    r  = tp / len(ref_ents)  if ref_ents  else 0.0
+    f1 = 2 * p * r / (p + r) if (p + r) > 0 else 0.0
+    return {"entity_precision": round(p, 4), "entity_recall": round(r, 4),
+            "entity_f1": round(f1, 4),
+            "entity_count_ref": len(ref_ents), "entity_count_pred": len(pred_ents)}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Lexical diversity — Type-Token Ratio
+# ─────────────────────────────────────────────────────────────────────────────
+
+def type_token_ratio(text: str) -> float:
+    """Compute type-token ratio. Returns 0.0 for empty text."""
+    tokens = text.lower().split()
+    if not tokens:
+        return 0.0
+    return round(len(set(tokens)) / len(tokens), 4)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Role confusion detector
+# ─────────────────────────────────────────────────────────────────────────────
+
+ASSISTANT_LANGUAGE = [
+    "i'd be happy to", "i can help", "let me help", "i can assist",
+    "how can i help", "is there anything else", "i'll look into",
+    "thank you for contacting", "let me check", "i understand your concern",
+    "i apologize for", "we appreciate your patience",
+]
+
+AGENT_PREFIX_RE = re.compile(r"^\s*agent\s*:", re.IGNORECASE)
+
+
+def detect_role_confusion(predicted_norm: str) -> dict:
+    """
+    Detect if the predicted user turn contains assistant-side language.
+    Returns a dict with:
+      - role_confused: bool
+      - role_confusion_signals: list of matched patterns
+    """
+    signals = []
+    if AGENT_PREFIX_RE.match(predicted_norm):
+        signals.append("agent_prefix")
+    for phrase in ASSISTANT_LANGUAGE:
+        if phrase in predicted_norm:
+            signals.append(phrase)
+    return {
+        "role_confused": len(signals) > 0,
+        "role_confusion_signals": signals[:3],  # keep top 3 for CSV readability
+    }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Hedging calibration
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Promise language (LLM-like over-commitment — Wang et al. 2025)
+PROMISE_PHRASES = [
+    "i will", "i'll", "i can", "i am going to", "i'm going to",
+    "definitely", "absolutely", "certainly", "of course", "no problem",
+    "right away", "immediately",
+]
+
+
+def compute_hedge_rate(text: str) -> float:
+    """Fraction of hedge phrases found in text (0–1)."""
+    text_lower = text.lower()
+    if not text_lower.strip():
+        return 0.0
+    hits = sum(1 for p in HEDGE_PHRASES if p in text_lower)
+    return round(hits / len(HEDGE_PHRASES), 4)
+
+
+def compute_promise_rate(text: str) -> float:
+    """Fraction of promise/commitment phrases found in text (0–1)."""
+    text_lower = text.lower()
+    if not text_lower.strip():
+        return 0.0
+    hits = sum(1 for p in PROMISE_PHRASES if p in text_lower)
+    return round(hits / len(PROMISE_PHRASES), 4)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Batch BERTScore (runs after all examples collected)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def compute_bertscore_batch(
+    references: list[str],
+    predictions: list[str],
+    model_type: str = BERTSCORE_MODEL,
+) -> tuple[list[float], list[float], list[float]]:
+    """
+    Compute BERTScore for all (reference, prediction) pairs in a single batch.
+    Returns (precisions, recalls, f1s) as lists of floats.
+    Falls back to [None]*n if bert_score is not installed.
+    """
+    n = len(references)
+    if not _HAS_BERTSCORE:
+        print("    ⚠  bert-score not installed — skipping BERTScore. "
+              "Install with: pip install bert-score")
+        return [None] * n, [None] * n, [None] * n
+
+    # Replace empty strings with a placeholder (BERTScore errors on empty)
+    refs  = [r if r.strip() else "[empty]" for r in references]
+    preds = [p if p.strip() else "[empty]" for p in predictions]
+
+    print(f"    Computing BERTScore for {n} pairs (model={model_type}) …")
+    P, R, F1 = _bert_score_fn(
+        preds, refs,
+        lang="en",
+        model_type=model_type,
+        rescale_with_baseline=True,
+        verbose=False,
+    )
+    return (
+        [round(x.item(), 4) for x in P],
+        [round(x.item(), 4) for x in R],
+        [round(x.item(), 4) for x in F1],
+    )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Batch BLEURT (runs after all examples collected)
+# ─────────────────────────────────────────────────────────────────────────────
+
+_bleurt_model = None
+_bleurt_tokenizer = None
+
+
+def compute_bleurt_batch(
+    references: list[str],
+    predictions: list[str],
+    batch_size: int = 32,
+) -> list[float]:
+    """
+    Compute BLEURT scores for all pairs. Returns list of floats.
+    Falls back to [None]*n if bleurt-pytorch is not installed.
+    """
+    global _bleurt_model, _bleurt_tokenizer
+    n = len(references)
+    if not _HAS_BLEURT:
+        print("    ⚠  bleurt-pytorch not installed — skipping BLEURT. "
+              "Install with: pip install bleurt-pytorch")
+        return [None] * n
+
+    import torch
+
+    if _bleurt_model is None:
+        print(f"    Loading BLEURT model ({BLEURT_CHECKPOINT}) …")
+        _bleurt_tokenizer = BleurtTokenizer.from_pretrained(BLEURT_CHECKPOINT)
+        _bleurt_model = BleurtForSequenceClassification.from_pretrained(BLEURT_CHECKPOINT)
+        _bleurt_model.eval()
+
+    refs  = [r if r.strip() else "[empty]" for r in references]
+    preds = [p if p.strip() else "[empty]" for p in predictions]
+
+    print(f"    Computing BLEURT for {n} pairs …")
+    scores = []
+    for i in range(0, n, batch_size):
+        batch_refs  = refs[i:i + batch_size]
+        batch_preds = preds[i:i + batch_size]
+        inputs = _bleurt_tokenizer(
+            batch_refs, batch_preds,
+            padding=True, truncation=True, max_length=512,
+            return_tensors="pt",
+        )
+        with torch.no_grad():
+            out = _bleurt_model(**inputs)
+        scores.extend([round(s.item(), 4) for s in out.logits.squeeze(-1)])
+    return scores
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  LLM-as-judge  (6-dimension turn-level rubric)
+# ─────────────────────────────────────────────────────────────────────────────
+
+JUDGE_RUBRIC = """You are evaluating whether a candidate user turn matches the quality of a reference user turn in a banking fraud dispute conversation.
+
+## Persona
+- Communication style: {communication_style}
+- Emotional state: {emotional_state}
+- Knowledge level: {knowledge_level}
+- Goal clarity: {goal_clarity}
+
+## Conversation history
+{conversation_history}
+
+## Reference user turn (ground truth)
+{expected_output}
+
+## Candidate user turn (model prediction)
+{predicted_output}
+
+Score the candidate on each dimension below (1–5). Provide a one-sentence justification for each score, then the integer score.
+
+### Dimension 1: Semantic Fidelity (1–5)
+Does the candidate turn convey the same core meaning and intent as the reference?
+5 = Identical meaning, possibly rephrased
+4 = Same intent, minor information difference
+3 = Same general topic but misses or adds a significant detail
+2 = Related but different intent
+1 = Unrelated or contradictory
+
+### Dimension 2: Persona Voice Match (1–5)
+Does the candidate sound like it was written by the described persona?
+5 = Matches communication style, knowledge level, and emotional state perfectly
+4 = Matches 2 of 3 persona dimensions, minor deviation on the third
+3 = Generally appropriate but noticeably off on one dimension
+2 = Clearly mismatched on style or emotion
+1 = Sounds like a different person entirely, or sounds like an AI assistant
+
+### Dimension 3: Conversational Coherence (1–5)
+Given the conversation history, is this a natural, plausible next turn?
+5 = Perfectly follows from the prior agent turn, advances the conversation
+4 = Coherent response but slightly awkward transition
+3 = Responsive to the general topic but ignores something the agent said
+2 = Non-sequitur or repeats information already provided
+1 = Incoherent or contradicts prior turns
+
+### Dimension 4: Goal Directedness (1–5)
+Does this turn move the conversation toward the persona's stated goal?
+5 = Directly advances the goal
+4 = Mostly advances the goal with minor tangent
+3 = Neutral — doesn't help or hurt goal progress
+2 = Stalls the conversation or introduces unnecessary complexity
+1 = Actively counterproductive
+
+### Dimension 5: Human Realism (1–5)
+Does this read like a real human wrote it in a chat interface?
+5 = Natural, appropriate informality, realistic information density
+4 = Mostly natural with one slightly off element
+3 = Functional but reads like a carefully constructed response
+2 = Detectably LLM-generated — too polished, too comprehensive, too cooperative
+1 = Obviously AI — uses assistant-side language, perfect grammar, bullet points
+
+### Dimension 6: Information Calibration (1–5)
+Does the candidate reveal the right amount of information for this persona and turn position?
+5 = Information density matches what this persona would plausibly share at this point
+4 = Slightly more or less information than expected, within normal variation
+3 = Noticeably too much or too little info
+2 = Significant mismatch — e.g., a novice perfectly articulating their dispute category
+1 = Completely implausible information behavior
+
+Return ONLY valid JSON (no markdown, no commentary outside the JSON):
+{{
+  "semantic_fidelity": {{"justification": "...", "score": N}},
+  "persona_voice": {{"justification": "...", "score": N}},
+  "conversational_coherence": {{"justification": "...", "score": N}},
+  "goal_directedness": {{"justification": "...", "score": N}},
+  "human_realism": {{"justification": "...", "score": N}},
+  "information_calibration": {{"justification": "...", "score": N}}
+}}"""
+
+JUDGE_DIMENSIONS = [
+    "semantic_fidelity", "persona_voice", "conversational_coherence",
+    "goal_directedness", "human_realism", "information_calibration",
+]
+
+
+def _extract_conversation_history(input_text: str) -> str:
+    """Pull conversation history from the input prompt."""
+    marker = "Conversation so far:"
+    idx = input_text.find(marker)
+    if idx == -1:
+        return "(First turn — no prior conversation)"
+    rest = input_text[idx + len(marker):]
+    # Trim the trailing instruction
+    for end_marker in ["If your goal is complete", "Generate"]:
+        eidx = rest.find(end_marker)
+        if eidx != -1:
+            rest = rest[:eidx]
+    return rest.strip()
+
+
+def run_llm_judge(
+    example: dict,
+    predicted: str,
+    expected: str,
+    persona: dict,
+    model_variant: str,
+    example_idx: int,
+) -> dict:
+    """
+    Call Claude to score a single (predicted, expected) pair.
+    Returns dict with scores for each dimension, or None-filled dict on failure.
+    Results are cached to JUDGE_CACHE_DIR.
+    """
+    empty_result = {d: None for d in JUDGE_DIMENSIONS}
+    empty_result["judge_justifications"] = {}
+
+    if not _HAS_ANTHROPIC:
+        return empty_result
+
+    JUDGE_CACHE_DIR.mkdir(exist_ok=True)
+    cache_file = JUDGE_CACHE_DIR / f"{model_variant}_{example_idx}.json"
+    if cache_file.exists():
+        try:
+            cached = json.loads(cache_file.read_text())
+            return cached
+        except Exception:
+            pass  # re-evaluate on corrupt cache
+
+    input_text = example.get("input", "")
+    conv_history = _extract_conversation_history(input_text)
+
+    prompt = JUDGE_RUBRIC.format(
+        communication_style=persona.get("communication_style", "unknown"),
+        emotional_state=persona.get("emotional_state", "unknown"),
+        knowledge_level=persona.get("knowledge_level", "unknown"),
+        goal_clarity=persona.get("goal_clarity", "unknown"),
+        conversation_history=conv_history,
+        expected_output=expected,
+        predicted_output=predicted if predicted.strip() else "(empty — model predicted EOS)",
+    )
+
+    try:
+        client = anthropic.Anthropic()
+        response = client.messages.create(
+            model=JUDGE_MODEL,
+            max_tokens=1024,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        raw = response.content[0].text.strip()
+        # Strip markdown fences if present
+        if raw.startswith("```"):
+            raw = re.sub(r"^```(?:json)?\s*", "", raw)
+            raw = re.sub(r"\s*```$", "", raw)
+        parsed = json.loads(raw)
+
+        result = {}
+        justifications = {}
+        for dim in JUDGE_DIMENSIONS:
+            if dim in parsed and isinstance(parsed[dim], dict):
+                result[dim] = int(parsed[dim].get("score", 0))
+                justifications[dim] = parsed[dim].get("justification", "")
+            else:
+                result[dim] = None
+        result["judge_justifications"] = justifications
+
+        cache_file.write_text(json.dumps(result, indent=2))
+        return result
+
+    except Exception as e:
+        print(f"    ⚠  Judge call failed for {model_variant}#{example_idx}: {e}")
+        return empty_result
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Self-BLEU mode collapse detection (conversation-level, computed post-hoc)
+# ─────────────────────────────────────────────────────────────────────────────
+
+_smooth_fn = SmoothingFunction().method1
+
+def compute_self_bleu(texts: list[str]) -> float:
+    """
+    Average pairwise BLEU across a set of texts.
+    High self-BLEU = low diversity = mode collapse.
+    """
+    if len(texts) < 2:
+        return 0.0
+    tokenized = [t.lower().split() for t in texts if t.strip()]
+    if len(tokenized) < 2:
+        return 0.0
+    scores = []
+    for i, hyp in enumerate(tokenized):
+        refs = [tokenized[j] for j in range(len(tokenized)) if j != i]
+        try:
+            s = sentence_bleu(refs, hyp, smoothing_function=_smooth_fn)
+            scores.append(s)
+        except Exception:
+            pass
+    return round(np.mean(scores), 4) if scores else 0.0
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 #  Data loading
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -319,13 +788,49 @@ class ExampleMetrics:
     expected_tokens:        int   = 0
     generation_time_sec:    float = 0.0
 
-    # New metrics
+    # New metrics (v1 — existing)
     normalized_exact_match: bool  = False
     eos_correct:            object = None   # bool for EOS examples, None otherwise
     eos_false_pos:          object = None   # bool for non-EOS examples, None otherwise
     length_ratio_error:     float  = 0.0
     style_compliance_score: float  = 0.0
     meteor_score:           float  = 0.0
+
+    # New metrics (v2 — semantic & entity)
+    bertscore_f1:          object = None    # float or None if unavailable
+    bertscore_precision:   object = None
+    bertscore_recall:      object = None
+    bleurt_score:          object = None    # float or None if unavailable
+    entity_precision:      float  = 1.0
+    entity_recall:         float  = 1.0
+    entity_f1:             float  = 1.0
+    entity_count_ref:      int    = 0
+    entity_count_pred:     int    = 0
+
+    # New metrics (v2 — behavioural signals)
+    ttr_predicted:         float  = 0.0    # type-token ratio of predicted turn
+    ttr_reference:         float  = 0.0    # type-token ratio of reference turn
+    ttr_delta:             float  = 0.0    # |predicted - reference|
+    hedge_rate_predicted:  float  = 0.0
+    hedge_rate_reference:  float  = 0.0
+    hedge_rate_delta:      float  = 0.0    # |predicted - reference|
+    promise_rate_predicted: float = 0.0
+    promise_rate_reference: float = 0.0
+    promise_rate_delta:    float  = 0.0
+    role_confused:         bool   = False
+    role_confusion_signals: str   = ""     # comma-joined top signals
+
+    # New metrics (v2 — LLM-as-judge, 1–5 scores)
+    judge_semantic_fidelity:       object = None
+    judge_persona_voice:           object = None
+    judge_conversational_coherence: object = None
+    judge_goal_directedness:       object = None
+    judge_human_realism:           object = None
+    judge_information_calibration: object = None
+    judge_mean:                    object = None  # mean of 6 dimensions
+
+    # Conversation-level identity (for grouping)
+    generation_idx:        object = None
 
     # Raw text (for debugging)
     predicted_output:  str = ""
@@ -411,13 +916,30 @@ def compute_metrics_for_example(
         predicted_tokens        = raw_metrics.get("predicted_tokens", 0) or 0,
         expected_tokens         = raw_metrics.get("expected_tokens", 0) or 0,
         generation_time_sec     = model_data.get("generation_time_seconds", 0.0) or 0.0,
-        # New metrics
+        # New metrics (v1)
         normalized_exact_match  = pred_is_eos if is_eos else (norm_pred == norm_exp),
         eos_correct             = pred_is_eos if is_eos else None,
         eos_false_pos           = pred_is_eos if not is_eos else None,
         length_ratio_error      = abs(1.0 - token_ratio) if token_ratio > 0 else 1.0,
         style_compliance_score  = style_compliance(norm_pred, persona),
         meteor_score            = meteor,
+        # New metrics (v2 — entity)
+        **entity_precision_recall(norm_exp, norm_pred),
+        # New metrics (v2 — behavioural)
+        ttr_predicted           = type_token_ratio(norm_pred),
+        ttr_reference           = type_token_ratio(norm_exp),
+        ttr_delta               = abs(type_token_ratio(norm_pred) - type_token_ratio(norm_exp)),
+        hedge_rate_predicted    = compute_hedge_rate(norm_pred),
+        hedge_rate_reference    = compute_hedge_rate(norm_exp),
+        hedge_rate_delta        = abs(compute_hedge_rate(norm_pred) - compute_hedge_rate(norm_exp)),
+        promise_rate_predicted  = compute_promise_rate(norm_pred),
+        promise_rate_reference  = compute_promise_rate(norm_exp),
+        promise_rate_delta      = abs(compute_promise_rate(norm_pred) - compute_promise_rate(norm_exp)),
+        role_confused           = detect_role_confusion(norm_pred)["role_confused"],
+        role_confusion_signals  = ", ".join(detect_role_confusion(norm_pred)["role_confusion_signals"]),
+        # Conversation identity
+        generation_idx          = meta.get("generation_idx"),
+        # Raw text
         predicted_output        = predicted,
         expected_output         = expected,
     )
@@ -466,6 +988,30 @@ def aggregate(metrics_list: list) -> dict:
         "mean_style_compliance":   safe_mean([m.style_compliance_score for m in metrics_list]),
         # Speed
         "mean_gen_time_sec":       safe_mean([m.generation_time_sec for m in metrics_list]),
+        # ── v2 metrics ──────────────────────────────────────────────────
+        # Semantic (non-EOS only)
+        "mean_bertscore_f1":       safe_mean([m.bertscore_f1        for m in non_eos_examples]),
+        "mean_bertscore_precision":safe_mean([m.bertscore_precision  for m in non_eos_examples]),
+        "mean_bertscore_recall":   safe_mean([m.bertscore_recall     for m in non_eos_examples]),
+        "mean_bleurt":             safe_mean([m.bleurt_score         for m in non_eos_examples]),
+        # Entity (non-EOS only)
+        "mean_entity_precision":   safe_mean([m.entity_precision     for m in non_eos_examples]),
+        "mean_entity_recall":      safe_mean([m.entity_recall        for m in non_eos_examples]),
+        "mean_entity_f1":          safe_mean([m.entity_f1            for m in non_eos_examples]),
+        # Behavioural
+        "mean_ttr_delta":          safe_mean([m.ttr_delta            for m in non_eos_examples]),
+        "mean_hedge_rate_delta":   safe_mean([m.hedge_rate_delta     for m in non_eos_examples]),
+        "mean_promise_rate_pred":  safe_mean([m.promise_rate_predicted for m in non_eos_examples]),
+        "mean_promise_rate_delta": safe_mean([m.promise_rate_delta   for m in non_eos_examples]),
+        "role_confusion_rate":     safe_mean([float(m.role_confused) for m in metrics_list]),
+        # LLM-as-judge
+        "mean_judge_semantic":     safe_mean([m.judge_semantic_fidelity       for m in non_eos_examples]),
+        "mean_judge_persona":      safe_mean([m.judge_persona_voice           for m in non_eos_examples]),
+        "mean_judge_coherence":    safe_mean([m.judge_conversational_coherence for m in non_eos_examples]),
+        "mean_judge_goal":         safe_mean([m.judge_goal_directedness       for m in non_eos_examples]),
+        "mean_judge_realism":      safe_mean([m.judge_human_realism           for m in non_eos_examples]),
+        "mean_judge_info_cal":     safe_mean([m.judge_information_calibration for m in non_eos_examples]),
+        "mean_judge_overall":      safe_mean([m.judge_mean                    for m in non_eos_examples]),
     }
 
 
@@ -570,10 +1116,20 @@ def write_category_csv(all_metrics: dict, path: Path):
     fieldnames = ["model_variant", "slice_dim", "slice_val",
                   "n", "n_eos", "n_non_eos",
                   "mean_bleu", "mean_rouge_l_f1", "mean_meteor",
+                  "mean_bertscore_f1", "mean_bertscore_precision", "mean_bertscore_recall",
+                  "mean_bleurt",
                   "mean_loss", "mean_perplexity", "norm_exact_match_rate",
                   "eos_recall", "eos_false_pos_rate",
                   "mean_length_ratio_error", "mean_token_ratio",
-                  "mean_style_compliance", "mean_gen_time_sec"]
+                  "mean_style_compliance",
+                  "mean_entity_precision", "mean_entity_recall", "mean_entity_f1",
+                  "mean_ttr_delta", "mean_hedge_rate_delta",
+                  "mean_promise_rate_pred", "mean_promise_rate_delta",
+                  "role_confusion_rate",
+                  "mean_judge_semantic", "mean_judge_persona", "mean_judge_coherence",
+                  "mean_judge_goal", "mean_judge_realism", "mean_judge_info_cal",
+                  "mean_judge_overall",
+                  "mean_gen_time_sec"]
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
@@ -1084,30 +1640,79 @@ def fig_style_compliance(all_metrics: dict):
 #  Terminal summary
 # ─────────────────────────────────────────────────────────────────────────────
 
-def print_summary(all_metrics: dict):
-    sep = "─" * 72
-    print(f"\n{'=' * 72}")
-    print("  PREDICTION EVALUATION SUMMARY")
-    print(f"{'=' * 72}")
+def _fmt(val, width=6, fmt=".3f"):
+    """Format a value that may be None."""
+    if val is None:
+        return f"{'n/a':>{width}}"
+    return f"{val:>{width}{fmt}}"
 
+
+def print_summary(all_metrics: dict):
+    sep = "─" * 100
+    print(f"\n{'=' * 100}")
+    print("  PREDICTION EVALUATION SUMMARY")
+    print(f"{'=' * 100}")
+
+    # ── Table 1: Core surface metrics ─────────────────────────────────────
     print(f"\n{sep}")
-    print(f"  {'Model':<18} {'N':>4}  {'BLEU':>6}  {'ROUGE-F1':>8}  "
-          f"{'METEOR':>6}  {'NormEM%':>7}  {'EOS-Rec':>8}  {'StyleC':>6}")
-    print(f"  {'─'*18}  {'─'*4}  {'─'*6}  {'─'*8}  {'─'*6}  {'─'*7}  {'─'*8}  {'─'*6}")
+    print("  TABLE 1: Surface Metrics  (non-EOS examples only for text metrics)")
+    print(f"  {'Model':<18} {'N':>4}  {'BLEU':>6}  {'ROUGE':>6}  {'METEOR':>6}  "
+          f"{'BERT-F1':>7}  {'BLEURT':>7}  {'NormEM%':>7}  {'EOS-Rec':>8}  {'StyleC':>6}")
+    print(f"  {'─'*18}  {'─'*4}  {'─'*6}  {'─'*6}  {'─'*6}  "
+          f"{'─'*7}  {'─'*7}  {'─'*7}  {'─'*8}  {'─'*6}")
 
     for variant in sorted(all_metrics.keys()):
-        metrics = all_metrics[variant]
-        agg = aggregate(metrics)
+        agg = aggregate(all_metrics[variant])
         print(f"  {variant:<18} {agg['n']:>4}  "
-              f"{agg['mean_bleu']:>6.3f}  "
-              f"{agg['mean_rouge_l_f1']:>8.3f}  "
-              f"{agg['mean_meteor']:>6.3f}  "
+              f"{_fmt(agg['mean_bleu'])}  "
+              f"{_fmt(agg['mean_rouge_l_f1'])}  "
+              f"{_fmt(agg['mean_meteor'])}  "
+              f"{_fmt(agg['mean_bertscore_f1'], 7)}  "
+              f"{_fmt(agg['mean_bleurt'], 7)}  "
               f"{(agg['norm_exact_match_rate'] or 0)*100:>6.1f}%  "
               f"{(agg['eos_recall'] or 0):>7.1%}  "
-              f"{agg['mean_style_compliance']:>6.3f}")
+              f"{_fmt(agg['mean_style_compliance'])}")
 
+    # ── Table 2: Behavioural signals ──────────────────────────────────────
     print(f"\n{sep}")
-    print("  EOS ANALYSIS  (16 expected-EOS examples in val set)")
+    print("  TABLE 2: Behavioural Signals  (lower delta = better calibration)")
+    print(f"  {'Model':<18} {'EntF1':>6}  {'TTR-Δ':>6}  {'Hedge-Δ':>8}  "
+          f"{'PromΔ':>6}  {'RoleCon%':>8}")
+    print(f"  {'─'*18}  {'─'*6}  {'─'*6}  {'─'*8}  {'─'*6}  {'─'*8}")
+
+    for variant in sorted(all_metrics.keys()):
+        agg = aggregate(all_metrics[variant])
+        rc = agg.get('role_confusion_rate')
+        print(f"  {variant:<18} "
+              f"{_fmt(agg['mean_entity_f1'])}  "
+              f"{_fmt(agg['mean_ttr_delta'])}  "
+              f"{_fmt(agg['mean_hedge_rate_delta'], 8)}  "
+              f"{_fmt(agg['mean_promise_rate_delta'])}  "
+              f"{(rc or 0)*100:>7.1f}%")
+
+    # ── Table 3: LLM-as-judge (if available) ──────────────────────────────
+    sample_agg = aggregate(list(all_metrics.values())[0])
+    if sample_agg.get("mean_judge_overall") is not None:
+        print(f"\n{sep}")
+        print("  TABLE 3: LLM-as-Judge Scores  (1–5, higher = better)")
+        print(f"  {'Model':<18} {'Seman':>6}  {'Perso':>6}  {'Coher':>6}  "
+              f"{'Goal':>6}  {'Real':>6}  {'InfoC':>6}  {'Mean':>6}")
+        print(f"  {'─'*18}  {'─'*6}  {'─'*6}  {'─'*6}  "
+              f"{'─'*6}  {'─'*6}  {'─'*6}  {'─'*6}")
+        for variant in sorted(all_metrics.keys()):
+            agg = aggregate(all_metrics[variant])
+            print(f"  {variant:<18} "
+                  f"{_fmt(agg['mean_judge_semantic'])}  "
+                  f"{_fmt(agg['mean_judge_persona'])}  "
+                  f"{_fmt(agg['mean_judge_coherence'])}  "
+                  f"{_fmt(agg['mean_judge_goal'])}  "
+                  f"{_fmt(agg['mean_judge_realism'])}  "
+                  f"{_fmt(agg['mean_judge_info_cal'])}  "
+                  f"{_fmt(agg['mean_judge_overall'])}")
+
+    # ── EOS analysis ──────────────────────────────────────────────────────
+    print(f"\n{sep}")
+    print("  EOS ANALYSIS")
     print(sep)
     for variant in sorted(all_metrics.keys()):
         metrics = all_metrics[variant]
@@ -1118,20 +1723,512 @@ def print_summary(all_metrics: dict):
         for m in wrong[:3]:
             print(f"    ✗ Conv {m.example_idx}: predicted → \"{m.predicted_output[:60]}\"")
 
-    print(f"{'=' * 72}\n")
+    # ── Role confusion flagged examples ───────────────────────────────────
+    print(f"\n{sep}")
+    print("  ROLE CONFUSION  (predicted user turns containing assistant-side language)")
+    print(sep)
+    for variant in sorted(all_metrics.keys()):
+        confused = [m for m in all_metrics[variant] if m.role_confused]
+        print(f"  {variant:<20}: {len(confused)} turns flagged")
+        for m in confused[:3]:
+            print(f"    ⚠ #{m.example_idx}: [{m.role_confusion_signals}] "
+                  f"→ \"{m.predicted_output[:60]}\"")
+
+    print(f"{'=' * 100}\n")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Conversation-level metrics  (grouped by generation_idx)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def compute_conversation_metrics(all_metrics: dict) -> list:
+    """
+    Group turns by (variant, generation_idx), compute conversation-level metrics.
+    Returns list of dicts for conversation_metrics.csv.
+    """
+    rows = []
+    for variant, metrics in all_metrics.items():
+        # Group by generation_idx
+        conv_groups = defaultdict(list)
+        for m in metrics:
+            if m.generation_idx is not None:
+                conv_groups[m.generation_idx].append(m)
+
+        for gen_idx, turns in sorted(conv_groups.items()):
+            turns_sorted = sorted(turns, key=lambda t: t.example_idx)
+            non_eos = [t for t in turns_sorted if not t.is_eos_example]
+
+            # Style compliance across turns
+            style_scores = [t.style_compliance_score for t in non_eos]
+            style_mean = np.mean(style_scores) if style_scores else None
+            style_std  = np.std(style_scores)  if len(style_scores) > 1 else 0.0
+            style_min  = min(style_scores)      if style_scores else None
+
+            # BERTScore conversation average
+            bert_scores = [t.bertscore_f1 for t in non_eos if t.bertscore_f1 is not None]
+            bert_mean = round(np.mean(bert_scores), 4) if bert_scores else None
+
+            # Hedge rate trajectory: Spearman correlation between turn position and hedge rate
+            if len(non_eos) >= 3:
+                pred_hedges = [t.hedge_rate_predicted for t in non_eos]
+                ref_hedges  = [t.hedge_rate_reference for t in non_eos]
+                try:
+                    import warnings
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore")
+                        hedge_corr, _ = spearmanr(pred_hedges, ref_hedges)
+                    hedge_corr = round(hedge_corr, 4) if not np.isnan(hedge_corr) else None
+                except Exception:
+                    hedge_corr = None
+            else:
+                hedge_corr = None
+
+            # Length trajectory fidelity: Spearman between predicted & reference lengths
+            if len(non_eos) >= 3:
+                pred_lens = [t.predicted_tokens for t in non_eos]
+                ref_lens  = [t.expected_tokens  for t in non_eos]
+                try:
+                    len_corr, _ = spearmanr(pred_lens, ref_lens)
+                    len_corr = round(len_corr, 4) if not np.isnan(len_corr) else None
+                except Exception:
+                    len_corr = None
+            else:
+                len_corr = None
+
+            # Conversation-level hedge rate delta
+            conv_hedge_pred = np.mean([t.hedge_rate_predicted for t in non_eos]) if non_eos else 0
+            conv_hedge_ref  = np.mean([t.hedge_rate_reference for t in non_eos]) if non_eos else 0
+
+            # Conversation-level promise rate
+            conv_promise_pred = np.mean([t.promise_rate_predicted for t in non_eos]) if non_eos else 0
+
+            # Any role confusion in this conversation?
+            n_role_confused = sum(1 for t in turns_sorted if t.role_confused)
+
+            # LLM judge conversation average
+            judge_scores = [t.judge_mean for t in non_eos if t.judge_mean is not None]
+            judge_conv_mean = round(np.mean(judge_scores), 4) if judge_scores else None
+
+            # Self-BLEU across predicted turns in this conversation (mode collapse signal)
+            pred_texts = [t.predicted_output for t in non_eos if t.predicted_output.strip()]
+            self_bleu = compute_self_bleu(pred_texts) if len(pred_texts) >= 2 else None
+
+            # Persona info
+            persona_info = {}
+            if turns_sorted:
+                t0 = turns_sorted[0]
+                persona_info = {
+                    "communication_style": t0.communication_style,
+                    "emotional_state": t0.emotional_state,
+                    "knowledge_level": t0.knowledge_level,
+                    "goal_clarity": t0.goal_clarity,
+                }
+
+            rows.append({
+                "model_variant": variant,
+                "generation_idx": gen_idx,
+                "n_turns": len(turns_sorted),
+                "n_text_turns": len(non_eos),
+                **persona_info,
+                # Style coherence
+                "style_compliance_mean": round(style_mean, 4) if style_mean is not None else None,
+                "style_compliance_std": round(style_std, 4),
+                "style_compliance_min": round(style_min, 4) if style_min is not None else None,
+                # Semantic
+                "bertscore_f1_mean": bert_mean,
+                # Trajectory
+                "hedge_rate_correlation": hedge_corr,
+                "length_trajectory_correlation": len_corr,
+                "hedge_rate_delta": round(abs(conv_hedge_pred - conv_hedge_ref), 4),
+                "promise_rate_predicted": round(conv_promise_pred, 4),
+                # Behavioural
+                "n_role_confused_turns": n_role_confused,
+                "self_bleu": self_bleu,
+                # Judge
+                "judge_mean": judge_conv_mean,
+            })
+
+    return rows
+
+
+def write_conversation_csv(rows: list, path: Path):
+    if not rows:
+        return
+    fieldnames = list(rows[0].keys())
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+    print(f"  ✓  {path.name}  ({len(rows)} rows)")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  New visualisations  (v2 metrics)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def fig_bertscore_comparison(all_metrics: dict):
+    """Grouped bar chart: mean BERTScore F1 vs BLEU vs ROUGE per model variant."""
+    _set_style()
+    lora_variants = sorted(v for v in all_metrics if v.startswith("lora_"))
+    if not lora_variants:
+        lora_variants = sorted(all_metrics.keys())
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    fig.suptitle(
+        "Semantic Metrics Comparison — BERTScore vs BLEU vs ROUGE\n"
+        "BERTScore captures paraphrase similarity that n-gram metrics miss",
+        fontsize=13, fontweight="bold", y=1.02,
+    )
+
+    metric_names = ["BLEU", "ROUGE-L", "METEOR", "BERTScore F1"]
+    x = np.arange(len(lora_variants))
+    w = 0.18
+
+    for i, (mname, mkey) in enumerate([
+        ("BLEU", "mean_bleu"), ("ROUGE-L", "mean_rouge_l_f1"),
+        ("METEOR", "mean_meteor"), ("BERTScore F1", "mean_bertscore_f1"),
+    ]):
+        vals = []
+        for v in lora_variants:
+            agg = aggregate(all_metrics[v])
+            vals.append(agg.get(mkey) or 0.0)
+        offset = (i - 1.5) * w
+        bars = ax.bar(x + offset, vals, w * 0.9, label=mname, alpha=0.85)
+        for bar, val in zip(bars, vals):
+            if val > 0:
+                ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.005,
+                        f"{val:.3f}", ha="center", va="bottom", fontsize=8)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([v.replace("_", " ").upper() for v in lora_variants])
+    ax.set_ylabel("Score")
+    ax.set_ylim(0, 1.0)
+    ax.legend(fontsize=10)
+    ax.set_title("All variants — non-EOS examples only")
+    fig.tight_layout()
+    _save(fig, "18_bertscore_comparison.png")
+
+
+def fig_behavioural_signals(all_metrics: dict):
+    """Behavioural signal comparison: hedge delta, promise rate, TTR delta, role confusion."""
+    _set_style()
+    all_variants = sorted(all_metrics.keys())
+    lora_variants = [v for v in all_variants if v.startswith("lora_")]
+    base_variants = [v for v in all_variants if v.startswith("base_")]
+
+    fig, axes = plt.subplots(2, 2, figsize=(16, 11))
+    fig.suptitle(
+        "Behavioural Signal Analysis\n"
+        "Detecting LLM-like failure modes: hedge gap, promise language, lexical collapse, role confusion",
+        fontsize=14, fontweight="bold", y=1.02,
+    )
+
+    # 19a: Hedge rate delta (base vs LoRA)
+    ax = axes[0, 0]
+    variants_to_plot = lora_variants if lora_variants else all_variants
+    hedge_deltas = []
+    for v in variants_to_plot:
+        non_eos = [m for m in all_metrics[v] if not m.is_eos_example]
+        hedge_deltas.append([m.hedge_rate_delta for m in non_eos])
+    bp = ax.boxplot(hedge_deltas, patch_artist=True, widths=0.5,
+                    medianprops=dict(color="white", linewidth=2))
+    for patch, v in zip(bp["boxes"], variants_to_plot):
+        patch.set_facecolor(MODEL_COLORS.get(v, "#888"))
+    ax.set_xticklabels([v.replace("_"," ").upper() for v in variants_to_plot], fontsize=9)
+    ax.set_ylabel("|hedge_rate(pred) − hedge_rate(ref)|")
+    ax.set_title("Hedge Rate Calibration\n(lower = better match to reference hedging)")
+    ax.axhline(0, color="#C1121F", linewidth=1, linestyle="--", alpha=0.5)
+
+    # 19b: Promise language rate (pred only — should be near-zero for good user sim)
+    ax = axes[0, 1]
+    promise_rates = []
+    for v in all_variants:
+        non_eos = [m for m in all_metrics[v] if not m.is_eos_example]
+        promise_rates.append([m.promise_rate_predicted for m in non_eos])
+    bp = ax.boxplot(promise_rates, patch_artist=True, widths=0.5,
+                    medianprops=dict(color="white", linewidth=2))
+    for patch, v in zip(bp["boxes"], all_variants):
+        patch.set_facecolor(MODEL_COLORS.get(v, "#888"))
+    ax.set_xticklabels([v.replace("_"," ").upper() for v in all_variants],
+                       fontsize=8, rotation=20, ha="right")
+    ax.set_ylabel("Promise phrase rate")
+    ax.set_title("Promise Language  (Wang et al. 2025)\n"
+                 "(high = LLM-like over-commitment)")
+
+    # 19c: TTR delta
+    ax = axes[1, 0]
+    ttr_deltas = []
+    for v in variants_to_plot:
+        non_eos = [m for m in all_metrics[v] if not m.is_eos_example]
+        ttr_deltas.append([m.ttr_delta for m in non_eos])
+    bp = ax.boxplot(ttr_deltas, patch_artist=True, widths=0.5,
+                    medianprops=dict(color="white", linewidth=2))
+    for patch, v in zip(bp["boxes"], variants_to_plot):
+        patch.set_facecolor(MODEL_COLORS.get(v, "#888"))
+    ax.set_xticklabels([v.replace("_"," ").upper() for v in variants_to_plot], fontsize=9)
+    ax.set_ylabel("|TTR(pred) − TTR(ref)|")
+    ax.set_title("Lexical Diversity Gap\n(lower = more natural vocabulary diversity)")
+
+    # 19d: Role confusion rate
+    ax = axes[1, 1]
+    rc_rates = []
+    rc_labels = []
+    for v in all_variants:
+        rc = sum(1 for m in all_metrics[v] if m.role_confused) / len(all_metrics[v])
+        rc_rates.append(rc * 100)
+        rc_labels.append(v.replace("_"," ").upper())
+    colors = [MODEL_COLORS.get(v, "#888") for v in all_variants]
+    bars = ax.bar(range(len(all_variants)), rc_rates, color=colors,
+                  edgecolor="white", width=0.6)
+    for bar, val in zip(bars, rc_rates):
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.3,
+                f"{val:.1f}%", ha="center", fontsize=9, fontweight="bold")
+    ax.set_xticks(range(len(all_variants)))
+    ax.set_xticklabels(rc_labels, fontsize=8, rotation=20, ha="right")
+    ax.set_ylabel("% of turns with role confusion")
+    ax.set_title("Role Confusion Rate\n(predicted user turns containing assistant language)")
+
+    fig.tight_layout()
+    _save(fig, "19_behavioural_signals.png")
+
+
+def fig_judge_radar(all_metrics: dict):
+    """Radar/spider chart of LLM-judge scores per model variant."""
+    _set_style()
+    lora_variants = sorted(v for v in all_metrics if v.startswith("lora_"))
+    if not lora_variants:
+        return
+
+    # Check if judge data exists
+    sample = aggregate(all_metrics[lora_variants[0]])
+    if sample.get("mean_judge_overall") is None:
+        print("  ⚠  No LLM-judge data — skipping radar chart.")
+        return
+
+    dims = ["Semantic\nFidelity", "Persona\nVoice", "Conversational\nCoherence",
+            "Goal\nDirectedness", "Human\nRealism", "Information\nCalibration"]
+    dim_keys = ["mean_judge_semantic", "mean_judge_persona", "mean_judge_coherence",
+                "mean_judge_goal", "mean_judge_realism", "mean_judge_info_cal"]
+
+    angles = np.linspace(0, 2 * np.pi, len(dims), endpoint=False).tolist()
+    angles += angles[:1]  # close the polygon
+
+    fig, ax = plt.subplots(figsize=(9, 9), subplot_kw=dict(polar=True))
+    fig.suptitle(
+        "LLM-as-Judge: Turn-Level Quality Radar\n"
+        "6 dimensions scored 1–5 by Claude",
+        fontsize=14, fontweight="bold", y=1.02,
+    )
+
+    for variant in lora_variants:
+        agg = aggregate(all_metrics[variant])
+        values = [(agg.get(k) or 0) for k in dim_keys]
+        values += values[:1]
+        color = MODEL_COLORS.get(variant, "#888")
+        ax.plot(angles, values, 'o-', linewidth=2, label=variant.replace("_"," ").upper(),
+                color=color)
+        ax.fill(angles, values, alpha=0.15, color=color)
+
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(dims, fontsize=10)
+    ax.set_ylim(0, 5)
+    ax.set_yticks([1, 2, 3, 4, 5])
+    ax.set_yticklabels(["1", "2", "3", "4", "5"], fontsize=8)
+    ax.legend(loc="upper right", bbox_to_anchor=(1.3, 1.1), fontsize=10)
+    fig.tight_layout()
+    _save(fig, "20_judge_radar.png")
+
+
+def fig_entity_analysis(all_metrics: dict):
+    """Entity-level precision/recall per model variant."""
+    _set_style()
+    all_variants = sorted(all_metrics.keys())
+    lora_variants = [v for v in all_variants if v.startswith("lora_")]
+    variants_to_plot = lora_variants if lora_variants else all_variants
+
+    fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+    fig.suptitle(
+        "Entity-Level Factual Accuracy\n"
+        "Does the model mention the right amounts, dates, merchants, card numbers?",
+        fontsize=14, fontweight="bold", y=1.02,
+    )
+
+    # 21a: Entity F1 per model
+    ax = axes[0]
+    for v in variants_to_plot:
+        non_eos = [m for m in all_metrics[v] if not m.is_eos_example and m.entity_count_ref > 0]
+        if not non_eos:
+            continue
+        f1s = [m.entity_f1 for m in non_eos]
+        ax.bar(variants_to_plot.index(v), np.mean(f1s),
+               color=MODEL_COLORS.get(v, "#888"), edgecolor="white", width=0.6)
+        ax.text(variants_to_plot.index(v), np.mean(f1s) + 0.02,
+                f"{np.mean(f1s):.2f}", ha="center", fontsize=10, fontweight="bold")
+    ax.set_xticks(range(len(variants_to_plot)))
+    ax.set_xticklabels([v.replace("_"," ").upper() for v in variants_to_plot], fontsize=9)
+    ax.set_ylabel("Mean Entity F1")
+    ax.set_ylim(0, 1.15)
+    ax.set_title("Entity F1 on examples with ≥1 reference entity")
+
+    # 21b: Precision vs Recall scatter
+    ax = axes[1]
+    for v in variants_to_plot:
+        non_eos = [m for m in all_metrics[v] if not m.is_eos_example and m.entity_count_ref > 0]
+        if not non_eos:
+            continue
+        prec = np.mean([m.entity_precision for m in non_eos])
+        rec  = np.mean([m.entity_recall for m in non_eos])
+        ax.scatter(rec, prec, s=200, color=MODEL_COLORS.get(v, "#888"),
+                   label=v.replace("_"," ").upper(), zorder=3, edgecolors="white", linewidths=2)
+        ax.annotate(v.replace("_"," ").upper(), (rec, prec),
+                    textcoords="offset points", xytext=(8, 4), fontsize=9)
+    ax.set_xlabel("Entity Recall")
+    ax.set_ylabel("Entity Precision")
+    ax.set_xlim(0, 1.1)
+    ax.set_ylim(0, 1.1)
+    ax.plot([0, 1], [0, 1], "--", color="#ccc", linewidth=1, alpha=0.5)
+    ax.set_title("Entity Precision vs Recall\n(top-right = perfect)")
+    ax.legend(fontsize=9)
+
+    fig.tight_layout()
+    _save(fig, "21_entity_analysis.png")
+
+
+def fig_conversation_level(conv_rows: list):
+    """Conversation-level metric distributions."""
+    _set_style()
+    if not conv_rows:
+        return
+
+    lora_rows = [r for r in conv_rows if r["model_variant"].startswith("lora_")]
+    if not lora_rows:
+        lora_rows = conv_rows
+    variants = sorted(set(r["model_variant"] for r in lora_rows))
+
+    fig, axes = plt.subplots(2, 2, figsize=(16, 11))
+    fig.suptitle(
+        "Conversation-Level Metrics\n"
+        "How coherent is the model across an entire conversation?",
+        fontsize=14, fontweight="bold", y=1.02,
+    )
+
+    # 22a: Style compliance std per conversation
+    ax = axes[0, 0]
+    data = []
+    for v in variants:
+        vals = [r["style_compliance_std"] for r in lora_rows
+                if r["model_variant"] == v and r["style_compliance_std"] is not None]
+        data.append(vals)
+    if any(data):
+        bp = ax.boxplot(data, patch_artist=True, widths=0.5,
+                        medianprops=dict(color="white", linewidth=2))
+        for patch, v in zip(bp["boxes"], variants):
+            patch.set_facecolor(MODEL_COLORS.get(v, "#888"))
+    ax.set_xticklabels([v.replace("_"," ").upper() for v in variants], fontsize=9)
+    ax.set_ylabel("Style compliance std (within conversation)")
+    ax.set_title("Style Coherence Across Turns\n(lower std = more consistent persona)")
+
+    # 22b: Length trajectory correlation
+    ax = axes[0, 1]
+    data = []
+    for v in variants:
+        vals = [r["length_trajectory_correlation"] for r in lora_rows
+                if r["model_variant"] == v and r["length_trajectory_correlation"] is not None]
+        data.append(vals)
+    if any(data):
+        bp = ax.boxplot(data, patch_artist=True, widths=0.5,
+                        medianprops=dict(color="white", linewidth=2))
+        for patch, v in zip(bp["boxes"], variants):
+            patch.set_facecolor(MODEL_COLORS.get(v, "#888"))
+    ax.set_xticklabels([v.replace("_"," ").upper() for v in variants], fontsize=9)
+    ax.set_ylabel("Spearman ρ (pred length vs ref length)")
+    ax.axhline(0, color="#C1121F", linewidth=1, linestyle="--", alpha=0.5)
+    ax.set_title("Length Trajectory Fidelity\n(higher = model length tracks reference length)")
+
+    # 22c: Self-BLEU (mode collapse)
+    ax = axes[1, 0]
+    data = []
+    for v in variants:
+        vals = [r["self_bleu"] for r in lora_rows
+                if r["model_variant"] == v and r["self_bleu"] is not None]
+        data.append(vals)
+    if any(data):
+        bp = ax.boxplot(data, patch_artist=True, widths=0.5,
+                        medianprops=dict(color="white", linewidth=2))
+        for patch, v in zip(bp["boxes"], variants):
+            patch.set_facecolor(MODEL_COLORS.get(v, "#888"))
+    ax.set_xticklabels([v.replace("_"," ").upper() for v in variants], fontsize=9)
+    ax.set_ylabel("Self-BLEU (within conversation)")
+    ax.set_title("Mode Collapse Detection\n(high self-BLEU = repetitive predicted turns)")
+
+    # 22d: Conversation-level judge mean (if available)
+    ax = axes[1, 1]
+    has_judge = any(r.get("judge_mean") is not None for r in lora_rows)
+    if has_judge:
+        data = []
+        for v in variants:
+            vals = [r["judge_mean"] for r in lora_rows
+                    if r["model_variant"] == v and r["judge_mean"] is not None]
+            data.append(vals)
+        if any(data):
+            bp = ax.boxplot(data, patch_artist=True, widths=0.5,
+                            medianprops=dict(color="white", linewidth=2))
+            for patch, v in zip(bp["boxes"], variants):
+                patch.set_facecolor(MODEL_COLORS.get(v, "#888"))
+        ax.set_xticklabels([v.replace("_"," ").upper() for v in variants], fontsize=9)
+        ax.set_ylabel("Judge mean score (1–5)")
+        ax.set_title("Conversation-Level Judge Quality")
+    else:
+        ax.text(0.5, 0.5, "LLM-as-judge not run\n(use --judge flag)",
+                ha="center", va="center", fontsize=12, color="#999",
+                transform=ax.transAxes)
+        ax.set_title("Conversation-Level Judge Quality")
+
+    fig.tight_layout()
+    _save(fig, "22_conversation_level.png")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Main
 # ─────────────────────────────────────────────────────────────────────────────
 
-def main():
-    print("=" * 72)
-    print("  eval_predictions.py  —  Multi-model prediction evaluation")
-    print("=" * 72)
+def parse_args():
+    parser = argparse.ArgumentParser(description="Multi-model prediction evaluation for UserLM")
+    parser.add_argument("--judge", action="store_true",
+                        help="Run LLM-as-judge evaluation (requires ANTHROPIC_API_KEY)")
+    parser.add_argument("--judge-model", default=JUDGE_MODEL,
+                        help=f"Model for LLM judge (default: {JUDGE_MODEL})")
+    parser.add_argument("--judge-limit", type=int, default=None,
+                        help="Limit number of examples to judge (for testing)")
+    parser.add_argument("--no-bertscore", action="store_true",
+                        help="Skip BERTScore computation")
+    parser.add_argument("--no-bleurt", action="store_true",
+                        help="Skip BLEURT computation")
+    parser.add_argument("--bertscore-model", default=BERTSCORE_MODEL,
+                        help=f"Model for BERTScore (default: {BERTSCORE_MODEL})")
+    return parser.parse_args()
 
-    # ── Check files exist ─────────────────────────────────────────────────
-    print("\n[1/7] Checking input files …")
+
+def main():
+    args = parse_args()
+
+    total_steps = 11
+    step = 0
+
+    def waymark(msg):
+        nonlocal step
+        step += 1
+        print(f"\n[{step}/{total_steps}] {msg}")
+
+    print("=" * 100)
+    print("  eval_predictions.py  —  Multi-model prediction evaluation  (v2)")
+    print("  Metrics: BLEU · ROUGE · METEOR · BERTScore · BLEURT · Entity F1")
+    print("           Style · Hedging · Promise · TTR · Role Confusion")
+    print("           LLM-as-Judge (6 dimensions)  · Conversation-level")
+    print("=" * 100)
+
+    # ── 1. Check files ───────────────────────────────────────────────────
+    waymark("Checking input files …")
     missing = [name for name, path in MODEL_FILES.items() if not path.exists()]
     if missing:
         print(f"  ERROR: Missing prediction files for: {missing}")
@@ -1139,28 +2236,34 @@ def main():
         return
     for name, path in MODEL_FILES.items():
         print(f"  ✓  {name}: {path}")
+    print(f"  ✓  BERTScore available: {_HAS_BERTSCORE and not args.no_bertscore}")
+    print(f"  ✓  BLEURT available: {_HAS_BLEURT and not args.no_bleurt}")
+    print(f"  ✓  LLM judge: {'enabled' if args.judge else 'disabled (use --judge to enable)'}")
 
-    # ── Load + verify alignment ───────────────────────────────────────────
-    print("\n[2/7] Loading prediction files …")
+    # ── 2. Load + verify alignment ───────────────────────────────────────
+    waymark("Loading prediction files …")
     files_data = {name: load_file(path) for name, path in MODEL_FILES.items()}
     for name, rows in files_data.items():
         print(f"  {name}: {len(rows)} examples loaded")
 
-    print("\n[3/7] Verifying cross-file alignment …")
+    waymark("Verifying cross-file alignment …")
     try:
         n_examples = verify_alignment(files_data)
     except ValueError as e:
         print(f"  ERROR: {e}")
         return
 
-    # ── Compute metrics ───────────────────────────────────────────────────
-    print(f"\n[4/7] Computing metrics ({n_examples} examples × {len(MODEL_FILES)} files × 2 variants) …")
-    all_flat: list = []          # flat list of ExampleMetrics (all models)
-    all_metrics: dict = {}       # {variant_name: [ExampleMetrics]}
+    # ── 4. Compute per-example metrics (cheap: entity, TTR, hedging, etc.) ─
+    waymark(f"Computing per-example metrics ({n_examples} examples × "
+            f"{len(MODEL_FILES)} files × 2 variants) …")
+    print("  This includes: METEOR, entity P/R/F1, TTR, hedge rate, "
+          "promise rate, role confusion, style compliance")
+    all_flat: list = []
+    all_metrics: dict = {}
 
     for model_name, rows in files_data.items():
         for model_key, variant_prefix in [("base_model", "base"), ("lora_model", "lora")]:
-            size_tag   = model_name.split("_")[1]        # "4b" / "12b" / "27b"
+            size_tag     = model_name.split("_")[1]
             variant_name = f"{variant_prefix}_{size_tag}"
             variant_metrics = []
             for idx, row in enumerate(rows):
@@ -1171,42 +2274,169 @@ def main():
                 all_flat.append(m)
             all_metrics[variant_name] = variant_metrics
             n_eos = sum(1 for m in variant_metrics if m.is_eos_example)
-            print(f"  ✓  {variant_name:<18}: {len(variant_metrics)} examples  ({n_eos} EOS)")
+            n_rc  = sum(1 for m in variant_metrics if m.role_confused)
+            print(f"  ✓  {variant_name:<18}: {len(variant_metrics)} examples  "
+                  f"({n_eos} EOS, {n_rc} role-confused)")
 
-    print(f"\n  Total metric rows: {len(all_flat)}")
+    print(f"  Total metric rows: {len(all_flat)}")
 
-    # ── Cross-model comparison ─────────────────────────────────────────────
-    print("\n[5/7] Running cross-model comparison (Wilcoxon signed-rank tests) …")
+    # ── 5. Batch BERTScore ───────────────────────────────────────────────
+    waymark("Computing BERTScore (batch) …")
+    if not args.no_bertscore:
+        for variant, metrics in all_metrics.items():
+            non_eos = [m for m in metrics if not m.is_eos_example]
+            refs  = [normalize(m.expected_output) for m in non_eos]
+            preds = [normalize(m.predicted_output) for m in non_eos]
+            print(f"  → {variant}: {len(non_eos)} non-EOS examples")
+            P, R, F1 = compute_bertscore_batch(refs, preds, model_type=args.bertscore_model)
+            for m, p, r, f in zip(non_eos, P, R, F1):
+                m.bertscore_precision = p
+                m.bertscore_recall    = r
+                m.bertscore_f1        = f
+            # EOS examples get 1.0 if correct, 0.0 if not
+            for m in metrics:
+                if m.is_eos_example:
+                    correct = (m.predicted_output == "")
+                    m.bertscore_f1 = 1.0 if correct else 0.0
+                    m.bertscore_precision = m.bertscore_f1
+                    m.bertscore_recall = m.bertscore_f1
+    else:
+        print("  ⚠  BERTScore skipped (--no-bertscore)")
+
+    # ── 6. Batch BLEURT ──────────────────────────────────────────────────
+    waymark("Computing BLEURT (batch) …")
+    if not args.no_bleurt:
+        for variant, metrics in all_metrics.items():
+            non_eos = [m for m in metrics if not m.is_eos_example]
+            refs  = [normalize(m.expected_output) for m in non_eos]
+            preds = [normalize(m.predicted_output) for m in non_eos]
+            print(f"  → {variant}: {len(non_eos)} non-EOS examples")
+            scores = compute_bleurt_batch(refs, preds)
+            for m, s in zip(non_eos, scores):
+                m.bleurt_score = s
+            for m in metrics:
+                if m.is_eos_example:
+                    correct = (m.predicted_output == "")
+                    m.bleurt_score = 1.0 if correct else 0.0
+    else:
+        print("  ⚠  BLEURT skipped (--no-bleurt)")
+
+    # ── 7. LLM-as-judge ─────────────────────────────────────────────────
+    waymark("Running LLM-as-judge evaluation …")
+    if args.judge:
+        global JUDGE_MODEL
+        JUDGE_MODEL = args.judge_model
+        print(f"  Judge model: {JUDGE_MODEL}")
+        JUDGE_CACHE_DIR.mkdir(exist_ok=True)
+        judge_count = 0
+        for variant, metrics in all_metrics.items():
+            non_eos = [m for m in metrics if not m.is_eos_example]
+            if args.judge_limit:
+                non_eos = non_eos[:args.judge_limit]
+            print(f"  → {variant}: judging {len(non_eos)} examples …")
+            for i, m in enumerate(non_eos):
+                # Find the original example data
+                size_key = m.model_size
+                model_key = "lora_model" if m.is_lora else "base_model"
+                example = files_data[size_key][m.example_idx]
+                persona = example.get("_meta", {}).get("persona", {})
+
+                result = run_llm_judge(
+                    example, m.predicted_output, m.expected_output,
+                    persona, variant, m.example_idx,
+                )
+                m.judge_semantic_fidelity = result.get("semantic_fidelity")
+                m.judge_persona_voice = result.get("persona_voice")
+                m.judge_conversational_coherence = result.get("conversational_coherence")
+                m.judge_goal_directedness = result.get("goal_directedness")
+                m.judge_human_realism = result.get("human_realism")
+                m.judge_information_calibration = result.get("information_calibration")
+
+                scores = [v for v in [
+                    m.judge_semantic_fidelity, m.judge_persona_voice,
+                    m.judge_conversational_coherence, m.judge_goal_directedness,
+                    m.judge_human_realism, m.judge_information_calibration,
+                ] if v is not None]
+                m.judge_mean = round(np.mean(scores), 2) if scores else None
+
+                judge_count += 1
+                if judge_count % 10 == 0:
+                    print(f"    … {judge_count} examples judged")
+                time.sleep(0.2)  # rate limit courtesy
+
+        print(f"  ✓  {judge_count} total examples judged")
+    else:
+        print("  ⚠  LLM judge skipped (use --judge to enable)")
+
+    # ── 8. Cross-model comparison ────────────────────────────────────────
+    waymark("Running cross-model comparison (Wilcoxon signed-rank tests) …")
     comparison_rows = compare_models(all_metrics)
     print(f"  ✓  {len(comparison_rows)} pairwise comparisons computed")
 
-    # ── Print summary ─────────────────────────────────────────────────────
+    # ── 9. Conversation-level metrics ────────────────────────────────────
+    waymark("Computing conversation-level metrics (grouped by generation_idx) …")
+    conv_rows = compute_conversation_metrics(all_metrics)
+    n_convs = len(set((r["model_variant"], r["generation_idx"]) for r in conv_rows))
+    print(f"  ✓  {len(conv_rows)} conversation × variant rows  "
+          f"({n_convs} unique conversations)")
+
+    # ── 10. Print summary + write CSVs ───────────────────────────────────
     print_summary(all_metrics)
 
-    # ── Write CSVs ────────────────────────────────────────────────────────
-    print("[6/7] Writing CSVs …")
+    waymark("Writing CSVs …")
     write_detailed_csv(all_flat, DETAILED_CSV)
+    print(f"  → {DETAILED_CSV.name}")
     write_category_csv(all_metrics, CATEGORY_CSV)
+    print(f"  → {CATEGORY_CSV.name}")
     write_comparison_csv(comparison_rows, COMPARISON_CSV)
+    print(f"  → {COMPARISON_CSV.name}")
+    write_conversation_csv(conv_rows, CONVERSATION_CSV)
+    print(f"  → {CONVERSATION_CSV.name}")
 
-    # ── Generate figures ──────────────────────────────────────────────────
-    print("\n[7/7] Generating visualisations …")
+    # ── 11. Generate figures ─────────────────────────────────────────────
+    waymark("Generating visualisations …")
     IMAGES_DIR.mkdir(exist_ok=True)
-    print("  [7a] Category heatmap …")
-    fig_category_heatmap(all_metrics)
-    print("  [7b] Model comparison …")
-    fig_model_comparison(all_metrics, comparison_rows)
-    print("  [7c] EOS analysis …")
-    fig_eos_analysis(all_metrics)
-    print("  [7d] Efficiency frontier …")
-    fig_efficiency_frontier(all_metrics)
-    print("  [7e] Style compliance …")
-    fig_style_compliance(all_metrics)
-    print("  ✓  All 5 figures saved.")
 
-    print("\n" + "=" * 72)
-    print("  Done.")
-    print("=" * 72 + "\n")
+    print("  [a] Category heatmap …")
+    fig_category_heatmap(all_metrics)
+
+    print("  [b] Model comparison …")
+    fig_model_comparison(all_metrics, comparison_rows)
+
+    print("  [c] EOS analysis …")
+    fig_eos_analysis(all_metrics)
+
+    print("  [d] Efficiency frontier …")
+    fig_efficiency_frontier(all_metrics)
+
+    print("  [e] Style compliance …")
+    fig_style_compliance(all_metrics)
+
+    print("  [f] BERTScore comparison …")
+    fig_bertscore_comparison(all_metrics)
+
+    print("  [g] Behavioural signals …")
+    fig_behavioural_signals(all_metrics)
+
+    print("  [h] Entity analysis …")
+    fig_entity_analysis(all_metrics)
+
+    print("  [i] LLM-judge radar …")
+    fig_judge_radar(all_metrics)
+
+    print("  [j] Conversation-level metrics …")
+    fig_conversation_level(conv_rows)
+
+    print("  ✓  All 10 figures saved.")
+
+    print("\n" + "=" * 100)
+    print("  Done. Outputs:")
+    print(f"    CSVs:    {DETAILED_CSV.name}, {CATEGORY_CSV.name}, "
+          f"{COMPARISON_CSV.name}, {CONVERSATION_CSV.name}")
+    print(f"    Images:  {IMAGES_DIR}/13_*.png … 22_*.png")
+    if args.judge:
+        print(f"    Cache:   {JUDGE_CACHE_DIR}/")
+    print("=" * 100 + "\n")
 
 
 if __name__ == "__main__":
