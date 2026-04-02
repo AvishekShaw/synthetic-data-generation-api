@@ -294,19 +294,152 @@ Customer: [message]
 Write 6-14 turns total. End when the customer's goal is complete or they've been redirected."""
 
 
-def build_prompt(persona: Persona, scenario: Scenario, few_shot_examples: list[str]) -> tuple[str, str]:
-    """Build (system_prompt, user_prompt) for this persona × scenario combination."""
-    # Pick 3 random few-shot examples
+# ── Failure-mode variants ──────────────────────────────────────────────────
+
+# Maps each failure mode to the specific behavioural instruction injected
+# into the system prompt so Claude knows *how* to end the conversation early.
+FAILURE_MODE_INSTRUCTIONS: dict[str, str] = {
+    "impatience": (
+        "running out of patience. The process requires too many steps or takes too "
+        "long. The customer eventually gives up and says they'll call or visit a "
+        "branch instead. Build frustration gradually — don't quit after one turn."
+    ),
+    "info_blocker": (
+        "not having the information the agent needs. The customer doesn't have the "
+        "card number, transaction date, or other required details on hand right now "
+        "and cannot look them up. They end the chat saying they'll come back later."
+    ),
+    "loop_exit": (
+        "the agent asking the same question (or a very similar one) multiple times. "
+        "After the customer has answered it twice and the agent asks again, the "
+        "customer loses patience and exits the chat in frustration."
+    ),
+    "trust_breakdown": (
+        "the customer losing confidence in the agent. The agent provides information "
+        "that the customer believes is wrong or inconsistent. Rather than continue, "
+        "the customer decides to call the bank directly instead."
+    ),
+    "wrong_channel": (
+        "the customer realising this chat channel cannot solve their problem. They "
+        "need something the chatbot cannot do (speak to a human fraud specialist, "
+        "access a joint account, etc.) and exits to find the right channel."
+    ),
+    "scope_limit": (
+        "the agent being unable to fulfill the customer's specific request because "
+        "of a stated policy or system limitation. The customer accepts they're "
+        "blocked here and ends the conversation to try another route."
+    ),
+    "distraction": (
+        "the customer getting distracted mid-conversation. Their messages become "
+        "progressively shorter and less engaged over the final 2-3 turns, then "
+        "they say something like 'sorry have to go' and end the chat."
+    ),
+    "escalation_exit": (
+        "the customer demanding to speak to a supervisor or human agent. When the "
+        "chatbot cannot escalate, the customer refuses to continue with the bot "
+        "and exits the conversation."
+    ),
+}
+
+FAILURE_SYSTEM_PROMPT = (
+    """You are generating synthetic training data for a banking chatbot user simulator.
+
+Write a realistic multi-turn conversation between a CUSTOMER and a BANKING AGENT.
+The customer is dealing with a potentially fraudulent transaction.
+
+CRITICAL RULES — based on real customer behavior:
+1. Customer messages are SHORT and informal. Like text messages, not emails.
+2. Customers don't use financial jargon unless they're financially sophisticated.
+3. Customers give INCOMPLETE information first, add details only when prompted.
+4. Customers ask about ONE thing at a time before moving to the next.
+5. Customers REPEAT their request in different words when the agent doesn't understand.
+6. Customers express frustration INDIRECTLY before directly.
+7. Customers sometimes don't know what they actually need ("just want this sorted").
+8. Include realistic typos, lowercase, skipped punctuation — but don't overdo it.
+9. Customer messages are typically 1-2 sentences. Rarely more.
+
+The agent is a banking chatbot that:
+- Lists card options when needed (e.g. "Chase Freedom ****1234, Chase Sapphire ****5678")
+- Lists recent transactions when needed
+- Asks clarifying questions one at a time
+- Is polite but slightly robotic/formulaic
+
+FORMAT — alternate strictly between Customer and Agent:
+Customer: [message]
+Agent: [message]
+Customer: [message]
+...
+
+IMPORTANT: This conversation does NOT end in goal completion.
+The customer exits early because of: {failure_mode_instruction}
+
+Write 4-10 turns total. The conversation must end with the customer giving up,
+leaving, or disengaging — NOT with their goal resolved."""
+)
+
+# Failure mode assigned to each persona (by index in PERSONAS list).
+# Chosen for psychological plausibility: e.g. escalating personas exit via
+# escalation_exit, wrong_mental_model personas hit trust_breakdown, etc.
+PERSONA_FAILURE_MAP: dict[int, str] = {
+    0: "info_blocker",      # novice / mildly_frustrated / direct / clear
+    1: "scope_limit",       # intermediate / calm / terse / clear
+    2: "trust_breakdown",   # intermediate / calm / indirect / wrong_mental_model
+    3: "loop_exit",         # intermediate / mildly_frustrated / direct / vague
+    4: "impatience",        # intermediate / mildly_frustrated / terse / clear
+    # 5: "escalation_exit",   # intermediate / escalating / direct / clear
+    # 6: "wrong_channel",     # expert / calm / direct / clear
+    # 7: "scope_limit",       # expert / calm / terse / clear
+    # 8: "trust_breakdown",   # expert / mildly_frustrated / direct / clear
+    # 9: "escalation_exit",   # expert / escalating / direct / clear
+}
+
+# Separate completion template for failure conversations:
+# exit condition says "give up / stop" rather than "goal is complete".
+FAILURE_COMPLETION_TEMPLATE = (
+    "You are a human user interacting with an AI system. {intent}.\n"
+    "Users can make typos, they don't always use perfect punctuation, "
+    "and they tend to be lazy because typing requires effort.\n"
+    "You have to also split information across turns and not give "
+    "everything at the start.\n"
+    "However, you should not overdo these things in your outputs, "
+    "you must realistically act like a human.\n\n"
+    "Conversation so far:\n"
+    "{history}\n\n"
+    "If you have decided to give up, leave, or stop engaging, respond with <eos>. "
+    "Otherwise, generate your next message."
+)
+
+
+def build_prompt(persona: Persona, scenario: Scenario, few_shot_examples: list[str],
+                 mode: str = "success", failure_mode: str | None = None) -> tuple[str, str]:
+    """Build (system_prompt, user_prompt) for this persona × scenario combination.
+
+    mode: 'success' uses the standard SYSTEM_PROMPT.
+          'failure' uses FAILURE_SYSTEM_PROMPT with the failure_mode instruction injected.
+    """
+    # Pick up to 3 random few-shot examples (may be empty on first run)
     samples = random.sample(few_shot_examples, min(3, len(few_shot_examples)))
     few_shot_block = "\n\n---\n\n".join(samples)
 
-    user_prompt = f"""Here are real examples of how actual banking customers chat with support agents:
+    if mode == "failure" and failure_mode:
+        system_prompt = FAILURE_SYSTEM_PROMPT.format(
+            failure_mode_instruction=FAILURE_MODE_INSTRUCTIONS[failure_mode]
+        )
+    else:
+        system_prompt = SYSTEM_PROMPT
+
+    if few_shot_block:
+        examples_section = f"""Here are real examples of how actual banking customers chat with support agents:
 
 === REAL EXAMPLES ===
 {few_shot_block}
 === END EXAMPLES ===
 
-Now generate a NEW conversation with these specifications:
+Now generate a NEW conversation with these specifications:"""
+    else:
+        examples_section = "Generate a conversation with these specifications:"
+
+    user_prompt = f"""{examples_section}
 
 CUSTOMER PROFILE:
 {_persona_description(persona)}
@@ -316,7 +449,7 @@ SCENARIO:
 
 Generate the conversation now. Customer messages must sound like real people texting — not formal writing."""
 
-    return SYSTEM_PROMPT, user_prompt
+    return system_prompt, user_prompt
 
 
 # ─────────────────────────────────────────────
@@ -470,7 +603,8 @@ COMPLETION_TEMPLATE = (
 
 
 def to_training_format(messages: list[dict], persona: Persona,
-                       scenario: Scenario, idx: int) -> list[dict]:
+                       scenario: Scenario, idx: int,
+                       meta_extra: dict | None = None) -> list[dict]:
     """
     Convert a generated conversation into the training JSONL format.
     One entry per user turn:
@@ -478,11 +612,11 @@ def to_training_format(messages: list[dict], persona: Persona,
       - All later turns  → COMPLETION_TEMPLATE  (includes history so far)
     The last user turn always has output = '<eos>'.
 
-    The [INTENT] slot is filled with a scenario-specific summary derived
-    from the scenario dimensions (merchant, amount, date, certainty, etc.)
-    rather than the generic "dispute a potentially fraudulent transaction".
+    meta_extra: optional dict merged into every entry's _meta field.
+                Used to carry failure_mode, goal_completed, probing_type, etc.
     """
     intent = generate_intent_summary(scenario)
+    is_failure = (meta_extra or {}).get("goal_completed") is False
 
     entries = []
     history_lines: list[str] = []
@@ -498,21 +632,26 @@ def to_training_format(messages: list[dict], persona: Persona,
                 # First turn — no conversation history yet
                 input_text = FIRST_TURN_TEMPLATE.format(intent=intent)
             else:
-                # Completion turn — all middle and final turns
-                input_text = COMPLETION_TEMPLATE.format(
+                # Completion turn — use failure template if applicable
+                template = FAILURE_COMPLETION_TEMPLATE if is_failure else COMPLETION_TEMPLATE
+                input_text = template.format(
                     intent=intent,
                     history="\n".join(history_lines),
                 )
 
+            base_meta = {
+                "synthetic":      True,
+                "generation_idx": idx,
+                "persona":        asdict(persona),
+                "scenario":       asdict(scenario),
+            }
+            if meta_extra:
+                base_meta.update(meta_extra)
+
             entries.append({
                 "input":  input_text,
                 "output": output,
-                "_meta": {
-                    "synthetic":      True,
-                    "generation_idx": idx,
-                    "persona":        asdict(persona),
-                    "scenario":       asdict(scenario),
-                },
+                "_meta":  base_meta,
             })
             history_lines.append(f"Customer: {msg['content']}")
 
@@ -532,6 +671,7 @@ def write_conversation_dump(
     persona: Persona,
     scenario: Scenario,
     messages: list[dict],
+    meta_extra: dict | None = None,
 ) -> Path:
     """
     Write one human-readable txt file for a generated conversation.
@@ -561,6 +701,11 @@ def write_conversation_dump(
     lines.append(f"  amount                 : {scenario.amount}")
     lines.append(f"  transaction_date       : {scenario.transaction_date}")
     lines.append("")
+    if meta_extra:
+        lines.append("EXTRA META:")
+        for k, v in meta_extra.items():
+            lines.append(f"  {k}: {v}")
+        lines.append("")
     lines.append("-" * 60)
     lines.append("")
 
@@ -578,22 +723,35 @@ def write_conversation_dump(
 # ─────────────────────────────────────────────
 
 def generate_all(args):
-    print("\n=== UserLM Synthetic Data Generator ===\n")
+    mode = getattr(args, "mode", "success")
+    print(f"\n=== UserLM Synthetic Data Generator  [mode: {mode}] ===\n")
 
-    # Load few-shot examples
-    print(f"Loading few-shot examples from: {args.data_path}")
-    few_shot = load_few_shot_examples(args.data_path)
-    if not few_shot:
-        print("ERROR: No complete conversations found. Check your data path.")
-        return
+    # generation_idx offsets keep each mode's conversations in a distinct range:
+    #   success  → 0–499
+    #   failure  → 500–999
+    #   type_a   → 1000+  (generate_probe_conversations.py)
+    #   type_b   → 2000+  (generate_probe_conversations.py)
+    idx_offset = 500 if mode == "failure" else 0
 
-    # Build combinations
-    combinations = [(p, s) for p in PERSONAS for s in SCENARIOS]
+    # Load few-shot examples (optional — omitted on first run)
+    if args.data_path:
+        print(f"Loading few-shot examples from: {args.data_path}")
+        few_shot = load_few_shot_examples(args.data_path)
+        if not few_shot:
+            print("WARNING: No complete conversations found in data-path. Proceeding without few-shot examples.")
+    else:
+        few_shot = []
+        print("No --data-path provided — generating without few-shot examples.")
+
+    # Build combinations — for failure mode we also need the persona index
+    # so we can look up PERSONA_FAILURE_MAP.
+    combinations = [
+        (pidx, p, s)
+        for pidx, p in enumerate(PERSONAS)
+        for s in SCENARIOS
+    ]
     total_available = len(combinations)
 
-    # --limit controls how many to generate.
-    # Default is 3 (for a quick test run).
-    # Pass --limit all (or --limit -1) to generate the full set.
     if args.limit == -1:
         limit = total_available
         limit_label = "all"
@@ -612,8 +770,8 @@ def generate_all(args):
     output_path = Path(args.output).expanduser()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    # Human-readable dumps go in a sibling directory
-    dump_dir = output_path.parent / "conversation_dumps"
+    # Human-readable dumps go in a mode-specific sibling directory
+    dump_dir = output_path.parent / f"conversation_dumps_{mode}"
 
     # Track progress — skip already-generated combinations if resuming
     generated_indices = set()
@@ -638,37 +796,46 @@ def generate_all(args):
     success_count = 0
     error_count = 0
 
-    for idx, (persona, scenario) in enumerate(combinations):
+    for combo_idx, (pidx, persona, scenario) in enumerate(combinations):
         # Stop once we've hit the limit (counting only new successes)
         if success_count >= limit:
-            remaining = total_available - idx
+            remaining = total_available - combo_idx
             print(f"\n  Limit of {limit} reached. "
                   f"{remaining} combination(s) remaining — run with --limit all to generate everything.")
             break
 
-        if idx in generated_indices:
-            print(f"  [{idx+1}/{total_available}] Skipping (already done)")
+        global_idx = idx_offset + combo_idx
+        if global_idx in generated_indices:
+            print(f"  [{combo_idx+1}/{total_available}] Skipping (already done)")
             continue
 
-        label = (f"[{idx+1}/{total_available}] "
+        # Resolve failure mode for this persona (failure mode only)
+        failure_mode = PERSONA_FAILURE_MAP.get(pidx) if mode == "failure" else None
+
+        label = (f"[{combo_idx+1}/{total_available}] "
                  f"{persona.knowledge_level}/{persona.emotional_state} | "
                  f"{scenario.certainty}/{scenario.information_completeness} | "
-                 f"{scenario.merchant_name} {scenario.amount}")
+                 f"{scenario.merchant_name} {scenario.amount}"
+                 + (f" | {failure_mode}" if failure_mode else ""))
         print(label)
 
-        system_prompt, user_prompt = build_prompt(persona, scenario, few_shot)
+        system_prompt, user_prompt = build_prompt(
+            persona, scenario, few_shot, mode=mode, failure_mode=failure_mode
+        )
 
         # ── Dry run: just save the prompts ──
         if args.provider == "dry_run":
             dry_run_file.write(f"\n{'='*60}\n")
-            dry_run_file.write(f"COMBINATION {idx+1}/{total_available}\n")
+            dry_run_file.write(f"COMBINATION {combo_idx+1}/{total_available}\n")
             dry_run_file.write(f"Persona: {asdict(persona)}\n")
             dry_run_file.write(f"Scenario: {asdict(scenario)}\n")
+            if failure_mode:
+                dry_run_file.write(f"Failure mode: {failure_mode}\n")
             dry_run_file.write(f"{'='*60}\n\n")
             dry_run_file.write(f"SYSTEM:\n{system_prompt}\n\n")
             dry_run_file.write(f"USER:\n{user_prompt}\n\n")
-            print(f"  → Prompt saved")
-            success_count += 1   # count dry-run prompts against the limit too
+            print(f"  → Prompt saved" + (f" [{failure_mode}]" if failure_mode else ""))
+            success_count += 1
             continue
 
         # ── API call with retry ──
@@ -703,17 +870,32 @@ def generate_all(args):
             error_count += 1
             continue
 
-        training_entries = to_training_format(messages, persona, scenario, idx)
+        # Build mode-specific extra metadata
+        meta_extra = None
+        if mode == "failure":
+            meta_extra = {
+                "goal_completed": False,
+                "failure_mode":   failure_mode,
+            }
+        elif mode == "success":
+            meta_extra = {"goal_completed": True}
+
+        training_entries = to_training_format(
+            messages, persona, scenario, global_idx, meta_extra=meta_extra
+        )
 
         with open(output_path, "a") as f:
             for entry in training_entries:
                 f.write(json.dumps(entry) + "\n")
 
-        # Write human-readable dump for this conversation
-        dump_path = write_conversation_dump(dump_dir, idx, persona, scenario, messages)
+        # Write human-readable dump
+        dump_path = write_conversation_dump(
+            dump_dir, combo_idx, persona, scenario, messages, meta_extra=meta_extra
+        )
 
         user_turns = sum(1 for m in messages if m["role"] == "user")
-        print(f"  ✓ {len(messages)} turns ({user_turns} user) → {len(training_entries)} training examples")
+        extra_str = f" | failure_mode={failure_mode}" if failure_mode else ""
+        print(f"  ✓ {len(messages)} turns ({user_turns} user){extra_str} → {len(training_entries)} training examples")
         print(f"    Dump: {dump_path}")
         success_count += 1
 
@@ -736,14 +918,22 @@ def generate_all(args):
         try:
             eos_count = 0
             total_entries = 0
+            failure_counts: dict[str, int] = {}
             with open(output_path) as f:
                 for line in f:
                     e = json.loads(line)
                     total_entries += 1
                     if e.get("output") == "<eos>":
                         eos_count += 1
+                    fm = e.get("_meta", {}).get("failure_mode")
+                    if fm:
+                        failure_counts[fm] = failure_counts.get(fm, 0) + 1
             print(f"Total training entries written: {total_entries}")
             print(f"  of which complete conversations (<eos>): {eos_count}")
+            if failure_counts:
+                print("  Failure mode breakdown:")
+                for fm, cnt in sorted(failure_counts.items()):
+                    print(f"    {fm}: {cnt} entries")
         except:
             pass
 
@@ -759,6 +949,16 @@ def main():
         epilog=__doc__,
     )
     parser.add_argument(
+        "--mode",
+        choices=["success", "failure"],
+        default="success",
+        help=(
+            "success (default): conversations that end with the customer's goal met. "
+            "failure: conversations where the customer gives up / drops out early. "
+            "generation_idx offset: success=0, failure=500."
+        ),
+    )
+    parser.add_argument(
         "--provider",
         choices=["anthropic", "databricks", "dry_run"],
         required=True,
@@ -770,8 +970,12 @@ def main():
     )
     parser.add_argument(
         "--data-path",
-        required=True,
-        help="Path to userlm_data.jsonl (your existing fine-tuning data).",
+        required=False,
+        default=None,
+        help=(
+            "Path to existing userlm JSONL (used as few-shot examples). "
+            "Optional — omit on first run when no prior data exists."
+        ),
     )
     parser.add_argument(
         "--output",

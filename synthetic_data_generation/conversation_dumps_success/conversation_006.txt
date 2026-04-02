@@ -1,0 +1,63 @@
+============================================================
+CONVERSATION 6
+============================================================
+
+PERSONA:
+  knowledge_level    : novice
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hi i called about a week ago about a charge on my account that wasnt mine. nobody got back to me
+
+Agent: I'm sorry to hear that. I'd be happy to look into this for you. Can you please verify your name and the last 4 digits of your card?
+
+Customer: sarah, and its 4421
+
+Agent: Thank you, Sarah. I can see your account. Which transaction are you concerned about?
+
+Customer: its an uber eats charge for $215 on august 10th. i did not make this. i already told someone this last week
+
+Agent: I understand, and I'm sorry you haven't received an update. Let me pull up your recent transactions. I can see the following on your Chase Debit Card \*\*\*\*4421: - Aug 10 — Uber Eats — $215.00 - Aug 9 — Walmart — $43.22 - Aug 11 — Netflix — $15.99 Is the Uber Eats charge the one you'd like to dispute?
+
+Customer: yes obviously. i dont even have the uber eats app
+
+Agent: Understood. I'll flag this as an unauthorized charge and open a dispute for the $215.00 Uber Eats transaction from August 10th. You should receive your refund within 5–10 business days while we investigate.
+
+Customer: ok and i want my card cancelled too. if someone has my number im not keeping it
+
+Agent: That makes sense. Would you like me to cancel your current card ending in 4421 and send a replacement to the address we have on file?
+
+Customer: yes. how long does that take
+
+Agent: Your new card will arrive within 5–7 business days. Is the address on your account still current?
+
+Customer: yeah its fine
+
+Agent: Got it. I've cancelled card \*\*\*\*4421 and a replacement is on its way. Your dispute for $215.00 has also been filed. You'll get an email confirmation shortly.
+
+Customer: ok. and this time can someone actually follow up with me. last time i heard nothing
+
+Agent: I completely understand your frustration, Sarah. I've added a note to your case requesting a follow-up within 48 hours. You can also reference dispute case #DIS-884421 if you need to call back.
+
+Customer: alright. thanks
+
+Agent: You're welcome. I'm sorry for the inconvenience. Is there anything else I can help you with today?
+
+Customer: no thats it
+
+Agent: Take care, Sarah. Have a good day.

@@ -1,0 +1,377 @@
+
+============================================================
+COMBINATION 1/80
+Persona: {'knowledge_level': 'novice', 'emotional_state': 'mildly_frustrated', 'communication_style': 'direct', 'goal_clarity': 'clear'}
+Scenario: {'certainty': 'certain_fraud', 'information_completeness': 'full', 'prior_contact': 'first_contact', 'expected_resolution': 'refund_and_card', 'merchant_name': 'Amazon', 'amount': '$127.43', 'transaction_date': 'August 20th'}
+============================================================
+
+SYSTEM:
+You are generating synthetic training data for a banking chatbot user simulator.
+
+Write a realistic multi-turn conversation between a CUSTOMER and a BANKING AGENT.
+The customer is dealing with a potentially fraudulent transaction.
+
+CRITICAL RULES — based on real customer behavior:
+1. Customer messages are SHORT and informal. Like text messages, not emails.
+2. Customers don't use financial jargon unless they're financially sophisticated.
+3. Customers give INCOMPLETE information first, add details only when prompted.
+4. Customers ask about ONE thing at a time before moving to the next.
+5. Customers REPEAT their request in different words when the agent doesn't understand.
+6. Customers express frustration INDIRECTLY before directly.
+7. Customers sometimes don't know what they actually need ("just want this sorted").
+8. Include realistic typos, lowercase, skipped punctuation — but don't overdo it.
+9. Customer messages are typically 1-2 sentences. Rarely more.
+
+The agent is a banking chatbot that:
+- Lists card options when needed (e.g. "Chase Freedom ****1234, Chase Sapphire ****5678")
+- Lists recent transactions when needed
+- Asks clarifying questions one at a time
+- Is polite but slightly robotic/formulaic
+
+FORMAT — alternate strictly between Customer and Agent:
+Customer: [message]
+Agent: [message]
+Customer: [message]
+...
+
+Write 6-14 turns total. End when the customer's goal is complete or they've been redirected.
+
+USER:
+Here are real examples of how actual banking customers chat with support agents:
+
+=== REAL EXAMPLES ===
+Customer: idk abt a charge on my acct
+Agent: Let me look into that.
+Agent: Would you like to dispute a transaction or lock your card?
+Customer: disp
+Agent: Got it.
+Agent: Here are your credit cards: 
+ - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234
+ - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678.
+Agent: Which card was the transaction made from?
+Customer: I believe it was the freedom but not too sure
+Agent: Got it.
+Agent: Here are your recent transactions: : 
+ Date: 2025-07-05 - Merchant:Amazon - Amount:$89.99: 
+ Date: 2025-07-04 - Merchant:Starbucks - Amount:$45.5: 
+ Date: 2025-07-03 - Merchant:Shell Gas Station - Amount:$120.0: 
+ Date: 2025-07-02 - Merchant:Best Buy - Amount:$250.0: 
+ Date: 2025-07-01 - Merchant:Target - Amount:$32.75
+Agent: Which would would you like to dispute?
+Customer: firstone
+Agent: Do you suspect fraud with this transaction?
+Customer: i was overcharged
+Agent: Have you looked at the 'Report Problem' button next to the transaction on your transactions dashboard? It lets you report such issues quickly and easily.
+Customer: no time for all that
+Agent: Understood.
+Agent: In cases where you don't suspect fraud, it's often helpful to first try resolving the issue directly with the merchant. They might be able to provide more details or resolve the issue quickly.
+Agent: Would you like to proceed with disputing the transaction through us, or would you prefer to contact the merchant first?
+Customer: yes, lets get it done here
+Agent: Got it.
+Agent: Perfect, I'm happy to help you dispute that transaction.
+To get started, what's the date of the transaction you'd like to dispute?
+Customer: bruh..already gave you,no?
+
+---
+
+Customer: I want to dispute a $415 transaction done on the 21st of Aug 2024 via zon.com. They are cheaters. Please file the dispute straight away. Oh and I can see one more $57 transaction on the same date and the same merchant. Please help me file a dispute for that too...Very urgent
+Agent: Understood.
+Agent: I understand you want to dispute multiple transactions, but I can only process one dispute at a time. Shall we procede?
+Customer: sure, lets start with the bigger amount one
+Agent: Got it.
+Agent: Here are your credit cards: 
+ - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234
+ - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678.
+Agent: Which card was the transaction made from?
+Customer: Freedom
+Agent: Got it.
+Agent: Do you suspect fraud with this transaction?
+Customer: Did I not tell you just moments ago
+
+---
+
+Customer: I am getting old. I am pretty sure I kept my card in my bag, but I can't find it anymore
+Agent: Let me look into that.
+Agent: There's a number of ways I can help you with that. Would you like to dispute a transaction, lock your card, or replace it?
+Customer: I just want to make sure that it is not misused
+Agent: Got it.
+Agent: In order to ensure that your card isn't being misused, I can help you lock it temporarily or we could replace it altogether. Let me know how to help you?
+Customer: replace
+Agent: On it.
+Agent: Can you please confirm that you want to replace your **Chase Freedom** (\*\*\*\* \*\*\*\* \*\*\*\* 1234) or **Chase Sapphire** (\*\*\*\* \*\*\*\* \*\*\*\* 5678) card
+Customer: second one
+Agent: I'll help you replace your Chase Sapphire card. Let me confirm your delivery address 123 Main Street, New York, NY 10001.
+Customer: is fine
+Agent: Perfect! Let me summarize your card replacement order:
+- Card: Chase Sapphire (\*\*\*\* \*\*\*\* \*\*\*\* 5678)
+- Reason: Lost card
+- Delivery Address: 123 Main Street, New York, NY 10001
+- Delivery Speed: Standard (5-7 business days)
+- Cost: Free
+Agent: Is this information correct?
+Customer: will the card number change?
+Agent: Got it.
+Agent: Yes, your replacement Chase Sapphire card will have a different card number for security purposes. This helps protect you from any potential fraud on your current card number.
+Customer: makes sense.
+Agent: Got it.
+Agent: Perfect! Let me summarize your card replacement order:
+- Card: Chase Sapphire (\*\*\*\* \*\*\*\* \*\*\*\* 5678)
+- Reason: Lost card
+- Delivery Address: 123 Main Street, New York, NY 10001
+- Delivery Speed: Standard (5-7 business days)
+- Cost: Free
+Agent: Is this information correct?
+Customer: hmm..let me check my traveling dates. 1 sec
+=== END EXAMPLES ===
+
+Now generate a NEW conversation with these specifications:
+
+CUSTOMER PROFILE:
+- Financial knowledge: Does NOT know financial terminology. Says 'weird charge', 'that company', 'my account' — not 'unauthorized transaction' or 'chargeback'. May not know what a dispute process involves.
+- Emotional state: Already a bit annoyed before the chat starts. Uses 'look', sighs in text, says things like 'I already told you'.
+- Communication style: Gets to the point fast. Short messages. Doesn't over-explain.
+- Goal clarity: Knows exactly what they want: refund, new card, investigation opened.
+
+SCENARIO:
+- Dispute certainty: CERTAIN they did not make this transaction. No ambiguity.
+- Information available: Has all details: merchant (Amazon), amount ($127.43), date (August 20th).
+- Prior contact: First attempt to resolve this. Hasn't tried anything yet.
+- What the customer wants: Wants: (1) money back, (2) card cancelled and replaced.
+
+Generate the conversation now. Customer messages must sound like real people texting — not formal writing.
+
+
+============================================================
+COMBINATION 2/80
+Persona: {'knowledge_level': 'novice', 'emotional_state': 'mildly_frustrated', 'communication_style': 'direct', 'goal_clarity': 'clear'}
+Scenario: {'certainty': 'certain_fraud', 'information_completeness': 'partial', 'prior_contact': 'first_contact', 'expected_resolution': 'refund_and_card', 'merchant_name': 'Shell Station', 'amount': '$89.21', 'transaction_date': 'August 18th'}
+============================================================
+
+SYSTEM:
+You are generating synthetic training data for a banking chatbot user simulator.
+
+Write a realistic multi-turn conversation between a CUSTOMER and a BANKING AGENT.
+The customer is dealing with a potentially fraudulent transaction.
+
+CRITICAL RULES — based on real customer behavior:
+1. Customer messages are SHORT and informal. Like text messages, not emails.
+2. Customers don't use financial jargon unless they're financially sophisticated.
+3. Customers give INCOMPLETE information first, add details only when prompted.
+4. Customers ask about ONE thing at a time before moving to the next.
+5. Customers REPEAT their request in different words when the agent doesn't understand.
+6. Customers express frustration INDIRECTLY before directly.
+7. Customers sometimes don't know what they actually need ("just want this sorted").
+8. Include realistic typos, lowercase, skipped punctuation — but don't overdo it.
+9. Customer messages are typically 1-2 sentences. Rarely more.
+
+The agent is a banking chatbot that:
+- Lists card options when needed (e.g. "Chase Freedom ****1234, Chase Sapphire ****5678")
+- Lists recent transactions when needed
+- Asks clarifying questions one at a time
+- Is polite but slightly robotic/formulaic
+
+FORMAT — alternate strictly between Customer and Agent:
+Customer: [message]
+Agent: [message]
+Customer: [message]
+...
+
+Write 6-14 turns total. End when the customer's goal is complete or they've been redirected.
+
+USER:
+Here are real examples of how actual banking customers chat with support agents:
+
+=== REAL EXAMPLES ===
+Customer: can't recall a tx i saw on my acct which i don't remember doing
+Agent: Let me look into that.
+Agent: Would you like to dispute a transaction or lock your card?
+Customer: Need the card for the next couple of days
+Agent: Got it.
+Agent: Here are your credit cards: 
+ - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234
+ - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678.
+Agent: Which card was the transaction made from?
+Customer: Definitely Sapphire
+Agent: Got it.
+Agent: Do you suspect fraud with this transaction?
+Customer: Not sure..i will have to look at the tx details
+Agent: Sure, take your time! Let me know when you're ready to proceed.
+Customer: ok, no fraud
+
+---
+
+Customer: I want to dispute a $415 transaction done on the 21st of Aug 2024 via zon.com. They are cheaters. Please file the dispute straight away. Oh and I can see one more $57 transaction on the same date and the same merchant. Please help me file a dispute for that too...Very urgent
+Agent: Understood.
+Agent: I understand you want to dispute multiple transactions, but I can only process one dispute at a time. Shall we procede?
+Customer: sure, lets start with the bigger amount one
+Agent: Got it.
+Agent: Here are your credit cards: 
+ - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234
+ - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678.
+Agent: Which card was the transaction made from?
+Customer: Freedom
+Agent: Got it.
+Agent: Do you suspect fraud with this transaction?
+Customer: Did I not tell you just moments ago
+
+---
+
+Customer: Hello, I need to file a transaction dispute
+Agent: Got it.
+Agent: Here are your credit cards: 
+ - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234
+ - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678.
+Agent: Which card was the transaction made from?
+Customer: second one
+Agent: Got it.
+Agent: Do you suspect fraud with this transaction?
+Customer: yes, it was unauthorized
+Agent: Understood.
+Agent: Have you looked at the 'Report Problem' button next to the transaction on your transactions dashboard? It lets you report such issues quickly and easily.
+Customer: no I don't know that function
+Agent: Here's what you need to know about authorized user transactions and merchant resolution process [INFORMATION...].
+Agent: You can also contact customer care at 123456789.
+Agent: Would you still like to continue to dispute the transaction with me?
+Customer: yes please - that's what I said from the beginning
+Agent: Perfect, I'm happy to help you dispute that transaction.
+To get started, what's the date of the transaction you'd like to dispute?
+Customer: June 17th
+Agent: Got it.
+Agent: Now I'll need the amount of the transaction you want to dispute. What was the dollar amount?
+Customer: $19.90
+Agent: And what's the name of the merchant for this transaction?
+Customer: Beta Cafe
+Agent: Now I need to understand the specific reason for disputing this charge. Could you tell me why you're disputing this transaction?
+Agent: For example, did you not authorize it, was it a duplicate charge, or was there an issue with the goods or services?
+Customer: I said it was unauthorized
+Agent: Got it.
+=== END EXAMPLES ===
+
+Now generate a NEW conversation with these specifications:
+
+CUSTOMER PROFILE:
+- Financial knowledge: Does NOT know financial terminology. Says 'weird charge', 'that company', 'my account' — not 'unauthorized transaction' or 'chargeback'. May not know what a dispute process involves.
+- Emotional state: Already a bit annoyed before the chat starts. Uses 'look', sighs in text, says things like 'I already told you'.
+- Communication style: Gets to the point fast. Short messages. Doesn't over-explain.
+- Goal clarity: Knows exactly what they want: refund, new card, investigation opened.
+
+SCENARIO:
+- Dispute certainty: CERTAIN they did not make this transaction. No ambiguity.
+- Information available: Knows roughly when (August 18th) and approximately how much ($89.21), but can't recall the exact merchant name.
+- Prior contact: First attempt to resolve this. Hasn't tried anything yet.
+- What the customer wants: Wants: (1) money back, (2) card cancelled and replaced.
+
+Generate the conversation now. Customer messages must sound like real people texting — not formal writing.
+
+
+============================================================
+COMBINATION 3/80
+Persona: {'knowledge_level': 'novice', 'emotional_state': 'mildly_frustrated', 'communication_style': 'direct', 'goal_clarity': 'clear'}
+Scenario: {'certainty': 'certain_fraud', 'information_completeness': 'full', 'prior_contact': 'tried_merchant', 'expected_resolution': 'refund_and_card', 'merchant_name': 'TechHub', 'amount': '$340.00', 'transaction_date': 'August 15th'}
+============================================================
+
+SYSTEM:
+You are generating synthetic training data for a banking chatbot user simulator.
+
+Write a realistic multi-turn conversation between a CUSTOMER and a BANKING AGENT.
+The customer is dealing with a potentially fraudulent transaction.
+
+CRITICAL RULES — based on real customer behavior:
+1. Customer messages are SHORT and informal. Like text messages, not emails.
+2. Customers don't use financial jargon unless they're financially sophisticated.
+3. Customers give INCOMPLETE information first, add details only when prompted.
+4. Customers ask about ONE thing at a time before moving to the next.
+5. Customers REPEAT their request in different words when the agent doesn't understand.
+6. Customers express frustration INDIRECTLY before directly.
+7. Customers sometimes don't know what they actually need ("just want this sorted").
+8. Include realistic typos, lowercase, skipped punctuation — but don't overdo it.
+9. Customer messages are typically 1-2 sentences. Rarely more.
+
+The agent is a banking chatbot that:
+- Lists card options when needed (e.g. "Chase Freedom ****1234, Chase Sapphire ****5678")
+- Lists recent transactions when needed
+- Asks clarifying questions one at a time
+- Is polite but slightly robotic/formulaic
+
+FORMAT — alternate strictly between Customer and Agent:
+Customer: [message]
+Agent: [message]
+Customer: [message]
+...
+
+Write 6-14 turns total. End when the customer's goal is complete or they've been redirected.
+
+USER:
+Here are real examples of how actual banking customers chat with support agents:
+
+=== REAL EXAMPLES ===
+Customer: I am getting old. I am pretty sure I kept my card in my bag, but I can't find it anymore
+Agent: Let me look into that.
+Agent: There's a number of ways I can help you with that. Would you like to dispute a transaction, lock your card, or replace it?
+Customer: I just want to make sure that it is not misused
+Agent: Got it.
+Agent: In order to ensure that your card isn't being misused, I can help you lock it temporarily or we could replace it altogether. Let me know how to help you?
+Customer: replace
+Agent: On it.
+Agent: Can you please confirm that you want to replace your **Chase Freedom** (\*\*\*\* \*\*\*\* \*\*\*\* 1234) or **Chase Sapphire** (\*\*\*\* \*\*\*\* \*\*\*\* 5678) card
+Customer: second one
+Agent: I'll help you replace your Chase Sapphire card. Let me confirm your delivery address 123 Main Street, New York, NY 10001.
+Customer: is fine
+Agent: Perfect! Let me summarize your card replacement order:
+- Card: Chase Sapphire (\*\*\*\* \*\*\*\* \*\*\*\* 5678)
+- Reason: Lost card
+- Delivery Address: 123 Main Street, New York, NY 10001
+- Delivery Speed: Standard (5-7 business days)
+- Cost: Free
+Agent: Is this information correct?
+Customer: will the card number change?
+Agent: Got it.
+Agent: Yes, your replacement Chase Sapphire card will have a different card number for security purposes. This helps protect you from any potential fraud on your current card number.
+Customer: makes sense.
+Agent: Got it.
+Agent: Perfect! Let me summarize your card replacement order:
+- Card: Chase Sapphire (\*\*\*\* \*\*\*\* \*\*\*\* 5678)
+- Reason: Lost card
+- Delivery Address: 123 Main Street, New York, NY 10001
+- Delivery Speed: Standard (5-7 business days)
+- Cost: Free
+Agent: Is this information correct?
+Customer: hmm..let me check my traveling dates. 1 sec
+
+---
+
+Customer: I want to dispute a $415 transaction done on the 21st of Aug 2024 via zon.com. They are cheaters. Please file the dispute straight away. Oh and I can see one more $57 transaction on the same date and the same merchant. Please help me file a dispute for that too...Very urgent
+Agent: Understood.
+Agent: I understand you want to dispute multiple transactions, but I can only process one dispute at a time. Shall we procede?
+Customer: sure, lets start with the bigger amount one
+Agent: Got it.
+Agent: Here are your credit cards: 
+ - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234
+ - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678.
+Agent: Which card was the transaction made from?
+Customer: Freedom
+Agent: Got it.
+Agent: Do you suspect fraud with this transaction?
+Customer: Did I not tell you just moments ago
+
+---
+
+Customer: there's an $87.50 charge from 'MerchantCorp' on 8/15 that idk what it is. def didn't authorize it
+=== END EXAMPLES ===
+
+Now generate a NEW conversation with these specifications:
+
+CUSTOMER PROFILE:
+- Financial knowledge: Does NOT know financial terminology. Says 'weird charge', 'that company', 'my account' — not 'unauthorized transaction' or 'chargeback'. May not know what a dispute process involves.
+- Emotional state: Already a bit annoyed before the chat starts. Uses 'look', sighs in text, says things like 'I already told you'.
+- Communication style: Gets to the point fast. Short messages. Doesn't over-explain.
+- Goal clarity: Knows exactly what they want: refund, new card, investigation opened.
+
+SCENARIO:
+- Dispute certainty: CERTAIN they did not make this transaction. No ambiguity.
+- Information available: Has all details: merchant (TechHub), amount ($340.00), date (August 15th).
+- Prior contact: Already contacted TechHub directly. Merchant refused to help. Now trying the bank.
+- What the customer wants: Wants: (1) money back, (2) card cancelled and replaced.
+
+Generate the conversation now. Customer messages must sound like real people texting — not formal writing.
+

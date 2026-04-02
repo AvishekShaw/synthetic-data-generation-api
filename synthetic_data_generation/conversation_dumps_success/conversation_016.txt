@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 16
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account I don't recognize
+
+Agent: Sorry to hear that. I can help you look into that. Would you like to dispute a transaction, lock your card, or just report it for investigation?
+
+Customer: investigate for now
+
+Agent: Got it. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: freedom one
+
+Agent: Got it. What's the date of the transaction you're concerned about?
+
+Customer: august 14th
+
+Agent: And what was the amount?
+
+Customer: 54.99
+
+Agent: What's the merchant name on the charge?
+
+Customer: adobe
+
+Agent: Understood. Just to clarify — do you believe this was unauthorized, or are you unsure? For example, it could be a subscription or a charge from someone else in your household.
+
+Customer: not sure honestly. maybe a sub I forgot about or my kid used something
+
+Agent: That's helpful, thank you. I've flagged the transaction from Adobe for $54.99 on August 14th for review. Our team will look into whether this is a recurring subscription or any other known activity tied to your account. Would you like to take any other steps in the meantime, like locking your card?
+
+Customer: no I'll wait and see what comes back
+
+Agent: Understood. We'll investigate and you'll receive an update within 3–5 business days. Is there anything else I can help you with?
+
+Customer: nope that's it thanks
+
+Agent: You're all set. Don't hesitate to reach out if anything else comes up. Have a good one!

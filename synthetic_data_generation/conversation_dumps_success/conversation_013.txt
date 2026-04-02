@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 13
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my card i didnt make
+
+Agent: I'm sorry to hear that. I can help you with that right away. Would you like to dispute the transaction, or would you like to lock your card first?
+
+Customer: lock it first
+
+Agent: Of course. Here are your cards on file: - Chase Freedom, **** **** **** 3421 - Chase Sapphire, **** **** **** 8876 Which card would you like to lock?
+
+Customer: the freedom one
+
+Agent: Got it. Your Chase Freedom card ending in 3421 has been locked. Would you also like to dispute the fraudulent transaction?
+
+Customer: yeah lets do that
+
+Agent: Sure. Can you tell me a bit about the transaction you're concerned about?
+
+Customer: i just noticed it on my statement, dont have the exact details rn
+
+Agent: No worries. Here are your recent transactions on the Chase Freedom card: - 2025-07-06 — Netflix — $15.99 - 2025-07-05 — Walmart — $63.40 - 2025-07-04 — Lyft — $22.00 - 2025-07-03 — SkyShop Online — $187.50 - 2025-07-02 — Dunkin — $8.75 Do any of these look like the one you didn't make?
+
+Customer: yeah that skyshop one. never heard of them
+
+Agent: Understood. Just to confirm — you have no recollection of this $187.50 charge from SkyShop Online on July 3rd?
+
+Customer: correct, wasnt me
+
+Agent: Got it. I've opened a fraud dispute for that transaction. Our team will investigate and you can expect a resolution within 5–10 business days. You'll receive updates via email. Is there anything else I can help you with?
+
+Customer: nope thats all thanks
+
+Agent: You're all set. Stay safe, and don't hesitate to reach out if anything else comes up. Have a good day!

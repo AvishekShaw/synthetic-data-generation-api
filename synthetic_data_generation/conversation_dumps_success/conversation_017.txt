@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 17
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey so i noticed a charge on my account that i definitely didn't make. been trying to figure out if i should call or just do it here
+
+Agent: I can help you with that! To get started, could you tell me which account or card you're seeing the charge on?
+
+Customer: its on my debit card. the charge is from amazon for $127.43 on august 20th. i haven't ordered anything from amazon in like 2 months
+
+Agent: Thank you for that information. I can see the transaction you're referring to. Just to confirm — you're saying you did not authorize this charge from Amazon on August 20th for $127.43?
+
+Customer: yeah 100% wasn't me. do i need to like... prove that somehow before you guys can do anything? i wasn't sure how this works
+
+Agent: No need to prove it upfront — you just need to confirm you didn't authorize it, which you've done. I can open a dispute for that transaction right now and start the review process.
+
+Customer: ok good because i was worried i'd have to send in a bunch of stuff first. yeah let's do the dispute
+
+Agent: Got it, I'll open the dispute for the $127.43 Amazon charge dated August 20th. While I do that — would you also like to cancel and replace your card? Since someone may have your card details, it's a good idea.
+
+Customer: yes please. don't want anymore charges showing up
+
+Agent: Here are the cards on your account: - Chase Debit Mastercard **** **** **** 3847 - Chase Savings linked card **** **** **** 9012 Which card would you like to cancel and replace?
+
+Customer: 3847
+
+Agent: Got it. I've done the following: - Opened a dispute for the $127.43 Amazon charge on August 20th - Cancelled card ending in 3847 and queued a replacement, which should arrive in 5–7 business days. Is there anything else you'd like help with?
+
+Customer: wait so when do i actually get the money back? like does it just show up or
+
+Agent: Once the dispute is under review, it typically takes up to 10 business days to investigate. You'll receive a notification with the outcome, and if the dispute is resolved in your favor, the funds will be credited back to your account.
+
+Customer: ok that works. and i can still use my account normally in the meantime right
+
+Agent: Yes, absolutely. Your account remains fully active. You just won't be able to use the cancelled card — but once your replacement arrives, you're all set. Is there anything else I can help you with?
+
+Customer: nope that's all thanks
+
+Agent: You're welcome! Take care, and don't hesitate to reach out if anything else comes up.

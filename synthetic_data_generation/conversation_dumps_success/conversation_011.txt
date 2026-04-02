@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 11
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge. $340 from TechHub on aug 15
+
+Agent: Sorry to hear that. I can help you with that. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: the sapphire
+
+Agent: Got it. Let me pull up recent transactions on your Chase Sapphire \*\*\*\*5678. Here are recent transactions: - Aug 15 — TechHub — $340.00 - Aug 14 — Whole Foods — $62.47 - Aug 13 — Netflix — $15.99 Is the TechHub charge the transaction you'd like to dispute?
+
+Customer: yes. never bought anything from them
+
+Agent: Understood. Have you already attempted to resolve this with the merchant directly?
+
+Customer: yes they refused to help. thats why im here
+
+Agent: Thank you for letting me know. I'll open a dispute for the $340.00 TechHub charge from August 15th. Is there anything else you'd like me to do — such as locking or replacing your card?
+
+Customer: yeah cancel it and send a new one
+
+Agent: I can do that. Your Chase Sapphire \*\*\*\*5678 will be cancelled and a replacement card will be issued. What is the reason for replacing the card — suspected fraud, lost, or stolen?
+
+Customer: suspected fraud
+
+Agent: Done. Here's a summary of what I've completed: - Dispute opened for $340.00 — TechHub — Aug 15 - Chase Sapphire \*\*\*\*5678 cancelled and replacement card requested Your new card should arrive in 5–7 business days. Is there anything else I can help you with?
+
+Customer: how long till i get the money back
+
+Agent: Disputes are typically reviewed within 5–10 business days. If the claim is approved, the $340.00 will be credited back to your account. You may receive updates by email in the meantime.
+
+Customer: ok. thats it
+
+Agent: Got it. Take care, and don't hesitate to reach out if you need anything else.

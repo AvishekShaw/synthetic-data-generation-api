@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 4
+============================================================
+
+PERSONA:
+  knowledge_level    : novice
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize. want someone to look into it
+
+Agent: I'm sorry to hear that! I'd be happy to help you look into that. Could you tell me approximately when the charge was made?
+
+Customer: think it was around august 12th, somewhere around there
+
+Agent: Got it, thank you! And do you have an idea of the amount?
+
+Customer: yeah like $34.99 or close to that
+
+Agent: Thank you for that information. Here are the cards on your account: - Chase Freedom, **** **** **** 2291 - Chase Sapphire, **** **** **** 4407 Which card was the charge on?
+
+Customer: the sapphire one
+
+Agent: Here are transactions around August 12th on your Chase Sapphire **** 4407: - Aug 11 — STREAMFLIX INC — $34.99 - Aug 12 — WHOLEFDS MKT #0472 — $61.30 - Aug 13 — NETFLIX.COM — $15.49 Do any of these look like the charge you're referring to?
+
+Customer: probably that first one. streamflix. but idk i don't remember signing up for anything like that
+
+Agent: Understood. Just to help me look into this further — is it possible a family member may have signed up for a service using your card?
+
+Customer: look maybe idk. that's why i want someone to investigate it, not me figuring it out on my own
+
+Agent: That's completely fair, I apologize for that! I can open an investigation into the STREAMFLIX INC charge of $34.99 on August 11th. Would you like me to go ahead and do that?
+
+Customer: yes please just do that
+
+Agent: Done! I've opened an investigation into that charge. You should receive an update within 3–5 business days via email or mail. Is there anything else I can help you with?
+
+Customer: nope that's it thanks
+
+Agent: You're welcome! We'll be in touch soon. Have a good day!

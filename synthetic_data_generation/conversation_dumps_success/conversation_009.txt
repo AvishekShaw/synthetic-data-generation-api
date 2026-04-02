@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 9
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account i didn't make
+
+Agent: I'm sorry to hear that. Let me help you look into this. Would you like to dispute a transaction, or would you also like to lock or cancel your card?
+
+Customer: both. want my money back and a new card
+
+Agent: Understood. Let me pull up your cards first. Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3847 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 9201 Which card has the unauthorized charge?
+
+Customer: 9201
+
+Agent: Got it. Here are the most recent transactions on your Chase Sapphire \*\*\*\*9201: - Aug 20 — Amazon — $127.43 - Aug 19 — Starbucks — $6.75 - Aug 18 — Shell Gas — $48.20 Do any of these look like the charge you're referring to?
+
+Customer: yeah amazon aug 20. didn't buy anything
+
+Agent: Understood. I'll flag the Amazon charge of $127.43 on August 20th as unauthorized and open a dispute for you. Can you confirm you did not make or authorize this transaction?
+
+Customer: correct. 100% wasn't me
+
+Agent: Got it. Your dispute has been filed for the $127.43 Amazon charge. You should receive a refund to your account within 3–5 business days while we investigate. Would you like to cancel your Chase Sapphire \*\*\*\*9201 and request a replacement card now?
+
+Customer: yes please
+
+Agent: Done. Your Chase Sapphire \*\*\*\*9201 has been cancelled. Your replacement card will arrive in 5–7 business days. Would you like expedited shipping?
+
+Customer: how long is expedited
+
+Agent: Expedited delivery typically takes 1–2 business days.
+
+Customer: yeah do that
+
+Agent: Perfect. Your replacement card will be expedited to the address we have on file. Is there anything else I can help you with today?
+
+Customer: nope that's it
+
+Agent: All set! To recap — your dispute for $127.43 has been filed, and your replacement card is on its way. Feel free to reach out if you need anything else. Take care!

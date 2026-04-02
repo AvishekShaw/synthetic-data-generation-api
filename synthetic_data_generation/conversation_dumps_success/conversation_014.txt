@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 14
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey i need to follow up on a dispute i opened
+
+Agent: I'd be happy to help you follow up on your dispute. Can you provide me with the details of the transaction in question?
+
+Customer: uber eats $215 august 10th. i never made that order
+
+Agent: Thank you for those details. Let me look into that for you. Before I pull up the dispute, can I confirm which card this transaction was made on?
+
+Customer: idk i have two cards with you guys
+
+Agent: No problem! Here are the cards on your account: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card was the Uber Eats charge on?
+
+Customer: sapphire. the 5678 one
+
+Agent: Got it. I can see the transaction — $215.00 to Uber Eats on August 10th on your Chase Sapphire ****5678. I can also see a dispute was previously opened on this transaction. Is that the one you're following up on?
+
+Customer: yes. called last week and was told to wait but i havent heard anything
+
+Agent: I understand, and I'm sorry for the delay. I can see the dispute is still under review. Do you believe this transaction was fraudulent — meaning someone else made this charge without your knowledge?
+
+Customer: yes 100%. i did not make that order
+
+Agent: Understood. I've noted that you are certain this is an unauthorized charge. Would you also like to cancel your Chase Sapphire ****5678 and request a replacement card at this time?
+
+Customer: yes please. and i want my money back
+
+Agent: Got it. Here's what I'm doing for you: 1. Escalating your dispute for the $215.00 Uber Eats charge as confirmed fraud. 2. Cancelling your Chase Sapphire ****5678 and ordering a replacement card. A refund will be issued pending the outcome of the fraud investigation — you should receive an update within 3-5 business days. Your new card will arrive in 5-7 business days. Is there anything else I can help you with?
+
+Customer: 3-5 days again?? thats what they said last time
+
+Agent: I completely understand your frustration, and I'm sorry you've already been waiting. I've flagged this as a priority escalation given the prior contact with no update. You should receive a status update sooner than the standard timeframe. Is there anything else I can help with?
+
+Customer: no thats it. just want it sorted
+
+Agent: Understood. I've got everything submitted for you. You'll hear back soon, and your new card is on the way. Take care!

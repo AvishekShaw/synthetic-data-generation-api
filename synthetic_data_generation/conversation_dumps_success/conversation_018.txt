@@ -1,0 +1,63 @@
+============================================================
+CONVERSATION 18
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey so i was going through my statement last night and there's a charge on there that i definitely didn't make
+
+Agent: Sorry to hear that! I can help you look into that. Would you like to dispute a transaction, lock your card, or replace it?
+
+Customer: yeah i want to dispute it but like… do i need to have proof first? because i don't have much to go on
+
+Agent: No worries — you don't need proof upfront to start a dispute. I can help you get that process started. Which card do you think the charge appeared on?
+
+Customer: not sure which one exactly, i have two with you guys
+
+Agent: No problem! Here are your credit cards on file: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card was the transaction on?
+
+Customer: pretty sure it's the 5678 one
+
+Agent: Got it, the Chase Sapphire ending in 5678. Do you know roughly when the transaction occurred?
+
+Customer: yeah it was august 18th. it's like $89 and something, 89.21 i think
+
+Agent: Thank you. Here are recent transactions on your Chase Sapphire card around that date: - Aug 18 — AMZN Digital, $12.99 - Aug 18 — GRUBHUB ORDER, $34.50 - Aug 18 — VTLMRCH*ONLINE, $89.21 - Aug 19 — STARBUCKS, $6.75 Do any of these look like the charge you're referring to?
+
+Customer: yeah that third one, VTLMRCH whatever. have no idea what that is, definitely wasn't me
+
+Agent: Got it. Do you suspect this is a fraudulent transaction — meaning someone made this charge without your authorization?
+
+Customer: yes 100%, i did not make this. no one else uses my card either
+
+Agent: Understood. I'll go ahead and log a fraud dispute for the $89.21 charge on August 18th from VTLMRCH*ONLINE. Would you also like to cancel and replace your Chase Sapphire card ending in 5678?
+
+Customer: yes please, i was gonna ask about that. want a new card sent out
+
+Agent: Got it! I've initiated the dispute for the $89.21 transaction and will cancel your Chase Sapphire **** 5678 and send a replacement to your address on file. Your new card should arrive within 5–7 business days. Is there anything else I can help you with?
+
+Customer: so when do i actually get the money back, is that automatic or do i have to do something else
+
+Agent: Once the dispute is under review, our team will investigate and you'll typically see a resolution within 7–10 business days. You don't need to do anything else right now — we'll reach out if we need more information from you.
+
+Customer: ok cool, that's easier than i thought. thanks
+
+Agent: Happy to help! You're all set. Take care!

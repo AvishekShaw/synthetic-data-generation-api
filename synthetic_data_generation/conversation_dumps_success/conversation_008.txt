@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 8
+============================================================
+
+PERSONA:
+  knowledge_level    : novice
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize
+
+Agent: Sorry to hear that! I can help you look into that. Would you like to dispute a transaction, lock your card, or just get more information about the charge?
+
+Customer: just want someone to look into it, not sure if it's legit or not
+
+Agent: Got it. Let me pull up your cards so we can find the right account. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: the 1234 one
+
+Agent: Got it. Can you tell me a bit more about the charge — like the amount or who it's from?
+
+Customer: it's $54.99 from Adobe, august 14th
+
+Agent: Thanks for those details. Let me check your recent transactions on your Chase Freedom (\*\*\*\* 1234). I can see a charge of **$54.99** from **Adobe** on **August 14th**. Do you have any Adobe subscriptions or does anyone else use your card, like a family member?
+
+Customer: look i honestly don't know, maybe? that's why i want it investigated
+
+Agent: Totally fair — I'll open an investigation on this charge for you. Just to confirm: you'd like us to look into the **$54.99 Adobe charge on August 14th** on your Chase Freedom (\*\*\*\* 1234), is that right?
+
+Customer: yes exactly
+
+Agent: Done. I've flagged that transaction for review and opened a case on your behalf. You'll receive an update within 3-5 business days. While we look into it, would you also like to temporarily lock your Chase Freedom card in case anything else comes through?
+
+Customer: hmm no not yet, i don't wanna mess up anything if it turns out i do have a subscription or something
+
+Agent: That makes sense! You can always reach back out to lock it if needed. Is there anything else I can help you with today?
+
+Customer: nope that's it thanks
+
+Agent: You're all set! To recap, we've opened an investigation on the $54.99 Adobe charge from August 14th on your Chase Freedom (\*\*\*\* 1234). Keep an eye out for an update in 3-5 business days. Take care!

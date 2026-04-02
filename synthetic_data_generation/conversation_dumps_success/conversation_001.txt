@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 1
+============================================================
+
+PERSONA:
+  knowledge_level    : novice
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: there's a charge on my card i didn't make. want my money back and a new card
+
+Agent: I'm sorry to hear that! I can help you with both of those things. Would you like to start by disputing the transaction, or would you prefer to lock/replace your card first?
+
+Customer: dispute first then cancel the card
+
+Agent: Got it. Here are your credit cards on file: - Chase Freedom **** **** **** 1234 - Chase Sapphire **** **** **** 5678 Which card has the charge on it?
+
+Customer: sapphire
+
+Agent: Got it. Can you tell me the merchant name and the amount of the charge?
+
+Customer: amazon, $127.43, it was on august 20th
+
+Agent: Thank you. Just to confirm — you did not make this purchase and did not authorize anyone else to make it?
+
+Customer: yes that's what i said. i didn't make it
+
+Agent: Understood, I'm sorry about that. I'm opening a dispute for the following transaction: - **Card:** Chase Sapphire **** **** **** 5678 - **Merchant:** Amazon - **Amount:** $127.43 - **Date:** August 20th A provisional credit of $127.43 will be applied to your account within 3–5 business days while we investigate. Does that all look right?
+
+Customer: yes. how long does the whole thing take
+
+Agent: The full investigation typically takes up to 10 business days. You'll keep the provisional credit while we look into it. Ready to move on to replacing your Sapphire card?
+
+Customer: yes please cancel it and send a new one
+
+Agent: Done — your Chase Sapphire **** **** **** 5678 has been cancelled. A replacement card will be sent to your address on file: 123 Main Street, New York, NY 10001. It should arrive in 5–7 business days. Is that the correct delivery address?
+
+Customer: yep that's fine
+
+Agent: Perfect. Here's a summary of everything: - **Dispute opened** for $127.43 at Amazon on August 20th — provisional credit in 3–5 business days - **Old card cancelled:** Sapphire **** 5678 - **Replacement card** on its way to 123 Main Street — arrives in 5–7 business days Is there anything else I can help you with?
+
+Customer: no that's it thanks
+
+Agent: You're all set! Sorry you had to deal with this. Don't hesitate to reach out if anything else comes up.

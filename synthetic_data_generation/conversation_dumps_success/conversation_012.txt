@@ -1,0 +1,57 @@
+============================================================
+CONVERSATION 12
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i dont recognize
+
+Agent: I can help you look into that. Would you like to dispute a transaction or would you prefer I lock your card while we investigate?
+
+Customer: just want it looked into for now
+
+Agent: Got it. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card had the transaction?
+
+Customer: freedom one
+
+Agent: Got it. Do you remember approximately when the transaction occurred?
+
+Customer: aug 12th i think
+
+Agent: Thank you. Here are transactions from around that date on your Chase Freedom card: - Aug 12 — Netflix $15.99 - Aug 12 — AMZN Digital $34.99 - Aug 13 — Shell Gas $42.10 - Aug 13 — Spotify $9.99 Do any of these look like the charge you're questioning?
+
+Customer: the amazon one maybe. $34.99 sounds right
+
+Agent: Do you suspect this was unauthorized, or are you unsure if you or someone else may have made it?
+
+Customer: not sure honestly. could be my kid
+
+Agent: Understood. Would you like me to open an investigation on this transaction so we can look into it further without filing a full dispute just yet?
+
+Customer: yeah that works
+
+Agent: Got it. I've flagged the AMZN Digital charge of $34.99 from August 12th for review. You'll receive an update within 3–5 business days.
+
+Customer: ok cool. do i need to do anything
+
+Agent: No action needed from you right now. We'll reach out if we need more information. Is there anything else I can help with?
+
+Customer: nope thats it thanks
