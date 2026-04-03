@@ -1,0 +1,66 @@
+============================================================
+CONVERSATION 8
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Adobe
+  amount                  : $54.99
+  transaction_date        : August 14th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe you need to file a police report before the bank can open any dispute investigation.
+
+------------------------------------------------------------
+
+Customer: hey there's a weird charge on my account i don't recognize
+
+Agent: I'd be happy to help you with that unauthorized charge. To get started, could you please provide me with the last 4 digits of the card the charge appeared on?
+
+Customer: it's 4821
+
+Agent: Thank you! I can see your Visa ****4821 on file. Could you tell me the amount of the charge you don't recognize?
+
+Customer: $54.99, it's from Adobe
+
+Agent: Thank you for that information. I can see a charge of **$54.99 from Adobe** on your Visa ****4821. Do you have any Adobe subscriptions or services that this charge could be associated with, or is this completely unrecognized?
+
+Customer: that's the thing, i'm not sure. could be my kid set something up idk. i just want someone to look into it
+
+Agent: Understood! I can open a dispute investigation for the $54.99 Adobe charge on your Visa ****4821, and our team will look into it. Before I do — would you like to proceed with opening the dispute now, or would you prefer to check with your child first before we take any action?
+
+Customer: yeah go ahead and open it. do i need to file a police report first or something?
+
+Agent: No police report is needed — that's completely optional and never required to open a dispute.
+
+I've opened an investigation for the **$54.99 Adobe charge** on your Visa ****4821. Your case number is **DIS-2847361**. Our team will review the charge and you can expect a resolution within **3–5 business days**.
+
+Is there anything else I can help you with today?
+
+Customer: wait really? i always thought you had to do the police thing first. so you can just look into it without that?
+
+Agent: That's a common misconception! A police report is entirely optional — you never need one to open a dispute with us. We can investigate unauthorized or unclear charges regardless. Your case **DIS-2847361** is already open and our team will be in touch within 3–5 business days.
+
+Is there anything else I can help you with today?
+
+Customer: ok good to know. and just to confirm the investigation is already open, i don't have to do anything else right?
+
+Agent: That's correct — your dispute is already open and no further action is required from you at this time. To summarize:
+
+- **Case Number:** DIS-2847361
+- **Charge:** $54.99 from Adobe
+- **Card:** Visa ****4821
+- **Expected Resolution:** 3–5 business days
+
+We'll handle everything from here. Is there anything else I can help you with today?

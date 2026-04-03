@@ -1,0 +1,66 @@
+============================================================
+CONVERSATION 2
+============================================================
+
+PERSONA:
+  knowledge_level    : novice
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: info_blocker
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my card i didn't make and i want my money back
+
+Agent: I'm sorry to hear that. I'd be happy to help you dispute an unauthorized charge. Which card was the transaction made on? Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8807
+
+Customer: the freedom one
+
+Agent: Got it. What is the date of the transaction you'd like to dispute?
+
+Customer: august 18th i think
+
+Agent: Thank you. What was the amount of the transaction?
+
+Customer: like $89 something. 89.21 i think
+
+Agent: Got it. Could you provide the name of the merchant for this transaction?
+
+Customer: thats the thing i dont really remember the name. some weird company i never heard of
+
+Agent: I understand. To locate the transaction and proceed with the dispute, I'll need the exact merchant name. You can find this by checking your recent transactions in the app or on your statement. Would you be able to look that up?
+
+Customer: ugh i don't have my card on me right now so i can't check. can't you just look it up on your end
+
+Agent: I understand your frustration. Unfortunately, I'm not able to search transactions without a merchant name or exact amount to confirm the right charge. Do you have access to your account online or through the app where you could check?
+
+Customer: no i'm not near my phone right now. look can you just cancel my card in the meantime at least
+
+Agent: Of course. Just to confirm — you'd like to cancel and replace your Chase Freedom card ending in 3421. Is that correct?
+
+Customer: yes exactly
+
+Agent: To process the card cancellation, I'll need to verify your identity first. Could you please confirm the last 4 digits of your Social Security Number?
+
+Customer: ugh i don't have that off the top of my head either. i'm at work rn
+
+Agent: No problem at all. It sounds like you may not have everything handy right now. You're welcome to come back when you have access to your account and your details — we can take care of the dispute and the card cancellation at the same time.
+
+Customer: yeah fine i'll come back later when i'm home. pretty annoying tho
+
+Agent: Completely understand, and I'm sorry for the inconvenience. We'll be here whenever you're ready. Is there anything else I can help you with in the meantime?
+
+Customer: nope

@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 31
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my account i definitely didn't make
+
+Agent: I'm sorry to hear that. I'd be happy to help you look into this. Do you suspect this is a fraudulent transaction?
+
+Customer: yes 100% wasn't me
+
+Agent: Understood. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678. Which card was this transaction on?
+
+Customer: sapphire i think, the one ending in 5678
+
+Agent: Got it, Chase Sapphire \*\*\*\*5678. What's the date of the transaction you'd like to dispute?
+
+Customer: august 19th, it's from the apple store for $1,249
+
+Agent: Thank you for that information. Just to confirm — the transaction is $1,249.00 at Apple Store on August 19th, and you did not authorize this charge. Is that correct?
+
+Customer: yes exactly. i need that money back
+
+Agent: Understood. I've noted your dispute for $1,249.00 at Apple Store on August 19th as an unauthorized transaction. Your case has been submitted and our fraud team will review it. You may be contacted for further information if needed.
+
+Customer: ok and i want the card cancelled too, don't want them using it again
+
+Agent: Absolutely, that's a smart step. I can cancel your Chase Sapphire \*\*\*\*5678 right now and a replacement card will be mailed to your address on file within 5–7 business days. Shall I go ahead and do that?
+
+Customer: yes please do it
+
+Agent: Done. Your Chase Sapphire \*\*\*\*5678 has been cancelled and a new card is on its way. Is there anything else I can help you with today?
+
+Customer: how long til i get my money back
+
+Agent: That's a great question. Once our fraud team reviews your dispute, a decision is typically made within 5–10 business days. You'll be notified by email once there's an update. Is there anything else I can help you with?
+
+Customer: no that's it, just hope it gets sorted quickly
+
+Agent: I completely understand. We'll do our best to resolve this as quickly as possible. Take care!

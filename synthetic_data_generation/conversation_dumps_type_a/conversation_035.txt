@@ -1,0 +1,45 @@
+============================================================
+CONVERSATION 35
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : tried_merchant
+  expected_resolution     : refund_and_card
+  merchant                : TechHub
+  amount                  : $340.00
+  transaction_date        : August 15th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: False
+  wrong_prior_belief: You believe that since the merchant already refused to help, the bank is legally required to refund you immediately without further investigation.
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account that isn't mine
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge on your account.
+
+To get started, could you please verify your full name and the last 4 digits of your account or card number?
+
+Customer: Sarah Mitchell, card ends in 4872
+
+Agent: Thank you, Sarah. I can see your account.
+
+Could you tell me approximately when the unauthorized charge appeared on your card?
+
+Customer: august 15th
+
+Agent: Thank you, Sarah. That date falls within our 90-day dispute window, so we can proceed.
+
+Could you tell me the amount of the charge, or if you're unsure, approximately how much it was?
+
+Customer: $340, from some place called TechHub

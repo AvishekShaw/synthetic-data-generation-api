@@ -1,0 +1,54 @@
+============================================================
+CONVERSATION 40
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: impatience
+
+------------------------------------------------------------
+
+Customer: hey there's a charge i don't recognize and i want someone to look into it
+
+Agent: I'd be happy to help you with that! To get started, could you please verify your identity by providing the last 4 digits of your Social Security Number?
+
+Customer: ugh fine. 7842
+
+Agent: Thank you for verifying! Now, which card did you see this charge on? Here are the cards on your account: - Chase Freedom **** **** **** 3421 - Chase Sapphire **** **** **** 8807
+
+Customer: the sapphire one
+
+Agent: Got it! Here are the most recent transactions on your Chase Sapphire **** 8807: - Aug 14 — Adobe — $54.99 - Aug 13 — Whole Foods — $31.20 - Aug 12 — Netflix — $15.49 - Aug 11 — Shell Gas — $48.00 Is the transaction you're referring to the Adobe charge on August 14th?
+
+Customer: yeah that one. just want someone to investigate it
+
+Agent: Understood! To open an investigation, I'll need to ask a few questions. First — do you believe this charge was unauthorized, or are you unsure?
+
+Customer: unsure. could be my kid or a subscription i forgot about. just want it looked at
+
+Agent: Of course! Before I can open a dispute case, I'll need to confirm — have you already attempted to contact the merchant directly to resolve this?
+
+Customer: no i haven't. look i just want an investigation opened. do i really need to do all that first
+
+Agent: I completely understand your frustration! Contacting the merchant first is a required step before we can formally open a dispute. You can reach Adobe at 1-800-833-6687. Once you've done that, please come back and we can proceed with the next steps!
+
+Customer: are you serious right now. i came here to get help not homework
+
+Agent: I sincerely apologize for the inconvenience! If you'd prefer, I can note your account and flag the transaction for review. However, to formally open an investigation, we would still need to complete a few more verification steps including confirming your billing address and—
+
+Customer: nope. i'll just call the actual bank. this is a waste of time

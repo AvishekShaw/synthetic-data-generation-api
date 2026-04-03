@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 29
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's something on my statement that doesn't look right, pretty sure i didn't do it
+
+Agent: I'm sorry to hear that! I can help you with that. Would you like to dispute a transaction, lock your card, or replace it?
+
+Customer: lock the card first, lets start there
+
+Agent: On it! Here are your cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8809 Which one would you like to lock?
+
+Customer: sapphire, the 8809 one
+
+Agent: Got it. Could you please provide the reason for locking the card?
+
+Customer: look, there's a charge on there i definitely didn't make. suspicious transaction
+
+Agent: Understood. Your Chase Sapphire card ending in 8809 has been locked successfully. Would you like to dispute the transaction as well?
+
+Customer: yeah but i don't have my statement in front of me rn. can you pull up the recent ones?
+
+Agent: Of course! Here are the recent transactions on your Chase Sapphire card ending in 8809: - $214.99 — TechStore Online — 11/02 - $34.50 — Riverside Café — 11/04 - $189.00 — GlobalShop Ltd — 11/05 - $12.75 — City Parking — 11/06 Do any of these look like the charge you're referring to?
+
+Customer: yeah that globalshop one. never heard of them
+
+Agent: Got it. To confirm — you'd like to dispute the $189.00 charge from GlobalShop Ltd on 11/05, is that correct?
+
+Customer: yes, 100% didn't do that
+
+Agent: Thank you for confirming. I've submitted a dispute for the $189.00 charge from GlobalShop Ltd on 11/05. You'll receive a confirmation and next steps via email within 1-2 business days.
+
+Customer: ok good. so what happens now, do i get my money back?
+
+Agent: Great question! Once the dispute is under review, our fraud team will investigate the charge. If the dispute is resolved in your favor, the amount will be returned to your account. This process typically takes up to 10 business days. Is there anything else I can help you with?
+
+Customer: no thats fine, just wanted it sorted. thanks
+
+Agent: You're welcome! Your card is locked and the dispute has been filed — you're all set. Don't hesitate to reach out if you need anything else. Have a good day!

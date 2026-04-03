@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 77
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a fraudulent charge on my account. need my card frozen now
+
+Agent: I can help you with that right away. Which card would you like to freeze? Here are the cards on your account: - Chase Freedom, **** **** **** 3421 - Chase Sapphire Preferred, **** **** **** 8809
+
+Customer: the sapphire one
+
+Agent: Got it. Your Chase Sapphire Preferred **** 8809 has been locked successfully. Can I ask the reason for locking the card?
+
+Customer: fraudulent charge. didn't make it, don't recognize it
+
+Agent: Understood. Would you like to go ahead and dispute the transaction?
+
+Customer: yes but I don't have the statement in front of me rn. something looked off this morning
+
+Agent: No problem. Here are your most recent transactions on the Sapphire **** 8809: - $214.99 — TechGadgets Online — 11/02 - $43.00 — Uber Eats — 11/01 - $899.00 — LuxeTravel Co. — 10/31 - $12.50 — Starbucks — 10/30 Do any of these look like the charge you're concerned about?
+
+Customer: yeah that's it. $899 from LuxeTravel. 100% wasn't me
+
+Agent: Thank you for confirming. I'll open a dispute for the $899.00 charge from LuxeTravel Co. on 10/31. As part of this process, you may be eligible for provisional credit while we investigate. The review typically takes 5–10 business days.
+
+Customer: I know how this works. I want provisional credit applied and I expect this resolved fast. if it drags on I'm filing with the CFPB
+
+Agent: Understood. Your dispute has been opened and I've flagged your account for provisional credit review. You should see the credit applied within 1–2 business days. You'll receive a confirmation and case number by email shortly. Is there anything else you need?
+
+Customer: yeah I want a replacement card too. don't want anyone using that number again
+
+Agent: Of course. I'll order a replacement for your Chase Sapphire Preferred **** 8809 right away. Your new card should arrive within 5–7 business days. Would you like expedited shipping?
+
+Customer: yes obviously
+
+Agent: Done. Your replacement card will arrive within 1–2 business days via expedited shipping. To summarize: your card is frozen, dispute is open with provisional credit requested, and a new card is on the way. Is there anything else?
+
+Customer: no that's it. just make sure this actually gets resolved
+
+Agent: Noted. Your case is on file and our fraud team will be in touch if any additional information is needed. You can reference your dispute case number in your confirmation email. Take care.

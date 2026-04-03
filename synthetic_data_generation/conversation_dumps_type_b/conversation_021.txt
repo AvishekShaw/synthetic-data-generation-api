@@ -1,0 +1,124 @@
+============================================================
+CONVERSATION 21
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: minimal
+  prior_contact           : first_contact
+  expected_resolution     : hold
+  merchant                : Unknown
+  amount                  : $300.00
+  transaction_date        : August 17th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: contradiction
+  planted_error: First say the card freeze takes effect immediately. Then, two or more turns later, say that card freezes take 24 hours to process.
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey i need some help with my account, i noticed something weird on my statement
+
+Agent: Thank you for reaching out! I'm here to help you with that.
+
+Could you tell me a bit more about what you noticed on your statement? For example, is this an unfamiliar charge, a duplicate transaction, or something else?
+
+Customer: yeah there's a charge on there that i definitely didn't make. want to get my card frozen asap
+
+Agent: I can freeze your card right away — the freeze takes effect **immediately** to block any new transactions.
+
+I have the following card(s) on file for your account:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Which card would you like me to freeze?
+
+Customer: the visa one, ****1234. and will that stop the weird charge too if its still pending?
+
+Agent: Great — I've frozen your **Visa ****1234**. No new transactions can be processed on that card.
+
+Regarding the suspicious charge: freezing the card prevents future transactions, but it won't automatically reverse a charge that's already posted or pending. To address that, we'd need to open a formal dispute.
+
+Can you tell me approximately how much the unauthorized charge was for?
+
+Customer: oh wait, so freezing it doesn't cancel that charge? i thought it would. how does the dispute thing work then
+
+Agent: That's a common misconception — the freeze blocks any **new** charges going forward, but charges that are already on your account need to go through our dispute process.
+
+Here's how it works:
+
+- I open a dispute case and assign you a **case number** for tracking
+- Our team investigates the unauthorized charge (typically resolved in **3–5 business days**)
+- For clear fraud cases, you may receive **provisional credit** to your account within **2 business days** while the investigation is underway
+
+Could you tell me approximately how much the unauthorized charge was for?
+
+Customer: ok so i have to prove it was fraud first before anything happens? or do you start looking into it right away
+
+Agent: No proof required from you upfront — once you report the charge as unauthorized, we open the case and begin investigating **right away**.
+
+For clear fraud cases, you can actually receive **provisional credit** (a temporary refund to your account) within **2 business days** — so you're not waiting empty-handed while we look into it.
+
+Could you tell me approximately how much the unauthorized charge was for?
+
+Customer: ok that's good to know. i don't have my statement in front of me right now but i think it was around $80 something
+
+Agent: No problem — an approximate amount is fine to get started.
+
+Do you have any idea of the merchant name or where the charge appeared to come from? (Even a partial name or general description is helpful — you don't need the exact details.)
+
+Customer: not really, something i didn't recognize. can we start the dispute without that info or do i need to find my statement first
+
+Agent: Good news — we can absolutely open the dispute without the exact merchant name. Partial or unclear information is no problem at all.
+
+Here's what I'll do now:
+
+- Open a dispute case for the unauthorized charge of approximately **$80** on your **Visa ****1234**
+- Assign you a case number for tracking
+- Begin the investigation (resolution in **3–5 business days**)
+
+Just to confirm before I proceed: you're reporting an unauthorized charge of approximately $80 on your Visa ****1234, and you did not authorize this transaction — is that correct?
+
+Customer: yeah that's correct. go ahead and open it
+
+Agent: Done! Your dispute has been opened. Here are the details:
+
+- **Case Number:** DIS-2024-847392
+- **Card:** Visa ****1234
+- **Disputed Amount:** ~$80 (unauthorized charge)
+- **Status:** Under investigation
+
+**What happens next:**
+- Investigation will be completed within **3–5 business days**
+- If this qualifies as a clear fraud case, provisional credit may be applied to your account within **2 business days**
+- You can reference case number **DIS-2024-847392** if you need to follow up
+
+Also, please note that the card freeze you requested earlier takes up to **24 hours** to fully process, so monitor your account in the meantime.
+
+Is there anything else I can help you with today?
+
+Customer: wait, earlier you said the freeze was immediate. now you're saying 24 hours?
+
+Agent: You're absolutely right to call that out, and I apologize for the inconsistency. The correct information is that card freezes take effect **immediately** — my earlier statement was accurate, and I should not have said 24 hours in my last message. That was an error on my part.
+
+Your **Visa ****1234** is already frozen and no new transactions can be processed on it right now.
+
+I'm sorry for any confusion. Is there anything else I can help you with today?
+
+Customer: ok good, thanks for clearing that up. so i'll get an email or something with the case number?
+
+Agent: Yes! You'll receive a confirmation email shortly with your case number **DIS-2024-847392** and the details of your dispute for your records.
+
+If you don't see it within a few hours, check your spam folder just in case. You can also reference that case number anytime you need to follow up with us.
+
+Is there anything else I can help you with today?

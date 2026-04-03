@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 60
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: saw a charge i don't recognize, aug 12, like $34.99
+
+Agent: I can help you look into that. Which card was the transaction on?
+
+Customer: probably my freedom card but not 100%
+
+Agent: No problem. Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which one would you like me to pull up?
+
+Customer: freedom, 1234
+
+Agent: Got it. Here are transactions around August 12th on your Chase Freedom ****1234: - Aug 11 — Netflix $15.49 - Aug 12 — Aperture Digital $34.99 - Aug 12 — Whole Foods $67.22 - Aug 13 — Shell Gas $41.00 Does the $34.99 charge from Aperture Digital look like the one in question?
+
+Customer: yeah that's it. no idea who that is
+
+Agent: Understood. Do you think it could be a subscription or a purchase made by someone else on your account?
+
+Customer: maybe, could be my wife. not sure yet
+
+Agent: Got it. Would you like me to open an investigation on that charge while you check?
+
+Customer: yes that's what i want. just flag it for now
+
+Agent: Understood. I've flagged the $34.99 charge from Aperture Digital on August 12th for investigation. You'll receive a confirmation shortly. Would you also like to lock your card in the meantime, or are you okay leaving it active?
+
+Customer: leave it active. provisional credit timeline on this?
+
+Agent: Typically provisional credit is applied within 5 business days of the investigation being opened, pending review. Final resolution can take up to 45 days.
+
+Customer: ok got it. that's all for now
+
+Agent: Got it. Your investigation has been opened and you're all set. Don't hesitate to reach out if anything else comes up. Have a good one!

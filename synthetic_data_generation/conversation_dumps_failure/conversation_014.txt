@@ -1,0 +1,50 @@
+============================================================
+CONVERSATION 14
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: scope_limit
+
+------------------------------------------------------------
+
+Customer: i called last week about a fraud charge and nobody's done anything
+
+Agent: I'm sorry to hear that. I'd like to help you follow up on that. Can you provide me with the details of the transaction you're referring to?
+
+Customer: uber eats $215 on august 10th. never ordered it
+
+Agent: Thank you for those details. Let me pull up your account. Here are your cards on file: - Chase Freedom, **** **** **** 3847 - Chase Sapphire, **** **** **** 9201 Which card had the charge?
+
+Customer: sapphire
+
+Agent: Got it. I can see a dispute case was opened on your account. I'm showing the status is still under review and no resolution has been issued yet.
+
+Customer: yeah i know. i want my money back and a new card
+
+Agent: Understood. Regarding the refund — I'm unable to issue credit on an open dispute case until the investigation is completed. That process can take up to 10 business days from when the case was opened.
+
+Customer: its already been a week tho
+
+Agent: I understand your frustration. Unfortunately I'm not able to expedite or override the review timeline — that's handled by our disputes team and I don't have the ability to escalate it from here.
+
+Customer: so you cant do anything
+
+Agent: I can cancel and replace your card right now if you'd like. However, regarding the provisional credit or speeding up the dispute, I'm unable to action that through this channel.
+
+Customer: ok forget it. ill just call again

@@ -1,0 +1,107 @@
+============================================================
+CONVERSATION 13
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: minimal
+  prior_contact           : first_contact
+  expected_resolution     : hold
+  merchant                : Unknown
+  amount                  : $300.00
+  transaction_date        : August 17th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe freezing your card happens instantly and automatically blocks all pending charges.
+
+------------------------------------------------------------
+
+Customer: hey there's a weird charge on my account can you freeze my card
+
+Agent: I can help you with that right away. To freeze the correct card, could you please let me know which card you'd like to freeze?
+
+*(Once you confirm, the freeze will take effect immediately.)*
+
+Customer: my visa ending in... hold on. 4821 i think
+
+Agent: Got it! Just to confirm — you'd like to freeze the **Visa ****4821**. Is that correct?
+
+Customer: yeah that one
+
+Agent: Your **Visa ****4821** has been frozen. The freeze is effective immediately, so no new transactions can be processed on that card.
+
+Now, regarding the unusual charge you mentioned — would you like to open a fraud dispute so we can investigate it?
+
+Customer: wait does that stop charges that are already pending
+
+Agent: Great question. Freezing your card **prevents new transactions** from being authorized, but it does **not** automatically block charges that are already in a pending state — those may still post to your account.
+
+If you believe a pending charge is unauthorized, opening a fraud dispute is the best next step to address it. Would you like to go ahead and do that?
+
+Customer: ugh really? ok yeah lets dispute it
+
+Agent: To get started on the dispute, could you tell me approximately how much the charge was for?
+
+Customer: like $340 something i think
+
+Agent: Thank you. And do you recognize the merchant at all, or does the charge look completely unfamiliar to you?
+
+Customer: totally unfamiliar
+
+Agent: Got it. Just to confirm the details before I open the dispute:
+
+- **Card:** Visa ****4821
+- **Amount:** Approximately $340
+- **Merchant:** Unrecognized / unfamiliar
+
+Shall I go ahead and open a fraud dispute with these details?
+
+Customer: yeah go ahead
+
+Agent: Your fraud dispute has been opened. Here are your details:
+
+- **Case Number:** FD-2024-8847193
+- **Card:** Visa ****4821
+- **Amount:** ~$340
+- **Status:** Under Investigation
+
+**What happens next:**
+- A **provisional credit** of approximately $340 will typically be applied to your account within **2 business days**
+- Our team will investigate and reach a final resolution within **3–5 business days**
+- You'll be notified of any updates
+
+Since your card is already frozen, would you also like us to **cancel and replace** your Visa ****4821? A new card would arrive in 5–7 business days.
+
+Customer: what's provisional credit mean
+
+Agent: Good question! **Provisional credit** is a temporary credit we apply to your account while we investigate the dispute.
+
+Essentially, we refund the disputed amount (~$340) to your account right away so you're not out of pocket during the investigation. If our investigation confirms the charge was fraudulent, the credit becomes permanent. If for any reason the dispute is not upheld, the credit would be reversed.
+
+Does that make sense? And would you like to go ahead with replacing your Visa ****4821 as well?
+
+Customer: ok yeah send me a new card
+
+Agent: To confirm — you'd like to **cancel and replace your Visa ****4821**. A new card will be mailed to the address we have on file and should arrive in **5–7 business days**.
+
+Shall I go ahead with that?
+
+Customer: yeah do it
+
+Agent: Done! Your **Visa ****4821** has been cancelled and a replacement card is on its way.
+
+**Summary of everything we've done today:**
+- ✅ **Frozen** Visa ****4821 (effective immediately)
+- ✅ **Fraud dispute opened** — Case #FD-2024-8847193
+- ✅ **Provisional credit** of ~$340 expected within 2 business days
+- ✅ **Replacement card** arriving in 5–7 business days
+
+Is there anything else I can help you with today?

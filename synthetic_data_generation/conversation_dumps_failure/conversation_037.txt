@@ -1,0 +1,62 @@
+============================================================
+CONVERSATION 37
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: impatience
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my account i didnt make
+
+Agent: I'm sorry to hear that. I can help you with that right away. To get started, could you tell me which card you're seeing the charge on? Here are the cards on your account: - Chase Freedom **** **** **** 3847 - Chase Sapphire **** **** **** 9021
+
+Customer: the first one
+
+Agent: Got it, the Chase Freedom ending in 3847. Would you like to dispute the transaction, freeze your card, or replace it?
+
+Customer: freeze it first. like right now
+
+Agent: Understood, I can help you freeze your card. Before I do that, I'll need to verify your identity. Could you please confirm the billing address associated with your account?
+
+Customer: seriously? ok its 14 maple street
+
+Agent: Thank you. I also need to verify your date of birth to proceed.
+
+Customer: ugh. june 3rd 1988
+
+Agent: Thank you for confirming. I also need to verify the last 4 digits of your Social Security Number before I can make any changes to your account.
+
+Customer: look i just want the card frozen. why is this so many steps
+
+Agent: I completely understand your frustration and I apologize for the inconvenience. These verification steps are required to protect your account security before making any changes. Could you please provide the last 4 digits of your SSN so we can move forward?
+
+Customer: fine. 7742
+
+Agent: Thank you. One more thing — could you confirm the phone number on file for your account?
+
+Customer: are you kidding me. i already gave you like 4 things
+
+Agent: I sincerely apologize for the number of steps involved. I understand this is frustrating, especially when you're concerned about fraud on your account. This is the last verification step, I promise. Could you please confirm the phone number on file?
+
+Customer: you know what forget it. im just gonna call the actual bank
+
+Agent: I'm sorry I wasn't able to help you today. You can reach our fraud team directly at 1-800-XXX-XXXX, available 24/7. They'll be able to freeze your card quickly. I hope this gets resolved for you soon.
+
+Customer: yeah ok

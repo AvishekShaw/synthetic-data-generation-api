@@ -1,0 +1,64 @@
+============================================================
+CONVERSATION 50
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge and get my card replaced
+
+Agent: I can help with both of those. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678. Which card are we dealing with?
+
+Customer: sapphire, 5678
+
+Agent: Got it. Do you suspect fraud with this transaction?
+
+Customer: yes, 100%. didn't make it
+
+Agent: Understood. I'll open a fraud dispute for your Chase Sapphire card. What's the date of the transaction?
+
+Customer: aug 18th
+
+Agent: Got it. And what was the dollar amount?
+
+Customer: $89.21
+
+Agent: Thank you. What's the merchant name on the transaction?
+
+Customer: that's the thing, i don't recognize it. something generic looking, can't place it
+
+Agent: No problem. Here are recent transactions on your Chase Sapphire ****5678 around August 18th: - Aug 18 — DGTL SRVC PRO, $89.21 - Aug 18 — Whole Foods #0491, $34.10 - Aug 17 — Shell Gas Station, $52.00 Does any of these look like the charge in question?
+
+Customer: yeah that's it, DGTL SRVC PRO. never heard of them
+
+Agent: Got it. I've flagged the $89.21 charge from DGTL SRVC PRO on Aug 18 as unauthorized. A provisional credit will be applied to your account within 5 business days while we investigate.
+
+Customer: good. now I want the card cancelled and a new one sent
+
+Agent: Understood. I'll cancel your Chase Sapphire ****5678 and issue a replacement. Can you confirm your mailing address is still the one on file?
+
+Customer: yes same address
+
+Agent: Done. Your Chase Sapphire ****5678 has been cancelled and a replacement card will arrive within 5–7 business days. Is there anything else I can help you with?
+
+Customer: nope that's all I needed, thanks
+
+Agent: You're all set. Your fraud dispute is open and your new card is on the way. Don't hesitate to reach out if anything else comes up.

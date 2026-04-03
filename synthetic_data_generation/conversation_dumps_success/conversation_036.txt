@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 36
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account I don't recognize
+
+Agent: I'm sorry to hear that! I'd be happy to help look into that for you. Could you let me know which card the charge appeared on? Here are the cards on your account: - Chase Freedom **** **** **** 3421 - Chase Sapphire **** **** **** 8809
+
+Customer: the freedom one
+
+Agent: Got it! Here are the recent transactions on your Chase Freedom **** 3421: - Aug 12 — SUBSTACK INC — $34.99 - Aug 13 — WHOLE FOODS — $62.14 - Aug 14 — NETFLIX — $15.49 - Aug 15 — SHELL GAS #4421 — $48.00 Do any of these look like the charge you're referring to?
+
+Customer: yeah the substack one. idk what that is
+
+Agent: Understood. Do you believe this was an unauthorized charge, or is it possible someone in your household may have signed up for a subscription?
+
+Customer: look it might be my kid idk. I just want someone to look into it
+
+Agent: Of course! I can open an investigation on that transaction. Just to confirm — this is the charge you'd like investigated: - Aug 12 — SUBSTACK INC — $34.99 on Chase Freedom **** 3421 Is that correct?
+
+Customer: yes that one
+
+Agent: Got it. I've flagged the transaction and opened an investigation on the Aug 12 SUBSTACK INC charge of $34.99. Our team will review it and follow up within 3–5 business days.
+
+Customer: ok and what happens next exactly
+
+Agent: Our fraud team will look into whether the charge was authorized. You'll receive an update via email or mail within 3–5 business days. If it turns out to be unauthorized, we'll walk you through next steps at that point — which may include a refund or a dispute.
+
+Customer: fine. and I don't need a new card or anything right
+
+Agent: Not necessarily. Since you're unsure if the charge was authorized, we'd recommend waiting until the investigation is complete before taking that step. If we determine the charge was fraudulent, we can issue a new card at that time if needed.
+
+Customer: ok works for me
+
+Agent: Great! Is there anything else I can help you with today?
+
+Customer: nope that's it
+
+Agent: Thank you for reaching out. Your investigation reference number is **INV-2024-084421** — keep that handy in case you need to follow up. Have a good day!

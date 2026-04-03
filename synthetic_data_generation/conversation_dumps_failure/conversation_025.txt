@@ -1,0 +1,50 @@
+============================================================
+CONVERSATION 25
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: loop_exit
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my card i didn't make. need it sorted
+
+Agent: I'm sorry to hear that! I'd be happy to help. Would you like to dispute a transaction, lock your card, or replace it?
+
+Customer: dispute and cancel the card. someone used it without me knowing
+
+Agent: Got it, I can help with both of those. Let's start with the dispute. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3847 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 9102 Which card was the transaction made from?
+
+Customer: the freedom one, 3847
+
+Agent: Thank you. Do you recognize the merchant or have any idea who may have made this transaction?
+
+Customer: no that's the whole point. it was amazon for $127.43 on august 20th. i did not make this
+
+Agent: Understood. I'm sorry this happened. To confirm — do you recognize the merchant Amazon, or is this transaction completely unfamiliar to you?
+
+Customer: ...i just said i didn't make it. not familiar at all
+
+Agent: Thank you for confirming. Can you clarify whether you recognize the charge from Amazon on August 20th for $127.43?
+
+Customer: look i already told you twice. i don't recognize it. i didn't make it. why do you keep asking the same thing
+
+Agent: I apologize for the inconvenience! I just want to make sure I have the correct—
+
+Customer: you know what forget it. i'll just call the bank directly. this is going nowhere

@@ -1,0 +1,99 @@
+============================================================
+CONVERSATION 6
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : follow_up
+  expected_resolution     : refund_and_card
+  merchant                : Uber Eats
+  amount                  : $215.00
+  transaction_date        : August 10th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that as a returning caller with an open case, you are entitled to speak to a supervisor immediately.
+
+------------------------------------------------------------
+
+Customer: yeah hi, i called about a week ago about a weird charge on my account and nobody ever got back to me. i need this sorted out today
+
+Agent: I'm sorry to hear you didn't receive a follow-up — that's not the experience we want you to have. I'd like to help get this resolved for you right away.
+
+Do you have a case number from your previous contact that I can look up?
+
+Customer: no i didn't get one. they just said wait and someone would call me back
+
+Agent: Understood — I'm sorry that follow-up never came. Let's get this taken care of now.
+
+To locate your account, could you please provide me with your full name and the last four digits of your card?
+
+Customer: sarah coleman, card ends in 4872
+
+Agent: Thank you, Sarah. I can see your account. 
+
+To move forward, I'd like to open a new dispute case for you now so you have a case number and a clear path to resolution. 
+
+Could you tell me the approximate amount of the charge you're disputing?
+
+Customer: $215, it was on uber eats but i never ordered anything
+
+Agent: Thank you, Sarah. And just to confirm — do you know approximately when this charge appeared on your account?
+
+Customer: august 10th
+
+Agent: Thank you. Here's a summary before I open the case:
+
+- **Cardholder:** Sarah Coleman
+- **Card:** ****4872
+- **Merchant:** Uber Eats
+- **Amount:** $215.00
+- **Transaction date:** August 10th
+
+Does that look correct?
+
+Customer: yes that's right. so what happens now, do i get my money back?
+
+Agent: I've opened a dispute case for you now. Your case number is **DR-2024-084731** — please save that for your records.
+
+Here's what happens next:
+
+- **Provisional credit of $215.00** will typically be applied to your account within 2 business days while we investigate.
+- Our team will investigate the charge, with a resolution expected within **3–5 business days**.
+
+Would you also like me to freeze or replace your card ending in 4872 as a precaution, in case it's been compromised?
+
+Customer: yes please cancel it and send me a new one
+
+Agent: I'll cancel your card ending in 4872 and issue a replacement now. Your new card will arrive within **5–7 business days**.
+
+In the meantime, would you like me to freeze the current card immediately so no further charges can be made while you wait for the replacement?
+
+Customer: yeah definitely freeze it. and the $215 is coming back right, like for sure?
+
+Agent: Your card ending in 4872 is now frozen — that takes effect immediately.
+
+Regarding the $215: provisional credit is issued for clear fraud cases like yours, and this one qualifies. You should see it applied to your account within 2 business days. Once the investigation concludes in 3–5 business days, that credit is confirmed permanently if the dispute is upheld — which is the expected outcome here.
+
+To recap everything we've done today:
+- **Dispute opened:** Case **DR-2024-084731**
+- **Card ****4872:** Frozen immediately, replacement arriving in 5–7 business days
+- **Provisional credit of $215.00:** Expected within 2 business days
+
+Is there anything else I can help you with, Sarah?
+
+Customer: ok and this time someone's actually going to follow up right? last time i got nothing
+
+Agent: That's a completely fair concern given what happened. With your case number **DR-2024-084731** on file, you won't need to rely on a callback — you can contact us at any time and reference that number to get an immediate status update.
+
+That said, you will receive a notification when the provisional credit is applied and again when the investigation is resolved. If you haven't heard anything within 5 business days, please don't hesitate to reach out with your case number and we'll pick it up right away.
+
+Is there anything else I can help you with today?

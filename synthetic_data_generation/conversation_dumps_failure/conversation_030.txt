@@ -1,0 +1,50 @@
+============================================================
+CONVERSATION 30
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: loop_exit
+
+------------------------------------------------------------
+
+Customer: hi look i already called about this like a week ago and nothing happened
+
+Agent: I'm sorry to hear that. I'd be happy to help look into this for you. Could you tell me what the issue is regarding?
+
+Customer: there's a charge on my account that isn't mine. i didn't make it
+
+Agent: Got it. I can help you dispute a transaction. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8876 Which card was the transaction made from?
+
+Customer: 3421
+
+Agent: Got it. Do you suspect fraud with this transaction?
+
+Customer: yes obviously, i didn't make it. it's $215 on uber eats on august 10th
+
+Agent: Understood. I'm sorry this happened. Do you believe this transaction was fraudulent or unauthorized?
+
+Customer: ...i just said that. yes it wasn't me
+
+Agent: Apologies for the confusion. To confirm — are you saying this transaction was unauthorized?
+
+Customer: why do you keep asking me the same thing. YES. unauthorized. not me. fraud. whatever you want to call it
+
+Agent: I apologize for the inconvenience. I want to make sure I have the correct details on file. Could you confirm whether you believe this transaction was unauthorized?
+
+Customer: ok i'm done. this is pointless. i'll just go to a branch

@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 25
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my account i definitely didn't make
+
+Agent: I'm sorry to hear that! I'd be happy to help you with that. Can you tell me more about the transaction — such as the merchant name, amount, or date?
+
+Customer: yeah it's amazon, $127.43, august 20th. i did NOT make this purchase
+
+Agent: Thank you for those details. I can see the transaction on your account. There are a few ways I can help — would you like to dispute the charge, lock your card, or replace it?
+
+Customer: look i want my money back AND the card cancelled. can we just do both
+
+Agent: Absolutely, we can take care of both. Let's start by identifying your card. Here are the cards on your account: - Chase Freedom **** **** **** 3842 - Chase Sapphire **** **** **** 7761 Which card was the Amazon charge on?
+
+Customer: the first one
+
+Agent: Got it. I'll go ahead and cancel and replace the Chase Freedom ending in 3842. Your new card will arrive in 5–7 business days. Would you like to confirm this?
+
+Customer: yes please
+
+Agent: Done — your card has been cancelled and a replacement is on the way. Now I'll move forward with disputing the $127.43 Amazon charge from August 20th. Can you confirm you did not authorize or place this order?
+
+Customer: yes 100% wasn't me
+
+Agent: Understood. I've submitted a dispute for that transaction. Our team will investigate and you should hear back within 3–5 business days.
+
+Customer: ok but do i get my money back in the meantime or do i have to wait
+
+Agent: While the dispute is under investigation, a temporary credit may be applied to your account. However, the final outcome depends on the investigation results. Our team will keep you updated throughout the process.
+
+Customer: ugh ok fine. so just to confirm — card cancelled, dispute filed, yeah?
+
+Agent: That's correct! To summarize: - Chase Freedom **** **** **** 3842 has been cancelled and a replacement is on the way. - A dispute has been filed for the $127.43 Amazon charge from August 20th. Is there anything else I can help you with?
+
+Customer: no that's it thanks
+
+Agent: You're welcome! Sorry for the inconvenience. Don't hesitate to reach out if you need anything else. Have a good day!

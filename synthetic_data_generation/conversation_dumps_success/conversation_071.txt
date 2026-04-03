@@ -1,0 +1,53 @@
+============================================================
+CONVERSATION 71
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: need to dispute a fraudulent charge and get my card cancelled
+
+Agent: I'm sorry to hear that. I can help you with both of those things. Would you like to start with the dispute or the card cancellation?
+
+Customer: dispute first. apple store, $1249, august 19th. definitely not me.
+
+Agent: Got it. Let me pull up your cards. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3847 - Chase Sapphire Reserve, \*\*\*\* \*\*\*\* \*\*\*\* 9021 Which card was this charged to?
+
+Customer: 9021
+
+Agent: Got it. Do you suspect fraud with this transaction?
+
+Customer: yes, that's literally what I just said lol
+
+Agent: Understood — I'll mark this as a fraudulent transaction. A dispute has been opened for $1,249.00 at Apple Store on August 19th on your Chase Sapphire Reserve ****9021. You should receive provisional credit within 5 business days while we investigate.
+
+Customer: ok good. now cancel that card and send a new one
+
+Agent: Please confirm you'd like to cancel your Chase Sapphire Reserve ****9021 and have a replacement card issued to your address on file.
+
+Customer: yes confirmed
+
+Agent: Done. Your Chase Sapphire Reserve ****9021 has been cancelled and a replacement card is on its way. You'll receive it within 5–7 business days. Is there anything else I can help you with?
+
+Customer: just make sure the dispute actually gets escalated. I know my reg e rights and I want this properly investigated not just auto-denied
+
+Agent: Noted. Your dispute has been flagged for full investigation and will not go through automated review. You'll receive a written confirmation and case number via email shortly. If you don't hear back within 10 business days, you can reference your case number to follow up.
+
+Customer: fine. that works.

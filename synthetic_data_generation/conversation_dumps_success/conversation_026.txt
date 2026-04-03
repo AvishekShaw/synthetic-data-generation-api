@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 26
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: look there's a charge on my account i definitely did not make. need this sorted asap
+
+Agent: I'd be happy to help you with that. Could you tell me more about the charge — do you have an approximate amount or date?
+
+Customer: around $89 something, august 18th. no idea who the merchant even is
+
+Agent: Got it. There are a few ways I can help — would you like to dispute the transaction, lock your card, or replace it?
+
+Customer: i want my money back and i don't want the card anymore. can we just do both
+
+Agent: Absolutely, we can take care of both. Let's start by identifying the card. Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 7890 Which card was the charge on?
+
+Customer: 3421
+
+Agent: Got it. Here are recent transactions on that card — do any of these look like the charge in question? - 08/18 — $89.21 — VRTX SERVICES - 08/17 — $12.50 — STARBUCKS - 08/16 — $34.99 — AMAZON
+
+Customer: yeah that first one. VRTX whatever. never heard of them
+
+Agent: Understood. I'll file a dispute for the $89.21 charge from VRTX SERVICES on 08/18. Can you confirm — did you authorize this transaction at all?
+
+Customer: no. definitely not. that's the whole point
+
+Agent: Noted. The dispute has been submitted. You should receive a decision within 5–7 business days. Now, would you like to cancel and replace the card ending in 3421?
+
+Customer: yes please finally
+
+Agent: Could you provide a reason for cancelling the card — for example, lost, stolen, or suspicious activity?
+
+Customer: suspicious activity obv
+
+Agent: Your card ending in 3421 has been cancelled. A replacement card will be mailed to your address on file and should arrive within 5–7 business days. Is there anything else I can help you with?
+
+Customer: no that's it. took long enough lol
+
+Agent: Understood — sorry for the frustration. Your dispute is in progress and your new card is on the way. Take care!

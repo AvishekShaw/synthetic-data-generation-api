@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 59
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge and get a new card
+
+Agent: I can help with both of those. Let me start with the dispute — can you share the transaction details?
+
+Customer: TechHub $340 august 15th
+
+Agent: Thank you. I can see that transaction on your account. Have you already attempted to resolve this with the merchant directly?
+
+Customer: yes they refused. not my charge
+
+Agent: Understood. I'll open a dispute for that transaction. While that's being processed, would you also like to lock or cancel your card?
+
+Customer: cancel and replace
+
+Agent: On it. Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3847 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 9921 Which card would you like to cancel and replace?
+
+Customer: 3847
+
+Agent: Got it. Can I ask the reason for cancelling — unauthorized transaction, lost, or stolen?
+
+Customer: unauthorized
+
+Agent: Your Chase Freedom card ending in 3847 has been cancelled. A replacement card will arrive in 5–7 business days. Would you like expedited shipping?
+
+Customer: yes. and whats the timeline on the provisional credit
+
+Agent: Provisional credit is typically applied within 5 business days of the dispute being filed. Your dispute for $340.00 at TechHub on August 15th has been submitted. You'll receive a confirmation by email shortly.
+
+Customer: ok and full investigation right not just a courtesy credit
+
+Agent: Correct — a full dispute investigation has been opened. You're covered under Regulation E protections and we'll contact you if additional information is needed.
+
+Customer: good. thats all
+
+Agent: You're all set. Dispute filed, card cancelled and replacement expedited. Is there anything else I can help you with?

@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 72
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a $54.99 charge from Adobe on Aug 14 i need looked into
+
+Agent: I'd be happy to help you with that. Would you like to dispute the transaction, lock your card, or just have it investigated?
+
+Customer: just investigate for now, not 100% sure i didn't authorize it
+
+Agent: Understood. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: sapphire
+
+Agent: Got it. Here are your recent transactions on the Chase Sapphire \*\*\*\*5678: - Date: 2025-08-14 - Merchant: Adobe Inc. - Amount: $54.99 - Date: 2025-08-12 - Merchant: Whole Foods - Amount: $67.30 - Date: 2025-08-10 - Merchant: Netflix - Amount: $15.49 - Date: 2025-08-09 - Merchant: Shell Gas Station - Amount: $48.00 Is the August 14th Adobe charge the one you'd like us to look into?
+
+Customer: yes that one
+
+Agent: Can you tell me why you're unsure about this charge? For example, did you think a subscription was cancelled, or could someone else have used your card?
+
+Customer: might be a forgotten sub or my kid used my card idk. just want it flagged and investigated
+
+Agent: Got it, I'll open an investigation on that transaction. In the meantime, do you want us to reach out to Adobe directly on your behalf, or would you prefer to check with them first?
+
+Customer: you guys handle it, that's literally what i'm here for
+
+Agent: Understood. I've flagged the $54.99 Adobe charge from August 14th on your Chase Sapphire \*\*\*\*5678 and opened an investigation. You'll receive an update within 3–5 business days. No provisional credit will be issued at this stage since no fraud has been confirmed yet.
+
+Customer: ok and if it does turn out to be unauthorized what happens next
+
+Agent: If the investigation confirms the charge was unauthorized, we'll initiate a chargeback and issue provisional credit to your account while the process is completed. You'll be notified at each step.
+
+Customer: good. that's all i needed thanks
+
+Agent: You're all set. We'll be in touch soon. Is there anything else I can help you with today?
+
+Customer: nope
+
+Agent: Thanks for reaching out. Have a good one.

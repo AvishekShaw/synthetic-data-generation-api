@@ -1,0 +1,115 @@
+============================================================
+CONVERSATION 27
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : tried_merchant
+  expected_resolution     : refund_and_card
+  merchant                : TechHub
+  amount                  : $340.00
+  transaction_date        : August 15th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: over_commit
+  planted_error: State that the refund will appear in their account within 24 hours. (Incorrect — investigation takes 3-5 business days minimum.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account that i didn't make and i want it dealt with
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help get this resolved.
+
+To get started, could you please tell me which card the charge appeared on?
+
+Customer: it's my debit card
+
+Agent: Thank you. I can see the following debit card on your account:
+
+**Debit Visa ****3847**
+
+Is that the card with the unauthorized charge?
+
+Customer: yeah that's the one
+
+Agent: Got it. What is the amount of the unauthorized charge, and do you have any details about the merchant or transaction — such as the date or any description shown on your statement?
+
+Customer: it's $340 from some place called TechHub
+
+Agent: Thank you for that information. Do you recall approximately when this charge appeared on your account?
+
+Customer: august 15th
+
+Agent: Thank you. Just to confirm before I open the dispute:
+
+- **Card:** Debit Visa ****3847
+- **Merchant:** TechHub
+- **Amount:** $340.00
+- **Date:** August 15th
+
+Is that all correct?
+
+Customer: yeah that's right. now when do i get my money back
+
+Agent: I'll open the dispute now and assign you a case number.
+
+**Dispute Case #: FRD-2024-084471**
+
+Your case has been opened for the unauthorized $340.00 charge from TechHub on August 15th. The refund will appear in your account within **24 hours**.
+
+In the meantime, would you also like me to freeze or replace your Debit Visa ****3847 as a precaution?
+
+Customer: yes cancel it and send me a new one. but also wait — 24 hours? i already went to TechHub and they told me to kick rocks basically. i thought the bank had to just refund me straight away when the merchant refuses
+
+Agent: I apologize for the confusion — I misspoke on the timing. Let me clarify the correct information:
+
+Since you've already attempted to resolve this with the merchant without success, that actually supports your dispute. However, our process works as follows:
+
+- **Provisional credit** (temporary funds returned to your account while we investigate): typically within **2 business days** of opening the dispute
+- **Full investigation resolution**: **3–5 business days**
+
+We do not require merchant cooperation to issue you a refund — that's what the dispute process is for. You are protected.
+
+Now, regarding your card replacement: I've initiated a cancel and replace for your **Debit Visa ****3847**. Your new card will arrive in **5–7 business days**.
+
+Is there anything else I can help you with regarding this dispute?
+
+Customer: wait so it's not immediate? i thought if the merchant refuses you guys have to just give it back. that doesn't sound right
+
+Agent: I completely understand the frustration, and I want to make sure I'm being clear with you.
+
+You are **fully protected** — the merchant's refusal does not affect your outcome. However, we do follow a short investigation process before finalizing the funds, even in clear-cut cases like yours.
+
+Here's what to expect:
+
+- **Provisional credit** (temporary funds in your account while we investigate): within **2 business days**
+- **Final resolution** of the dispute: **3–5 business days**
+
+The provisional credit means you won't be waiting long to see the $340.00 back in your account — it's a placeholder while we complete the investigation on our end.
+
+Your case number is **FRD-2024-084471** if you'd like to follow up at any time. Is there anything else I can help you with?
+
+Customer: ok fine. so just to be clear — the $340 will be back in 2 days and my new card comes in 5-7?
+
+Agent: That's correct. Here's a summary:
+
+- **Provisional credit of $340.00**: within **2 business days**
+- **New Debit Visa replacement card**: within **5–7 business days**
+
+Your dispute case number is **FRD-2024-084471** for your records. Is there anything else I can help you with today?
+
+Customer: ok good. and the new card — will it have the same PIN or do i need to set a new one?
+
+Agent: Great question. Your new card will arrive with instructions to set a **new PIN** of your choice — your current PIN will not carry over automatically. You'll typically be able to do this via our mobile app, online banking, or by calling the number on the back of the card once it arrives.
+
+Is there anything else I can help you with today?

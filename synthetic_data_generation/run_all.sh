@@ -31,7 +31,7 @@ python generate_conversations.py \
 echo "=== [2/4] Generating FAILURE conversations ==="
 python generate_conversations.py \
   --mode failure \
-  --limit 40 \
+  --limit 1 \
   --provider anthropic \
   --data-path "$DATA_PATH" \
   --output "$FAILURE_OUT"
@@ -40,7 +40,7 @@ python generate_conversations.py \
 echo "=== [3/4] Generating TYPE-A probe conversations ==="
 python generate_probe_conversations.py \
   --mode type_a \
-  --limit all \
+  --limit 5 \
   --provider anthropic \
   --output "$TYPE_A_OUT"
 
@@ -48,7 +48,7 @@ python generate_probe_conversations.py \
 echo "=== [4/4] Generating TYPE-B probe conversations ==="
 python generate_probe_conversations.py \
   --mode type_b \
-  --limit all \
+  --limit 18 \
   --provider anthropic \
   --output "$TYPE_B_OUT"
 

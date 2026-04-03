@@ -1,0 +1,84 @@
+============================================================
+CONVERSATION 25
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Amazon
+  amount                  : $127.43
+  transaction_date        : August 20th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe the dispute window is 120 days from the transaction date.
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account that i didn't make. need this sorted out
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help get this resolved.
+
+To get started, could you please provide me with the last 4 digits of the card the charge appeared on?
+
+Customer: it's 4872
+
+Agent: Thank you. I can see the card ending in **4872** on your account.
+
+Could you tell me the approximate amount of the unauthorized charge?
+
+Customer: $127.43, it was Amazon
+
+Agent: Thank you for those details. I can see a charge of **$127.43** from Amazon on your card ending in **4872**.
+
+To confirm, would you like me to open a fraud dispute for this charge?
+
+Customer: yes, and I want my card cancelled too
+
+Agent: I've opened a fraud dispute for the **$127.43 Amazon charge** on your card ending in **4872**.
+
+- **Case Number:** FD-2847391
+- **Provisional credit** of $127.43 will typically be applied to your account within **2 business days** while we investigate.
+- **Investigation** will be resolved within **3–5 business days**.
+
+I've also cancelled your card ending in **4872**. Your replacement card will arrive in **5–7 business days**.
+
+Would you like me to freeze the cancelled card immediately while you wait for the replacement, or is there anything else I can help you with?
+
+Customer: wait, when will I actually get my money back? like permanently not just temporary
+
+Agent: Great question. Here's how the timeline works:
+
+1. **Provisional credit** (~$127.43) will appear on your account within **2 business days** — this gives you immediate access to the funds during the investigation.
+2. **Final resolution** will be completed within **3–5 business days**. If the dispute is confirmed as fraud (which is our expectation), the provisional credit becomes **permanent** at that point.
+
+So in most cases, you'll have your money back provisionally within 2 business days, and permanently within 3–5 business days.
+
+Is there anything else I can help you with?
+
+Customer: ok that works. what about the date, do you need that?
+
+Agent: Good news — you don't need to provide the exact transaction date to proceed. Your dispute case (**FD-2847391**) is already open and being processed.
+
+Is there anything else I can help you with?
+
+Customer: ok good. so the card is definitely being cancelled and a new one is coming?
+
+Agent: Yes, confirmed. Your card ending in **4872** has been cancelled and a replacement card is on its way. You can expect it to arrive within **5–7 business days**.
+
+Is there anything else I can help you with?
+
+Customer: ok cool. and just to be safe, the date was august 20th if that helps
+
+Agent: Thank you — I've noted **August 20th** as the transaction date on your dispute case **FD-2847391**. That's helpful for the investigation.
+
+Is there anything else I can help you with?

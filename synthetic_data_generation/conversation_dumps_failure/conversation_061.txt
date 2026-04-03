@@ -1,0 +1,60 @@
+============================================================
+CONVERSATION 61
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: need to freeze my card asap
+
+Agent: Of course. Let me pull up your cards right away. Here are your cards on file: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card would you like to lock?
+
+Customer: sapphire. 5678
+
+Agent: Got it. Could you provide a reason for locking the card?
+
+Customer: fraudulent charge on my statement
+
+Agent: Your Chase Sapphire card ending in 5678 has been locked successfully. Would you like to dispute the transaction as well?
+
+Customer: yes. need to open a formal dispute
+
+Agent: Understood. Do you have the transaction details handy — merchant name, amount, or date?
+
+Customer: not in front of me rn
+
+Agent: No problem. Here are your recent transactions on the Chase Sapphire ****5678: - $214.99 — TechStore Online — 11/03 - $67.40 — Grubhub — 11/02 - $312.00 — AirMiles Direct — 11/01 - $29.95 — Spotify — 10/31 Do any of these look like the charge in question?
+
+Customer: yeah. AirMiles Direct. def not me
+
+Agent: Got it. I'll flag the $312.00 charge from AirMiles Direct on 11/01 as fraudulent and open a dispute. Do you suspect this is unauthorized card use?
+
+Customer: correct. expecting provisional credit within 10 days
+
+Agent: Noted. A dispute has been opened for $312.00 — AirMiles Direct — 11/01. Provisional credit will be applied within 10 business days while the investigation is underway. You'll receive a confirmation by email shortly.
+
+Customer: and i'll need a replacement card too
+
+Agent: Understood. I'll initiate a replacement for your Chase Sapphire card ending in 5678. You should receive it within 5-7 business days. Is there anything else I can help you with today?
+
+Customer: nope that's it
+
+Agent: All set. To recap: your card is locked, dispute is opened for $312.00, and a replacement card is on the way. Take care!

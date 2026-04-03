@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 61
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: need to freeze my card asap
+
+Agent: I can help you with that right away. Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card would you like to freeze?
+
+Customer: sapphire
+
+Agent: Got it. Before I freeze the card, can I ask why you'd like to freeze it?
+
+Customer: saw a charge that isn't mine
+
+Agent: Understood. I'll freeze your Chase Sapphire \*\*\*\*5678 now. Your card has been frozen. No new transactions can be made on this card. Would you like to dispute the transaction as well?
+
+Customer: yes, that's the whole point
+
+Agent: Got it. Here are your recent transactions on the Chase Sapphire \*\*\*\*5678. Do any of these look like the charge in question? - $234.50 — DELTA AIRLINES — Nov 12 - $89.00 — AMZN MKTP — Nov 14 - $312.00 — LUXE HOTEL GRP — Nov 15 - $45.20 — WHOLE FOODS — Nov 16
+
+Customer: the hotel one, definitely not me
+
+Agent: Do you suspect this is fraudulent — meaning someone used your card without authorization?
+
+Customer: yes reg e applies here, unauthorized charge
+
+Agent: Understood. I've noted this as an unauthorized transaction under Regulation E. Just to confirm — you'd like to dispute the $312.00 charge from LUXE HOTEL GRP on Nov 15. Is that correct?
+
+Customer: correct
+
+Agent: Got it. I've opened a fraud dispute for that transaction. You should receive provisional credit within 5 business days while we investigate. You'll also receive a new card in 5–7 business days. Is there anything else you need?
+
+Customer: no that's it
+
+Agent: All set. Your card is frozen, dispute is filed, and a replacement card is on the way. Take care.

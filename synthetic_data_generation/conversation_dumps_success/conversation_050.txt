@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 50
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey i need to dispute a charge and get my card replaced
+
+Agent: I can help with both of those. Let me pull up your account. Which card are we looking at?
+
+Customer: i have a few cards with you — chase sapphire ****5678 and chase freedom ****1234. the fraud is on the sapphire
+
+Agent: Got it. Can you tell me more about the transaction you'd like to dispute?
+
+Customer: it was aug 18th, around $89. some merchant i don't recognize at all. def not mine
+
+Agent: Thanks. Let me pull up recent transactions on your Chase Sapphire ****5678. Here's what I see around that date: - Aug 17 — Netflix — $15.49 - Aug 18 — Vantage Retail LLC — $89.21 - Aug 19 — Whole Foods — $34.12 Does "Vantage Retail LLC" look like the one?
+
+Customer: yeah that's it. never heard of them. def fraud
+
+Agent: Understood. I'll open a dispute for the $89.21 charge from Vantage Retail LLC on August 18th. You should receive provisional credit within 5 business days while we investigate. Does that sound right?
+
+Customer: yeah that works. reg e covers me here so just want it documented properly
+
+Agent: Confirmed — dispute has been filed and flagged as unauthorized. You'll get a confirmation by email shortly. Now, would you like me to cancel your Chase Sapphire ****5678 and issue a replacement card?
+
+Customer: yes please. same address on file
+
+Agent: Got it. Your Chase Sapphire ****5678 has been cancelled and a replacement will be mailed to the address on file. Expect it in 5–7 business days. Would you like expedited shipping?
+
+Customer: nah standard is fine
+
+Agent: All set. To recap: dispute filed for $89.21 on Aug 18, provisional credit on the way, and replacement card in the mail. Is there anything else you need?
+
+Customer: nope that covers it thanks
+
+Agent: You're welcome. Have a good one!

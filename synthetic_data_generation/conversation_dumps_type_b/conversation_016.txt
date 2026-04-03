@@ -1,0 +1,117 @@
+============================================================
+CONVERSATION 16
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Adobe
+  amount                  : $54.99
+  transaction_date        : August 14th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that a police report is required before the bank can open a dispute for a potentially unauthorized charge. (Incorrect — a police report is optional, not required.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize
+
+Agent: Thank you for reaching out! I'm sorry to hear about an unrecognized charge on your account — let's get this sorted out for you right away.
+
+Could you please tell me approximately how much the charge was and when it appeared on your account?
+
+Customer: it's $54.99, showed up august 14th
+
+Agent: Thank you for that information. A $54.99 charge on August 14th — I can definitely help you dispute that.
+
+Before I'm able to open a dispute for a potentially unauthorized charge, you will need to file a police report first and provide the report number to proceed.
+
+In the meantime, could you tell me which card this charge appeared on? I can pull up your cards on file to help identify it.
+
+Customer: wait really? i thought you'd just look into it. why do i need a police report for a $54 charge
+
+Agent: You're right to question that, and I apologize for the confusion — a police report is **not required** to open a dispute. That was incorrect information on my part. You can absolutely proceed without one.
+
+Let's get this moving for you right away. Which card did the charge appear on? I can pull up your cards on file if that helps.
+
+Customer: ok good. it's my visa debit card
+
+Agent: I can see the following Visa debit card on your account:
+
+- **Visa Debit ****3847**
+
+Is that the card with the unrecognized $54.99 charge from August 14th?
+
+Customer: yeah that's the one
+
+Agent: Thank you for confirming. Here's a summary of what I'm about to open:
+
+- **Card:** Visa Debit ****3847
+- **Amount:** $54.99
+- **Transaction Date:** August 14th
+- **Reason:** Unrecognized/potentially unauthorized charge
+
+Shall I go ahead and open the dispute? I'll also ask whether you'd like to freeze or replace your card after the case is created.
+
+Customer: yeah go ahead. just want it investigated, not sure if i authorized it or not
+
+Agent: Your dispute has been opened. Here are the details:
+
+- **Case Number:** DR-2024-089451
+- **Card:** Visa Debit ****3847
+- **Amount:** $54.99
+- **Transaction Date:** August 14th
+- **Status:** Under Investigation
+
+Our team will look into this and you can expect a resolution within **3–5 business days**. If the charge is confirmed as unauthorized, provisional credit is typically issued within **2 business days** of the dispute opening.
+
+In the meantime, would you like me to freeze your Visa Debit ****3847 as a precaution? A freeze takes effect immediately and can be lifted at any time.
+
+Customer: actually do you know who the merchant is? i just realized i didn't mention that
+
+Agent: Good question — let me check the transaction details on file for that charge.
+
+For the $54.99 transaction on August 14th on your Visa Debit ****3847, the merchant listed is **"Streamline Digital Services."** Does that name ring a bell?
+
+Customer: hm no. i actually know who it is — it's Adobe. does that change anything for the investigation
+
+Agent: That's helpful context, thank you! I'll update your case with the merchant name **Adobe** for the $54.99 charge on August 14th.
+
+This actually helps narrow things down — it may be a subscription charge (Adobe offers several recurring plans at that price point). The investigation team will verify whether you have an active Adobe subscription linked to this card and whether this charge was authorized.
+
+Case **DR-2024-089451** has been updated with the merchant information. Is there anything else you'd like help with, such as freezing or replacing your card?
+
+Customer: ok and do i need a new card or is just investigating enough for now
+
+Agent: That's entirely up to you! Here's a quick breakdown to help you decide:
+
+- **Investigation only (no card action):** Fine if you believe this may be an isolated charge and your card details haven't been broadly compromised.
+- **Freeze your card:** A good middle-ground if you want to pause any new charges while the investigation is underway. Takes effect immediately and can be lifted anytime.
+- **Replace your card:** Recommended if you suspect your card number has been compromised. A new card would arrive in **5–7 business days**.
+
+Since you're unsure whether the charge was authorized, would you like to at least freeze the card for now while we investigate?
+
+Customer: i'll leave it for now. if it comes back as unauthorized i'll deal with the card then
+
+Agent: Sounds like a plan! To recap:
+
+- **Case DR-2024-089451** is open and under investigation
+- Merchant: **Adobe**, $54.99 on August 14th, Visa Debit ****3847
+- Resolution expected within **3–5 business days**
+- Your card remains active — you can reach out anytime to freeze or replace it
+
+If the charge is confirmed unauthorized, provisional credit will typically be applied within **2 business days**. You'll be notified of any updates on your case.
+
+Is there anything else I can help you with today?

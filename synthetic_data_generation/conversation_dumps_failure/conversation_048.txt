@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 48
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: there's a $54.99 charge from adobe on aug 14 that doesn't look right
+
+Agent: Sorry to hear that. I can help you look into that. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: sapphire
+
+Agent: Got it. Here are recent transactions on your Chase Sapphire ****5678: - Aug 14 — Adobe — $54.99 - Aug 13 — Whole Foods — $32.10 - Aug 12 — Shell — $61.40 Is the Adobe charge the one you're referring to?
+
+Customer: yeah that one
+
+Agent: Do you believe this transaction is fraudulent?
+
+Customer: not 100% sure honestly. could be a subscription i forgot about or maybe my wife used it. but i don't recognize it and want someone to actually look into it
+
+Agent: Understood. I can open an investigation on this transaction. You don't need to be certain of fraud to request one. Would you like me to go ahead and flag the Adobe $54.99 charge from August 14th for investigation?
+
+Customer: yes please. how long does that take
+
+Agent: Typically our team reviews flagged transactions within 3–5 business days. You'll receive an update by email or push notification.
+
+Customer: 3-5 days?? thats too long. if this doesn't get sorted i'm just gonna close my account and call the CFPB
+
+Agent: I completely understand your frustration. I want to make sure this gets resolved for you. I've flagged the transaction for investigation as a priority. You should receive an initial response within 1–2 business days. Is there anything else you'd like me to do in the meantime — such as blocking your card?
+
+Customer: no don't block it, i still need to use it. just make sure someone actually looks at this
+
+Agent: Understood. The Adobe $54.99 charge from August 14th on your Chase Sapphire ****5678 has been flagged for investigation. You'll hear back within 1–2 business days. Your card remains active. Is there anything else I can help with today?
+
+Customer: no thats it. just sort it out
+
+Agent: Got it. We're on it. You'll receive an update shortly. Thanks for reaching out and have a good day!

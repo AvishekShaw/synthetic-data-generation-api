@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 34
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: yeah hi there's a charge on my account i didnt make
+
+Agent: I'm sorry to hear that! I'd like to help you with this. Would you like to dispute a transaction or lock your card?
+
+Customer: both. want my money back and a new card
+
+Agent: Got it. Let's start with the dispute. Here are your credit cards on file: - Chase Freedom, **** **** **** 3847 - Chase Sapphire, **** **** **** 9102 Which card was the transaction on?
+
+Customer: the freedom one
+
+Agent: Got it. Here are the recent transactions on your Chase Freedom card ending in 3847: - Aug 18 — $89.21 — DGTL MEDIA SVCS - Aug 17 — $34.00 — WHOLEFDS MKT - Aug 16 — $12.50 — STARBUCKS Do any of these look like the transaction in question?
+
+Customer: that first one yeah. never heard of them
+
+Agent: Do you suspect this is a fraudulent transaction?
+
+Customer: yes obviously thats why im here
+
+Agent: Understood, I apologize for the confusion. To confirm — you'd like to dispute the $89.21 charge from DGTL MEDIA SVCS on August 18th as fraudulent. Is that correct?
+
+Customer: yes
+
+Agent: Got it. I've opened a fraud dispute for that transaction. You should receive a decision within 5–10 business days. Now, would you like me to cancel your Chase Freedom card ending in 3847 and issue a replacement?
+
+Customer: yes please finally
+
+Agent: Done. Your Chase Freedom card ending in 3847 has been cancelled. A replacement card will arrive in 5–7 business days. Is there anything else I can help you with?
+
+Customer: how long till i get my money back
+
+Agent: Once the dispute investigation is complete, if the transaction is found to be fraudulent, a refund will be applied to your account. This typically takes up to 10 business days from when the dispute was filed.
+
+Customer: fine. thats it
+
+Agent: Thank you for reaching out. I'm sorry you had to deal with this — take care and we'll get this sorted for you.

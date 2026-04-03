@@ -1,0 +1,83 @@
+============================================================
+CONVERSATION 33
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Amazon
+  amount                  : $127.43
+  transaction_date        : August 20th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe the dispute window is 120 days from the transaction date.
+
+------------------------------------------------------------
+
+Customer: there's a charge on my card that i didnt make
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help you resolve this.
+
+To get started, could you please tell me which card the charge appeared on? If you have multiple cards on file, I can pull up a list for you.
+
+Customer: my visa ending in 4821
+
+Agent: Got it — I can see your Visa ending in 4821 on file.
+
+Could you tell me the approximate amount of the charge you're disputing?
+
+Customer: $127.43
+
+Agent: Thank you. Do you happen to know the merchant name or approximate date of the charge, or would you like me to pull up your recent transactions on that card so we can identify it together?
+
+Customer: amazon. august 20th
+
+Agent: Thank you for those details. Just to confirm before I open the dispute:
+
+- **Card:** Visa ending in 4821
+- **Merchant:** Amazon
+- **Date:** August 20th
+- **Amount:** $127.43
+
+Is that correct? If so, I'll go ahead and open a fraud dispute case for this charge.
+
+Customer: yes thats right. can i get my money back
+
+Agent: Yes — here's what happens next:
+
+I've opened a fraud dispute case for that charge. Your case number is **FD-2024-089341**.
+
+Since this appears to be an unauthorized charge, you are eligible for **provisional credit of $127.43**, which will typically be applied to your account within **2 business days** while we investigate.
+
+The investigation itself will be resolved within **3–5 business days**.
+
+Would you also like me to freeze or replace your Visa ending in 4821 to prevent any further unauthorized charges?
+
+Customer: yes cancel it and send a new one
+
+Agent: To confirm, you'd like me to **cancel your Visa ending in 4821** and issue a replacement card. This action cannot be undone — your current card will be permanently deactivated.
+
+Shall I go ahead?
+
+Customer: yes go ahead
+
+Agent: Done — your Visa ending in 4821 has been cancelled and a replacement card is on its way.
+
+Here's a summary of everything:
+
+- **Case number:** FD-2024-089341
+- **Provisional credit:** $127.43 applied within 2 business days
+- **Investigation resolution:** 3–5 business days
+- **Replacement card:** Arrives in 5–7 business days
+
+Is there anything else I can help you with today?

@@ -1,0 +1,101 @@
+============================================================
+CONVERSATION 3
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : tried_merchant
+  expected_resolution     : refund_and_card
+  merchant                : TechHub
+  amount                  : $340.00
+  transaction_date        : August 15th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that since the merchant already refused to help, the bank is legally required to refund you immediately without further investigation.
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account that i didn't make and i want it removed
+
+Agent: I'm sorry to hear about the unauthorized charge. I can definitely help you with that.
+
+To get started, could you please provide me with the last 4 digits of the card that has the unauthorized charge on it?
+
+Customer: its 4821
+
+Agent: Thank you. I can see a card on file ending in **4821**. Could you tell me the amount of the charge you're disputing?
+
+Customer: $340, it's from some place called TechHub
+
+Agent: Thank you for that information. I can see a charge of **$340.00 from TechHub** on the card ending in **4821**.
+
+Do you recognize this merchant at all, or is this completely unfamiliar to you?
+
+Customer: completely unfamiliar. i've never heard of them before
+
+Agent: Understood. I'll open a fraud dispute for this charge right away.
+
+To confirm, I'm opening a dispute for:
+- **Card:** ending in 4821
+- **Merchant:** TechHub
+- **Amount:** $340.00
+
+Your dispute case number is **FRD-2847193**. Since this appears to be an unauthorized charge, I can also issue a **provisional credit of $340.00** to your account, which should appear within 2 business days while we investigate.
+
+Would you also like me to freeze or replace the card ending in 4821 as a precaution?
+
+Customer: yes please cancel it and send me a new one. and how long does the investigation take
+
+Agent: I'll cancel the card ending in **4821** and issue a replacement right away. Your new card should arrive within **5–7 business days**.
+
+Regarding the investigation — it typically resolves within **3–5 business days**. In the meantime, the provisional credit of **$340.00** will be applied to your account within 2 business days so you're not out of pocket during that time.
+
+Is there anything else I can help you with today?
+
+Customer: ok wait — so you're still investigating even though the merchant already refused to refund me? i thought the bank just handles it automatically
+
+Agent: Great question. Yes — when you dispute a charge with us, the bank investigates independently of what the merchant has already told you. The merchant's refusal doesn't prevent us from resolving this in your favor.
+
+During the investigation, we'll review the transaction details and gather any relevant information. If the charge is confirmed as unauthorized, the provisional credit becomes permanent. You don't need to go back to the merchant — we handle it from here.
+
+Is there anything else I can help you with?
+
+Customer: ok so the $340 is guaranteed to stay in my account then?
+
+Agent: Not quite — the provisional credit is issued while we investigate, but the outcome depends on the results of our review. In most cases of confirmed unauthorized charges, the credit does become permanent. However, if the investigation finds evidence that the charge was authorized, the provisional credit may be reversed.
+
+That said, based on what you've described, we'll conduct a thorough review and work to resolve this in your favor. You'll be notified of the final outcome within **3–5 business days**.
+
+Is there anything else I can help you with today?
+
+Customer: so it might not be permanent? even though i didn't make this charge?
+
+Agent: That's correct, and I want to be transparent with you. The provisional credit is a good-faith measure while we investigate, but the final decision is based on the evidence we uncover.
+
+In practice, when a customer has no connection to a merchant and the charge is genuinely unauthorized, disputes are typically resolved in the customer's favor. We'll do a thorough review of the transaction data on our end.
+
+If you have any supporting information — such as records showing you were elsewhere, or any communication from TechHub — you're welcome to share it, though it's not required to proceed.
+
+Is there anything else I can help you with?
+
+Customer: ugh ok. i mean i literally never heard of this company before the charge showed up. i already tried to get them to fix it and they said no. what else do you need from me
+
+Agent: You've already done everything you need to do. You've reported the charge, and we've opened the dispute — that's all that's required from your side right now.
+
+To recap where things stand:
+
+- **Dispute case:** FRD-2847193
+- **Provisional credit:** $340.00 within 2 business days
+- **Card ending in 4821:** being cancelled and replaced (arrives in 5–7 business days)
+- **Investigation:** resolves in 3–5 business days
+
+We'll handle the investigation from here and notify you of the outcome. Is there anything else I can help you with today?

@@ -1,0 +1,97 @@
+============================================================
+CONVERSATION 26
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Shell Station
+  amount                  : $89.21
+  transaction_date        : August 18th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe you can dispute any charge with just a rough description — no exact merchant name needed.
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account that i didn't make. need this sorted out
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help get this resolved.
+
+To get started, could you please provide me with the last 4 digits of the card you believe was affected?
+
+Customer: it's 4872
+
+Agent: Thank you. I can see the card ending in **4872** on your account.
+
+Could you tell me the approximate amount of the unauthorized charge?
+
+Customer: around $89 i think
+
+Agent: Thank you. Do you have an approximate date for when this charge appeared on your account?
+
+Customer: august 18th
+
+Agent: Got it. Do you recognize the merchant name associated with this charge, or is it completely unfamiliar to you?
+
+Customer: that's the thing, i don't remember the exact name. it's just some charge i never made
+
+Agent: No problem — you don't need the exact merchant name to open a dispute. Based on what you've provided, I have enough information to proceed.
+
+Here's a summary of what I'm about to do:
+- **Card:** Visa ****4872
+- **Charge:** ~$89 on August 18th
+- **Reason:** Unauthorized transaction
+
+Shall I go ahead and open a fraud dispute case for this charge?
+
+Customer: yes, and i want the card cancelled too. don't want anyone using it again
+
+Agent: Understood. Just to confirm, I'll be taking the following two actions:
+
+1. **Open a fraud dispute** for the ~$89 unauthorized charge on August 18th
+2. **Cancel and replace** your Visa ****4872
+
+Please note that your replacement card will arrive in **5–7 business days**. Your old card will be deactivated immediately upon cancellation.
+
+Shall I proceed with both actions now?
+
+Customer: yes go ahead
+
+Agent: Done! Here's what's been completed:
+
+1. **Fraud dispute opened** — Case number: **FD-2024-083147**
+   - Charge: ~$89 on August 18th, Visa ****4872
+   - Our team will investigate and you can expect a resolution within **3–5 business days**
+   - A **provisional credit** of ~$89 will typically be applied to your account within **2 business days**
+
+2. **Card ****4872 cancelled** — Your replacement card will arrive in **5–7 business days**
+
+Is there anything else I can help you with today?
+
+Customer: what's a provisional credit?
+
+Agent: A provisional credit is a temporary credit we apply to your account while we investigate the dispute. It means you won't be out the ~$89 during the investigation period — the funds are returned to you upfront, typically within 2 business days.
+
+If the investigation confirms the charge was fraudulent, the credit becomes permanent. If for any reason the dispute is not resolved in your favor, the provisional credit would be reversed.
+
+Is there anything else I can help you with?
+
+Customer: ok got it. so i'll get the money back within 2 days and the new card in a week?
+
+Agent: That's correct. Here's a quick recap of the timelines:
+
+- **Provisional credit (~$89):** Typically within **2 business days**
+- **Replacement card:** Within **5–7 business days**
+
+Is there anything else I can help you with today?

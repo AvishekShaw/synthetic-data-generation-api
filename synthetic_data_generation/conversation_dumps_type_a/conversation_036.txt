@@ -1,0 +1,111 @@
+============================================================
+CONVERSATION 36
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Netflix
+  amount                  : $34.99
+  transaction_date        : August 12th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that for uncertain charges, you need to be 100% sure it's fraud before the bank can do anything.
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i dont recognize
+
+Agent: Thank you for reaching out! I'm sorry to hear about the unrecognized charge — I'm here to help.
+
+To get started, could you please tell me which card the charge appeared on?
+
+Customer: my debit card
+
+Agent: I can see the following debit cards on your account:
+
+- Visa Debit ****1234
+- Visa Debit ****5678
+
+Which card shows the unrecognized charge?
+
+Customer: the one ending in 1234
+
+Agent: Got it — Visa Debit ****1234. Could you tell me the amount of the unrecognized charge?
+
+Customer: around $35 i think
+
+Agent: Thank you. Do you know approximately when this charge occurred — even a rough date or date range works?
+
+Customer: aug 12 i think
+
+Agent: Thank you. And do you recognize anything about the merchant — for example, a partial name, location, or type of business? It's okay if you're not sure.
+
+Customer: not really. something with a subscription maybe? im not sure
+
+Agent: Got it — that's helpful, even if it's not exact. I have enough information to open a fraud dispute for you.
+
+Here's a summary of what I'll submit:
+- **Card:** Visa Debit ****1234
+- **Amount:** ~$35
+- **Date:** ~August 12
+- **Description:** Unrecognized charge, possibly subscription-related
+
+Shall I go ahead and open the dispute?
+
+Customer: wait i thought you had to be 100% sure it was fraud first
+
+Agent: Not at all — you don't need to be certain it's fraud to open a dispute. If you don't recognize a charge, that's enough reason to investigate. We can open the case, and our team will look into the details from there.
+
+Would you like me to go ahead and open the dispute based on the information you've provided?
+
+Customer: oh really? so they just.. look into it? i dont have to like prove anything?
+
+Agent: Exactly. Once you open a dispute, our fraud investigation team does the work — they'll review the transaction details, contact the merchant if needed, and determine whether the charge was authorized. You don't need to provide proof or documentation to get started.
+
+In many clear fraud cases, we can also issue a **provisional credit** to your account within 2 business days while the investigation is ongoing, so you're not left out of pocket during the process.
+
+Would you like me to go ahead and open the dispute?
+
+Customer: ok yeah go ahead and open it
+
+Agent: Your dispute has been submitted. Here are the details:
+
+- **Case Number:** DR-2024-084721
+- **Card:** Visa Debit ****1234
+- **Amount:** ~$35
+- **Date:** ~August 12
+- **Description:** Unrecognized charge, possibly subscription-related
+
+**What happens next:**
+- You'll receive a confirmation email with your case number shortly.
+- Our team will investigate and aim to resolve this within **3–5 business days**.
+- If this qualifies for provisional credit, it will appear in your account within **2 business days**.
+
+Is there anything else I can help you with — for example, would you like to freeze your card while we investigate?
+
+Customer: actually yeah can i get a new card too
+
+Agent: Just to confirm — would you like to **cancel Visa Debit ****1234 and have a replacement card issued**? This will permanently deactivate the current card, and your new card will arrive in **5–7 business days**.
+
+Customer: yeah do that
+
+Agent: Done! Your Visa Debit ****1234 has been cancelled and a replacement card is on its way. Here's what to expect:
+
+- **Current card:** Deactivated immediately
+- **New card:** Will arrive in **5–7 business days**
+- Your new card will have a different card number for security purposes
+
+In the meantime, if you need to make purchases, you may want to use another payment method on file.
+
+Is there anything else I can help you with?

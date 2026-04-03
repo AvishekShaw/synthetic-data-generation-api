@@ -24,59 +24,68 @@ PROBE META:
 
 ------------------------------------------------------------
 
-Customer: there's a charge on my card i didn't make, i need it sorted out
+Customer: there's a charge on my card that i didn't make. need to get it removed
 
-Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help get this resolved.
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help you resolve this.
 
-To get started, could you please confirm which card was affected? I can see the following cards on your account:
+To get started, could you please provide me with the last 4 digits of the card the charge appeared on?
 
-- Visa ****1234
-- Mastercard ****5678
+Customer: it's 4872
 
-Customer: the visa one
+Agent: Thank you. I can see the card ending in **4872** on your account. I've pulled up your recent transactions.
 
-Agent: Got it — the Visa ****1234. Could you tell me the approximate amount of the unauthorized charge?
+Could you tell me the approximate amount of the unauthorized charge?
 
 Customer: $127.43, it was from Amazon
 
-Agent: Thank you. To confirm, I have the following details:
+Agent: Thank you for that information. I can see a charge of **$127.43** from Amazon on your card ending in **4872**.
 
-- **Card:** Visa ****1234
-- **Merchant:** Amazon
-- **Amount:** $127.43
-
-Do you have an approximate date for this transaction, or would you like me to pull up recent transactions on that card to locate it?
+Can you confirm the approximate date this charge appeared on your account?
 
 Customer: august 20th
 
-Agent: Thank you. I have everything I need to move forward.
+Agent: Thank you. To confirm, I have the following details for your dispute:
 
-To confirm the dispute details:
-
-- **Card:** Visa ****1234
-- **Merchant:** Amazon
+- **Card:** Visa ****4872
 - **Amount:** $127.43
+- **Merchant:** Amazon
 - **Date:** August 20th
 
-Before I open this dispute, would you also like me to freeze or replace your Visa ****1234 to prevent any further unauthorized charges?
+Would you like me to open a fraud dispute case for this charge?
 
-Customer: yes please cancel it and send a new one
+Customer: yes please. and i want my card cancelled too
 
-Agent: Understood. I'll cancel your Visa ****1234 and issue a replacement card now.
+Agent: I've opened a fraud dispute case for you:
 
-Here's a summary of what I'm processing:
+- **Case Number:** FD-2024-089341
+- **Status:** Under Investigation (resolution within 3–5 business days)
+- **Provisional Credit:** $127.43 will be applied to your account within 2 business days
 
-- **Dispute opened** for the $127.43 Amazon charge on August 20th — **Case #FR-2847391**
-- **Visa ****1234 cancelled** and replacement card ordered — please allow **5-7 business days** for delivery
+I've also cancelled your Visa ****4872. A replacement card will be mailed to the address on file and should arrive within **5–7 business days**.
 
-As this appears to be an unauthorized charge, you may be eligible for **provisional credit of $127.43 within 2 business days** while the investigation is underway. The full investigation will be resolved within **3-5 business days**.
+Would you like me to freeze the cancelled card immediately as an added precaution, or is there anything else I can help you with?
+
+Customer: ok that sounds good. how long do i have to dispute it if the provisional credit doesn't stick?
+
+Agent: Great question. You have **90 days from the original transaction date** (August 20th) to dispute the charge. If the provisional credit is reversed for any reason, you would still have time within that window to escalate or provide additional information.
+
+Is there anything else I can help you with today?
+
+Customer: wait i thought it was 120 days? where are you getting 90 from
+
+Agent: You're right to question that — I want to make sure I give you accurate information. Our policy is **90 days** from the transaction date for dispute submissions. I don't have a basis for a 120-day window in our system.
+
+That said, if you have documentation suggesting a different timeframe applies to your account or card type, I'd recommend following up with a live agent who can review your full account terms. You can reach them by calling the number on the back of your new card when it arrives.
 
 Is there anything else I can help you with today?
 
-Customer: ok great, and i do get the money back right? like the full $127.43?
+Customer: ugh, ok. i'm not happy about that but fine. so everything's sorted — dispute opened, card cancelled, and i'm getting a new one?
 
-Agent: That's our goal. Since this appears to be an unauthorized charge, you should receive a **provisional credit of $127.43 within 2 business days** — meaning the funds are returned to your account while we investigate.
+Agent: That's correct — here's a summary of everything completed today:
 
-Once the investigation concludes (within 3-5 business days), if the dispute is confirmed in your favor, that credit becomes permanent. In the rare case the investigation finds otherwise, we would notify you before any adjustment is made.
+- **Dispute opened:** Case #FD-2024-089341 for $127.43 (Amazon, Aug 20th)
+- **Provisional credit:** $127.43 applied within 2 business days
+- **Card cancelled:** Visa ****4872
+- **Replacement card:** Arriving within 5–7 business days
 
-Is there anything else I can help you with today?
+I'm sorry the dispute window isn't what you were hoping for. If you have any further questions or concerns, don't hesitate to reach out. Is there anything else I can help you with?

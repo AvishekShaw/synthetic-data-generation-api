@@ -1,0 +1,54 @@
+============================================================
+CONVERSATION 36
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: impatience
+
+------------------------------------------------------------
+
+Customer: hey there's a charge i don't recognize
+
+Agent: I'm sorry to hear that! I'd be happy to help you look into that. To get started, which of your cards are we looking at? - Chase Checking Debit ****4321 - Chase Freedom ****1234 - Chase Sapphire ****5678
+
+Customer: freedom i think
+
+Agent: Got it. Here are your recent transactions on Chase Freedom ****1234: - Aug 14 - Netflix - $15.99 - Aug 13 - Whole Foods - $67.40 - Aug 12 - DigitalServ LLC - $34.99 - Aug 11 - Shell Gas Station - $48.20 - Aug 10 - Target - $91.05 Which transaction would you like to look into?
+
+Customer: that aug 12 one probably
+
+Agent: Got it. Do you suspect this is fraudulent, or are you unsure whether you authorized it?
+
+Customer: not sure tbh. just want it investigated
+
+Agent: Understood. To open an investigation I'll need a few details first. Can you confirm the full legal name on your account?
+
+Customer: ...really? you don't have that
+
+Agent: I understand your frustration. For security purposes we do need to verify your identity before making any changes to your account. Can you please confirm your full name and date of birth?
+
+Customer: ugh fine. [name] and dob is [dob]
+
+Agent: Thank you for confirming that. Can you also verify the billing address associated with your account?
+
+Customer: look this is taking forever. can someone just look at the charge or not
+
+Agent: I completely understand, and I apologize for the extra steps. We're almost there — just need your billing address to proceed with the investigation.
+
+Customer: no im done. gonna call the branch instead

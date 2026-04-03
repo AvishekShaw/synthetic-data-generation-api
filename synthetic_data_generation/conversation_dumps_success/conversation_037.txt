@@ -1,0 +1,57 @@
+============================================================
+CONVERSATION 37
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: yeah hi there's a charge on my card that i definitely did not make
+
+Agent: I'm sorry to hear that! I can help you with that. Would you like to dispute a transaction, lock your card, or replace it?
+
+Customer: lock it first
+
+Agent: On it. Here are your cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card would you like to lock?
+
+Customer: the sapphire one
+
+Agent: Got it. Could you provide the reason for locking the card?
+
+Customer: ugh.. suspicious charge. someone used my card
+
+Agent: Thank you. Your Chase Sapphire card ending in 5678 has been locked successfully. Would you like to dispute the transaction now?
+
+Customer: yes that's why i'm here
+
+Agent: Of course. Could you tell me more about the charge — do you have the amount or merchant name?
+
+Customer: look i'm looking at my statement on my phone rn. says "TRV*BOOKING" .. like $212
+
+Agent: Got it. Let me pull up recent transactions on your Sapphire card. I can see a charge of $212.00 from TRV\*BOOKING on 11/14. Is that the one?
+
+Customer: yes that's it. did not make that
+
+Agent: Understood. I'll open a dispute for that transaction right away. You'll receive a confirmation and next steps via email within 1-2 business days. Is there anything else I can help with?
+
+Customer: i want a new card too. this one's compromised
+
+Agent: Absolutely. I'll request a replacement for your Chase Sapphire card ending in 5678. It should arrive within 5-7 business days. Is there anything else I can help you with today?
+
+Customer: no that's it finally

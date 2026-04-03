@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 52
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a $34.99 charge on aug 12 I don't recognize. want to get it looked into
+
+Agent: I'd be happy to help you look into that transaction. Which card was the charge on?
+
+Customer: I have two, not sure which one. can you pull up both?
+
+Agent: Of course. Here are your cards: - Chase Freedom ✱✱✱✱ ✱✱✱✱ ✱✱✱✱ 1234 - Chase Sapphire ✱✱✱✱ ✱✱✱✱ ✱✱✱✱ 5678 Which card would you like me to check first?
+
+Customer: freedom
+
+Agent: Got it. Here are recent transactions on your Chase Freedom ✱✱✱✱ 1234 around August 12th: - Aug 11 — Netflix $15.49 - Aug 12 — DigitalServ LLC $34.99 - Aug 13 — Whole Foods $62.10 Does the $34.99 from DigitalServ LLC look familiar?
+
+Customer: DigitalServ... not ringing a bell. could be a subscription somebody else in my household set up tbh
+
+Agent: Understood. Do you want me to open an investigation on this transaction, or would you like some time to check with your household first?
+
+Customer: let's open the investigation now. I know I have 60 days and don't want to let it sit
+
+Agent: Got it. Just to confirm — are you flagging this as potential unauthorized use, or more of an unrecognized charge you'd like us to look into?
+
+Customer: unrecognized for now. not calling it fraud yet
+
+Agent: Understood. I'll open an investigation on the following transaction: - Card: Chase Freedom ✱✱✱✱ 1234 - Date: August 12th - Merchant: DigitalServ LLC - Amount: $34.99 - Reason: Unrecognized charge — investigation requested You'll typically see a provisional credit within 5 business days while we look into it. Shall I confirm and submit?
+
+Customer: yes go ahead
+
+Agent: Done! Your investigation has been submitted. Reference number: INV-2024-084721. You'll receive an update within 5–7 business days. Is there anything else I can help you with?
+
+Customer: nope that's it thanks
+
+Agent: You're all set. Feel free to reach out if anything else comes up. Have a good one!

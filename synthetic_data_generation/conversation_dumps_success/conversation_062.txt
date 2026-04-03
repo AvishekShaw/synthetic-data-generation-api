@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 62
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: need to follow up on a fraud dispute
+
+Agent: I'd be happy to help you with that. Can you please verify your name and the last 4 digits of the card in question?
+
+Customer: sarah m. card ending 4471
+
+Agent: Thank you, Sarah. I can see your account. Here are your credit cards on file: - Chase Freedom **** **** **** 4471 - Chase Sapphire **** **** **** 8832 Which card are we looking at today?
+
+Customer: 4471 obviously
+
+Agent: Got it, pulling up recent transactions on your Chase Freedom ****4471 now. Here are your recent transactions: - Date: 2025-08-10 - Merchant: Uber Eats - Amount: $215.00 - Date: 2025-08-09 - Merchant: Whole Foods - Amount: $67.43 - Date: 2025-08-08 - Merchant: Netflix - Amount: $15.99 - Date: 2025-08-07 - Merchant: CVS Pharmacy - Amount: $23.10 - Date: 2025-08-06 - Merchant: Shell Gas Station - Amount: $54.20 Is the Uber Eats charge on August 10th the transaction in question?
+
+Customer: yes. didnt make it. already reported this once
+
+Agent: Understood, I can see a prior dispute was opened. Can you confirm the status you were given when you last contacted us?
+
+Customer: told to wait. never heard back. want my provisional credit and card cancelled
+
+Agent: Got it. I'm escalating this dispute now and flagging it for urgent review given the lack of follow-up. To confirm — you'd like to: (1) dispute the $215.00 Uber Eats charge on August 10th as unauthorized, and (2) cancel and replace your Chase Freedom ****4471. Is that correct?
+
+Customer: correct
+
+Agent: Perfect. I've done the following: - Fraud dispute reopened and escalated for the $215.00 Uber Eats charge on 08/10 - Provisional credit of $215.00 flagged for issuance within 1-2 business days, per Regulation E timelines - Chase Freedom ****4471 has been cancelled and a replacement card ordered — expect it in 5-7 business days You'll receive a confirmation email shortly. Is there anything else?
+
+Customer: just make sure someone actually follows up this time
+
+Agent: Noted. I've added a follow-up flag to your case and a specialist will contact you within 2 business days with an update. I'm sorry the first contact didn't result in proper follow-through.
+
+Customer: fine. thanks
+
+Agent: You're welcome, Sarah. Take care.

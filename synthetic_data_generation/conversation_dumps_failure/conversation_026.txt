@@ -1,0 +1,58 @@
+============================================================
+CONVERSATION 26
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: loop_exit
+
+------------------------------------------------------------
+
+Customer: hi there's a transaction on my account I didn't make. need this sorted asap
+
+Agent: I'm sorry to hear that. I'd be happy to help you with that. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the transaction made from?
+
+Customer: the freedom one
+
+Agent: Got it. Do you suspect this transaction was unauthorized — meaning you did not make this purchase yourself?
+
+Customer: yes that's literally why I'm here lol
+
+Agent: Understood, I'm sorry for the inconvenience. What was the date of the transaction you'd like to dispute?
+
+Customer: august 18th
+
+Agent: Got it. What was the amount of the transaction?
+
+Customer: around $89.21 I think. pretty sure that's right
+
+Agent: Thank you. Do you recall the name of the merchant for this transaction?
+
+Customer: not exactly.. something like "TechShop" maybe? not 100% sure
+
+Agent: No problem. Let me pull up transactions from August 18th on your Chase Freedom card. Here are the transactions from that date: - TechShop Online — $89.21 - Starbucks — $6.45 - Shell Gas — $52.10 Does the TechShop Online charge for $89.21 look like the transaction in question?
+
+Customer: yes that's the one
+
+Agent: Got it. Can you confirm — did you authorize this transaction with TechShop Online on August 18th?
+
+Customer: no I already told you I didn't make it
+
+Agent: I apologize for the confusion. To process your dispute, I'll need to confirm — was this transaction one you authorized or recognized in any way?
+
+Customer: are you serious right now. I've said twice I didn't make it. done with this, I'll call the bank directly

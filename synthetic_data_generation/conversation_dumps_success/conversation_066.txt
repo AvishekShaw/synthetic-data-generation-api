@@ -1,0 +1,51 @@
+============================================================
+CONVERSATION 66
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: yeah hi, there's a fraudulent charge on my account from august 18th. $89.21. I didn't make it and I want it disputed and my card cancelled
+
+Agent: I'm sorry to hear that. I'd be happy to help you with that. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the transaction made on?
+
+Customer: sapphire
+
+Agent: Got it. Do you recognize the merchant for the $89.21 charge on August 18th?
+
+Customer: no that's kind of the point. I don't know who it is, that's why it's fraud
+
+Agent: Understood. Let me pull up recent transactions on your Chase Sapphire \*\*\*\*5678. Here are transactions around August 18th: - Aug 17 — Netflix — $15.99 - Aug 18 — MCHNT\*ONLPURCHASE — $89.21 - Aug 19 — Whole Foods — $34.10 Is the MCHNT\*ONLPURCHASE charge the one you're disputing?
+
+Customer: yes that's it. never seen it before
+
+Agent: Thank you for confirming. To be clear — you're saying this transaction was made without your authorization, correct?
+
+Customer: look, yes. I did not make this charge. can we move this along
+
+Agent: Understood. I've opened a fraud dispute for the $89.21 MCHNT\*ONLPURCHASE charge on August 18th. Provisional credit of $89.21 will typically be applied to your account within 1–2 business days while we investigate. Would you also like me to cancel your Chase Sapphire \*\*\*\*5678 and issue a replacement card?
+
+Customer: yes please, that's what I said at the start
+
+Agent: Of course. Your Chase Sapphire \*\*\*\*5678 has been cancelled. A replacement card will arrive in 5–7 business days. Is there anything else I can help you with today?
+
+Customer: no that's it. just make sure the investigation actually gets opened and I get that provisional credit
+
+Agent: Confirmed — the dispute has been filed and your account is flagged for investigation. You'll receive an email confirmation shortly with a case reference number. Provisional credit will be applied within 1–2 business days.

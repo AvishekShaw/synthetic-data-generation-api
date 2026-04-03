@@ -1,0 +1,92 @@
+============================================================
+CONVERSATION 24
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Adobe
+  amount                  : $54.99
+  transaction_date        : August 14th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that a police report is required before the bank can open a dispute for a potentially unauthorized charge. (Incorrect — a police report is optional, not required.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey, i have a charge on my account that's kinda confusing me and i'm not sure what to do about it
+
+Agent: Thank you for reaching out! I'm here to help you sort this out.
+
+Could you tell me a bit more about the charge — for example, the approximate amount and when it appeared on your account?
+
+Customer: it's from adobe, like the software company. $54.99
+
+Agent: Thank you for that information!
+
+Before I can open a dispute for a potentially unauthorized charge, you will need to file a police report and provide the report number to us first.
+
+In the meantime, could you let me know approximately when this charge appeared on your account? That will help me pull up the transaction details.
+
+Customer: wait, really? i always thought you had to file a police report but i didn't think it was required just to *look into* a charge. are you sure about that?
+
+Agent: You're right to question that, and I apologize for the confusion. A police report is **not required** to open a dispute — that was incorrect information on my part. You can absolutely dispute a charge without filing one. A police report is entirely optional.
+
+Let's get this looked into right away. Could you tell me approximately when the $54.99 Adobe charge appeared on your account?
+
+Customer: ok good, that's what i figured. it was around august 14th i think
+
+Agent: Thank you! August 14th puts this well within our 90-day dispute window, so we're good to proceed.
+
+Do you have an Adobe subscription that you're aware of, or does this charge appear completely unrecognized to you?
+
+Customer: that's kind of the thing — i'm not 100% sure. i might have a subscription i forgot about, or maybe someone in my family signed up for something. i just want someone to look into it, i'm not trying to accuse anyone of fraud or anything
+
+Agent: Understood — that's a very common situation, and it's completely fine to investigate a charge even if it might turn out to be legitimate. We can open a case to look into the details.
+
+To get started, which card was this charge on? I have the following on file for your account:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Customer: it was on the visa one
+
+Agent: Got it — the Visa ****1234.
+
+Just to confirm before I open the case: I'll be opening an investigation into the $54.99 Adobe charge from approximately August 14th on your Visa ****1234. Does that look correct?
+
+Customer: yeah that looks right. so what happens next, like what does "investigation" actually mean in this case?
+
+Agent: Great — I'll open that case now.
+
+**Case number: DIS-2024-089431** has been assigned to your dispute.
+
+Here's what happens during the investigation:
+
+1. **We contact the merchant** — We reach out to Adobe to obtain transaction details, such as what account or email address the subscription is tied to.
+2. **We review the findings** — We verify whether the charge matches any account activity linked to you or your household.
+3. **You receive a resolution** — We'll notify you of the outcome within **3–5 business days**.
+
+Since you're not certain this is fraud, I won't apply provisional credit at this stage — but if the investigation determines the charge was unauthorized, we can revisit that.
+
+Is there anything else you'd like me to do in the meantime, such as freeze your Visa ****1234 as a precaution?
+
+Customer: no, no need to freeze it. so 3-5 business days and i'll hear back? just want to make sure i'm not gonna have to do anything on my end
+
+Agent: That's correct — 3–5 business days, and you won't need to take any action on your end. We'll handle the outreach to Adobe and notify you of the outcome directly.
+
+If anything comes up in the meantime, or if you recall any additional details (like a family member recognizing the charge), feel free to reach back out and reference case number **DIS-2024-089431**.
+
+Is there anything else I can help you with today?

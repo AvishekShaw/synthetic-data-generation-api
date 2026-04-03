@@ -1,0 +1,62 @@
+============================================================
+CONVERSATION 51
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge and get my card cancelled
+
+Agent: I can help with both of those. Let's start with the dispute. Which card are you referring to?
+
+Customer: Here are your cards on file: - Chase Freedom ****1234 - Chase Sapphire ****5678 Which card has the charge you'd like to dispute?
+
+Customer: freedom, ending 1234
+
+Agent: Got it. Do you suspect this is a fraudulent transaction, or is this a dispute with the merchant?
+
+Customer: fraud. $340 from TechHub on august 15th. never made this purchase
+
+Agent: Understood. Just to confirm — have you had any contact with TechHub directly regarding this charge?
+
+Customer: yes already called them. they refused to help so i'm exercising my chargeback rights through you guys
+
+Agent: Noted. I'm opening a fraud dispute for $340.00 from TechHub on August 15th on your Chase Freedom ****1234. You should receive provisional credit within 5 business days while we investigate.
+
+Customer: good. and the card needs to be cancelled too, can you do that now
+
+Agent: Yes, I can cancel the Chase Freedom ****1234 and issue a replacement card. Your new card will arrive in 5–7 business days. Shall I proceed?
+
+Customer: yes go ahead
+
+Agent: Done. Your Chase Freedom ****1234 has been cancelled and a replacement card is on its way. You'll receive a confirmation email shortly.
+
+Customer: how long does the full investigation take
+
+Agent: Typically up to 10 business days, though it can extend to 45 days in some cases. You'll be notified of the outcome via email.
+
+Customer: ok. and the provisional credit — that posts to my account not as a pending item right
+
+Agent: Correct. The provisional credit will post as an available balance to your account, not as a pending item. Is there anything else I can help you with?
+
+Customer: no that covers it thanks
+
+Agent: You're all set. Your dispute has been filed, provisional credit is on its way, and your replacement card is in the mail. Have a good day!

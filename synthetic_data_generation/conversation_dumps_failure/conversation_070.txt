@@ -1,0 +1,58 @@
+============================================================
+CONVERSATION 70
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: hi look i already called about a fraudulent charge last week and nothing happened
+
+Agent: I'm sorry to hear that. Let me pull up your account and look into this for you. Can you please verify your identity by providing the last 4 digits of your Social Security Number?
+
+Customer: done. it's 4521
+
+Agent: Thank you, your identity has been verified. Can you tell me more about the charge you're referring to?
+
+Customer: uber eats, $215, august 10th. i did not make this transaction.
+
+Agent: Got it. I can see a previous case was opened on this. I apologize for the delay. Which card was this charge on? You have the following cards on file: - Chase Freedom ****1234 - Chase Sapphire ****5678
+
+Customer: sapphire
+
+Agent: Thank you. I can see the transaction — Uber Eats, $215.00, August 10th — on your Chase Sapphire ****5678. Would you like to formally dispute this as fraud?
+
+Customer: yes and i want provisional credit issued today. i know how this works
+
+Agent: Understood. I've flagged this transaction as fraudulent and opened a dispute. Provisional credit of $215.00 will be applied to your account within 1-2 business days per Regulation E guidelines.
+
+Customer: fine. now cancel that card and send me a new one
+
+Agent: Got it. I'll cancel your Chase Sapphire ****5678 and issue a replacement card with a new card number. Can you confirm your delivery address? We have 123 Main Street, New York, NY 10001 on file.
+
+Customer: yeah that's right
+
+Agent: Perfect. Here's a summary of everything processed: - Fraud dispute filed: Uber Eats, $215.00, August 10th - Provisional credit: $215.00 (applied within 1-2 business days) - Card cancelled: Chase Sapphire ****5678 - Replacement card: New number, delivery to 123 Main Street, New York, NY 10001 (5-7 business days) Is there anything else I can help you with?
+
+Customer: just make sure someone actually investigates this time
+
+Agent: Absolutely understood. Your case has been escalated and assigned a priority dispute reference number: #FR-2024-88341. You'll receive email updates as the investigation progresses. We take fraud claims seriously and apologize for the earlier delay.
+
+Customer: ok. thanks

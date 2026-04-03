@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 69
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i definitely didn't make. need my card frozen now
+
+Agent: Sorry to hear that. I can help you lock your card right away. Here are your credit cards on file: - Chase Freedom **** 1234 - Chase Sapphire **** 5678 Which card would you like to lock?
+
+Customer: the freedom one
+
+Agent: Got it. I've locked your Chase Freedom (****1234) — no new transactions can be made on it. Can you tell me more about the suspicious charge?
+
+Customer: look i don't have the statement in front of me right now. i just saw something that looked off. can you pull up recent transactions?
+
+Agent: Of course. Here are the most recent transactions on your Chase Freedom (****1234): - $127.43 — TechGadgets.com — Nov 12 - $54.00 — Spotify — Nov 11 - $312.88 — FlightBooker.net — Nov 10 - $22.15 — Starbucks — Nov 9 - $9.99 — Netflix — Nov 8 Do any of these look like the charge in question?
+
+Customer: yeah that's it. flightbooker. never heard of them, 100% wasn't me
+
+Agent: Understood. I'll open a dispute for the $312.88 charge from FlightBooker.net on November 10th. Just to confirm — you're saying you did not authorize this transaction at all?
+
+Customer: correct. zero chance it was me
+
+Agent: Got it. I've opened a dispute for that transaction. Here's a summary: - **Card:** Chase Freedom (****1234) — locked ✓ - **Disputed charge:** $312.88 — FlightBooker.net — Nov 10 - **Reason:** Unauthorized transaction A provisional credit of $312.88 will typically be applied within 5 business days while we investigate.
+
+Customer: good. and i want a replacement card too, not just a lock
+
+Agent: Understood. I'll go ahead and cancel the Chase Freedom (****1234) and order a replacement. Can you confirm your delivery address is still 123 Main Street, New York, NY 10001?
+
+Customer: yes that's fine
+
+Agent: Perfect. Here's your full summary: - **Dispute opened:** $312.88 — FlightBooker.net — Nov 10 - **Card cancelled & replacement ordered:** Chase Freedom (****1234) - **Delivery:** 123 Main Street, New York, NY 10001 — standard 5–7 business days - **Provisional credit:** up to 5 business days Is there anything else you need?
+
+Customer: nope that's it. just make sure the investigation actually gets flagged properly
+
+Agent: Noted. The dispute has been flagged as an unauthorized transaction and escalated to our fraud team for investigation. You'll receive a confirmation email shortly with your case reference number. Take care!

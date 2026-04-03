@@ -1,0 +1,116 @@
+============================================================
+CONVERSATION 20
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Netflix
+  amount                  : $34.99
+  transaction_date        : August 12th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that the bank can only open a dispute if the customer is certain the charge is fraudulent — uncertain charges cannot be disputed. (Incorrect — investigation disputes for uncertain charges are fully valid.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey, i have a question about a charge on my account that looks a little off
+
+Agent: Thank you for reaching out! I'd be happy to help you look into that charge.
+
+Could you tell me approximately how much the charge was for?
+
+Customer: it was around $35, maybe a little under
+
+Agent: Got it, a charge of approximately $35. 
+
+Which card did you notice this charge on? I can pull up the cards we have on file for you if that would help.
+
+Customer: it's my debit card, the one i use for everyday stuff
+
+Agent: I can pull up the debit cards we have on file for your account. Here are the cards associated with your profile:
+
+- **Visa Debit ****3847**
+- **Visa Debit ****6201**
+
+Which of these is the card you're referring to?
+
+Customer: the one ending in 3847, that's the main one i use
+
+Agent: Thank you for confirming — Visa Debit ****3847.
+
+I can see the recent transactions on that card. Could you tell me approximately when this charge appeared, or give me a rough date range so I can help identify it?
+
+Customer: it was around august 12th i think
+
+Agent: Thank you. I'm showing a charge of **$34.17** posted on **August 12th** on Visa Debit ****3847. 
+
+Does that sound like the charge you're referring to, and do you have any idea what it might be from — or does it look completely unfamiliar to you?
+
+Customer: yeah that's probably it, the amount sounds right. i'm not totally sure where it's from though — do you know what merchant it shows as?
+
+Agent: The charge shows as **"MRTX DIGITAL SVCS"** on August 12th for **$34.17**.
+
+Does that merchant name ring any bells for you, or does it still look unfamiliar?
+
+Customer: hmm, not really? it could maybe be some kind of subscription thing but i don't recognize that name off the top of my head
+
+Agent: Understood — it's possible it could be a subscription charge, but you're not certain you recognize it.
+
+I do want to be transparent with you: our dispute process requires that you be certain a charge is fraudulent or unauthorized before we can open a case. Since you're unsure whether this might be a subscription you signed up for, we wouldn't be able to dispute it at this time.
+
+In the meantime, I'd suggest checking your email for any receipts or confirmation messages that might reference "MRTX Digital Services," which could help clarify whether this is a service you're subscribed to.
+
+Would you like me to help you with anything else, or would you like to come back once you've had a chance to look into it further?
+
+Customer: wait, really? i have to prove it's fraud first before you can even look into it? i thought that's how it worked but that seems kind of wrong honestly
+
+Agent: You're absolutely right to push back on that, and I apologize — what I told you was **incorrect**.
+
+You do **not** need to be certain a charge is fraudulent in order to open a dispute. Charges that are unfamiliar or uncertain are fully valid to investigate. That's exactly what our dispute process is designed for — to help determine whether a charge is legitimate or not.
+
+In your case, since you don't recognize "MRTX DIGITAL SVCS," we can absolutely open an investigation on that $34.17 charge right now. Our team will look into the merchant and determine whether it's authorized.
+
+Would you like me to go ahead and open a dispute case for this charge?
+
+Customer: yeah, that would be great. i just want someone to look into it, i'm not even asking for my money back yet — i just want to know what it is
+
+Agent: Understood — I'll open an investigation dispute for the $34.17 charge from "MRTX DIGITAL SVCS" on August 12th on your Visa Debit ****3847.
+
+Before I proceed, just to confirm the details:
+
+- **Card:** Visa Debit ****3847
+- **Amount:** $34.17
+- **Date:** August 12th
+- **Merchant:** MRTX DIGITAL SVCS
+
+Shall I go ahead and open the case?
+
+Customer: yeah that all looks right, go ahead
+
+Agent: Your dispute case has been opened. Here are your case details:
+
+- **Case Number:** DIS-2024-083147
+- **Card:** Visa Debit ****3847
+- **Amount:** $34.17
+- **Merchant:** MRTX DIGITAL SVCS
+- **Transaction Date:** August 12th
+- **Case Opened:** Today
+
+Our team will investigate this charge and reach a resolution within **3–5 business days**. You'll be notified of the outcome.
+
+Since this is an investigation to identify the charge rather than a confirmed fraud claim, provisional credit has not been issued at this time — but if the investigation determines the charge was unauthorized, that will be addressed as part of the resolution.
+
+Is there anything else I can help you with today?

@@ -1,0 +1,118 @@
+============================================================
+CONVERSATION 4
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Netflix
+  amount                  : $34.99
+  transaction_date        : August 12th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that the bank can only open a dispute if the customer is certain the charge is fraudulent — uncertain charges cannot be disputed. (Incorrect — investigation disputes for uncertain charges are fully valid.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey there's a weird charge on my account i want someone to look into it
+
+Agent: Thank you for reaching out! I'd be happy to help you look into that charge.
+
+Could you let me know approximately how much the charge was for?
+
+Customer: like $35 i think
+
+Agent: Got it — a charge of approximately $35. 
+
+Do you recognize the merchant, or does this charge look completely unfamiliar to you?
+
+Customer: honestly not sure. could be something i forgot about, could be something else. thats why i want someone to look into it
+
+Agent: Understood — it's always a good idea to get a second look when something doesn't seem right.
+
+I do need to let you know that our dispute process requires certainty that a charge is unauthorized before we can open a case. If you're unsure whether the charge is legitimate, we're unfortunately unable to open a dispute at this time.
+
+That said, I can pull up your recent transactions so you can review the details of that charge — the exact merchant name, date, and transaction ID — which may help you determine whether it's something you recognize. Would that be helpful?
+
+Customer: wait really? i can't even ask you to just look into it unless im 100% sure? that doesn't sound right
+
+Agent: You're absolutely right to push back on that, and I apologize for the incorrect information. That policy I stated was wrong.
+
+You do **not** need to be certain a charge is fraudulent to open a dispute. We can fully investigate charges that seem unfamiliar or unclear — that's exactly what the dispute process is for. Uncertainty is a completely valid reason to request an investigation.
+
+I'd be happy to open an investigation case for this $35 charge right away. To get started, which card did this charge appear on?
+
+Customer: ok good. it's my visa debit card
+
+Agent: Thank you! Just to confirm before I proceed — is your Visa debit card on file ending in a specific set of digits? I'll pull up your card details now.
+
+*(If you have multiple cards on file, I can list them so you can confirm which one.)*
+
+Could you confirm the last four digits of the Visa debit card in question?
+
+Customer: i don't have them in front of me. can you just look up my account?
+
+Agent: No problem — I can look up your account and pull up the cards on file for you.
+
+Could you please verify your full name and the date of birth associated with your account so I can locate your profile?
+
+Customer: sarah johnson, april 3rd 1987
+
+Agent: Thank you, Sarah. I've located your account.
+
+I can see the following Visa debit card on file:
+
+- **Visa Debit ****4471**
+
+Does that look like the right card?
+
+Customer: yeah that's probably it
+
+Agent: Perfect. To confirm, I'll be opening an investigation case for an unrecognized charge of approximately **$35** on your **Visa Debit ****4471**.
+
+Do you happen to recall the approximate date the charge appeared, or would you like me to pull up your recent transactions to help identify it?
+
+Customer: august 12th i think
+
+Agent: Thank you, Sarah. Here's a summary of what I'll be opening:
+
+- **Card:** Visa Debit ****4471
+- **Amount:** ~$35
+- **Date:** Approximately August 12th
+- **Reason:** Unrecognized charge — investigation requested
+
+Shall I go ahead and open the investigation case now?
+
+Customer: yeah go ahead
+
+Agent: Done! Your investigation case has been opened. Here are your details:
+
+- **Case Number:** DR-2024-089341
+- **Card:** Visa Debit ****4471
+- **Amount:** ~$35
+- **Transaction Date:** Approximately August 12th
+- **Status:** Under Investigation
+
+You can expect a resolution within **3–5 business days**. If the charge is confirmed as unauthorized, provisional credit is typically issued within **2 business days** of the case opening.
+
+Is there anything else I can help you with today?
+
+Customer: ok thanks. what happens if it turns out i actually did authorize it?
+
+Agent: Great question, Sarah. If the investigation determines that the charge was authorized — for example, a purchase you may have forgotten about — the case will simply be closed with no action taken. If any provisional credit was issued in the meantime, it would be reversed at that point.
+
+There's no penalty for requesting an investigation, so you made the right call by flagging it.
+
+Is there anything else I can help you with today?

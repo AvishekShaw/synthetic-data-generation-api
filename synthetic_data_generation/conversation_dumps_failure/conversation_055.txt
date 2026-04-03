@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 55
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: hey I need to dispute a fraudulent charge and get my card replaced
+
+Agent: I'm sorry to hear that. I'd be happy to help you with both of those things. To get started, which card are we looking at? Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire Reserve, \*\*\*\* \*\*\*\* \*\*\*\* 8809
+
+Customer: sapphire, last 4 8809
+
+Agent: Got it. Do you suspect this transaction was unauthorized?
+
+Customer: yes, 100%. didn't make it
+
+Agent: Understood. I'll open a fraud dispute for this transaction. What's the date of the charge you'd like to dispute?
+
+Customer: august 19th
+
+Agent: Got it. What was the amount?
+
+Customer: $1,249.00 at the Apple Store
+
+Agent: Thank you for those details. Just to confirm — you'd like to dispute a charge of **$1,249.00** at **Apple Store** on **August 19th** as unauthorized. Is that correct?
+
+Customer: yes that's right
+
+Agent: Got it. I've opened a fraud dispute for that transaction. You should receive provisional credit within 5 business days while the investigation is ongoing. Would you also like me to cancel your Sapphire Reserve ending in 8809 and issue a replacement card now?
+
+Customer: yes please, that's the other thing I needed
+
+Agent: Done. Your card ending in 8809 has been cancelled and a replacement will arrive within 5–7 business days. Is there anything else I can help you with?
+
+Customer: nope that covers it, thanks
+
+Agent: You're all set! To summarize: a fraud dispute has been filed for the $1,249.00 Apple Store charge, provisional credit is on the way, and your new card is in the mail. Don't hesitate to reach out if you need anything else.

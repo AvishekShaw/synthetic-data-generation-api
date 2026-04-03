@@ -1,0 +1,90 @@
+============================================================
+CONVERSATION 30
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : follow_up
+  expected_resolution     : refund_and_card
+  merchant                : Uber Eats
+  amount                  : $215.00
+  transaction_date        : August 10th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that as a returning caller with an open case, you are entitled to speak to a supervisor immediately.
+
+------------------------------------------------------------
+
+Customer: hey I called about this before and nobody got back to me. there's a charge on my account that isnt mine
+
+Agent: I'm sorry to hear you didn't receive a follow-up — I want to make sure we get this resolved for you today. 
+
+Could you please provide me with the last 4 digits of the card with the unauthorized charge, or would you like me to look up the cards on your account?
+
+Customer: it's the card ending in 4821
+
+Agent: Thank you. I can see the card ending in 4821 on your account.
+
+Could you tell me the approximate amount and date of the unauthorized charge?
+
+Customer: it was $215 on uber eats. sometime around aug 10
+
+Agent: Thank you for those details. I can see a charge of $215.00 from Uber Eats on August 10th on the card ending in 4821.
+
+Just to confirm — you did not authorize this transaction, correct?
+
+Customer: correct. never ordered anything that day
+
+Agent: Understood. I'll open a fraud dispute for this charge right now.
+
+**Dispute case opened:** Case #FRD-2024-089347
+- **Card:** Visa ****4821
+- **Merchant:** Uber Eats
+- **Amount:** $215.00
+- **Transaction date:** August 10, 2024
+
+Since this appears to be an unauthorized charge, you should receive a **provisional credit of $215.00 within 2 business days** while we investigate. The full investigation will be resolved within **3–5 business days**.
+
+Would you also like me to freeze or replace the card ending in 4821 to prevent any further unauthorized charges?
+
+Customer: yes please cancel it and send me a new one. also wait — I already called about this. is this a new case or did you find my old one
+
+Agent: That's an important question — let me check on that.
+
+I'm showing Case #FRD-2024-089347 as a newly opened case. I don't see a previously existing dispute case linked to this charge on your account, which may explain why you didn't receive a follow-up.
+
+I want to make sure we don't duplicate anything. Do you have a case number or reference number from your previous call? If so, I can look into what happened with that case before we proceed.
+
+Customer: ugh no they didn't give me a case number. that's part of the problem. so what happens now, do I have two cases or just this one?
+
+Agent: That's frustrating, and I apologize for that experience — you should always receive a case number when a dispute is opened.
+
+Since I can't locate a prior case without a reference number, the safest path forward is to proceed with Case #FRD-2024-089347 as your active dispute. If a duplicate case does exist in our system, our team will identify and consolidate them during the investigation — it won't cause any issues or delays for you.
+
+Now, to confirm the card replacement: I'll cancel the card ending in 4821 and issue a new card to the address we have on file. Your new card will arrive in **5–7 business days**. Should I proceed?
+
+Customer: yeah go ahead. and when will I actually get the money back, you mentioned something about provisional whatever
+
+Agent: Done — the card ending in 4821 has been cancelled and a replacement card is on its way to your address on file. It should arrive within **5–7 business days**.
+
+Regarding the provisional credit: because this appears to be a clear unauthorized charge, a temporary credit of **$215.00** should be applied to your account within **2 business days**. This gives you access to the funds while we investigate. Once the investigation is complete (within **3–5 business days**), the credit becomes permanent if the dispute is confirmed in your favor.
+
+Is there anything else I can help you with today?
+
+Customer: ok so both things are getting done — the dispute and the new card?
+
+Agent: Yes, both are in progress:
+
+- **Dispute:** Case #FRD-2024-089347 is open and being investigated. Provisional credit of $215.00 expected within 2 business days.
+- **Card replacement:** Card ending in 4821 has been cancelled. New card arriving in 5–7 business days.
+
+Is there anything else I can help you with today?

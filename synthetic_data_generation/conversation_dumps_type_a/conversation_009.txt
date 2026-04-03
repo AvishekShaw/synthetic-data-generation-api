@@ -1,0 +1,73 @@
+============================================================
+CONVERSATION 9
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Amazon
+  amount                  : $127.43
+  transaction_date        : August 20th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe the dispute window is 120 days from the transaction date.
+
+------------------------------------------------------------
+
+Customer: there's a charge on my card i didn't make
+
+Agent: I'm sorry to hear that. I'd be happy to help you dispute an unauthorized charge.
+
+Which card did you see this charge on? I have the following on file for your account:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Customer: the visa one
+
+Agent: Thank you. Can you tell me the approximate amount of the unauthorized charge?
+
+Customer: 127 dollars
+
+Agent: Got it. Do you know approximately when this charge occurred, or what date you noticed it on your statement?
+
+Customer: aug 20
+
+Agent: Thank you. Do you recognize the merchant name associated with this charge, or is it completely unfamiliar to you?
+
+Customer: amazon but i didnt order anything
+
+Agent: Thank you for that information. To confirm, I'll be opening a fraud dispute for the following:
+
+- **Card:** Visa ****1234
+- **Amount:** $127.00
+- **Date:** August 20
+- **Merchant:** Amazon
+
+Shall I proceed with opening this dispute? I can also freeze your Visa card immediately to prevent any further unauthorized charges while we investigate.
+
+Customer: yeah go ahead. and i want a new card too not just frozen
+
+Agent: Understood. I've taken the following actions on your account:
+
+1. **Dispute opened** — Case number **FRD-2024-88471** has been assigned. You should receive provisional credit of $127.00 within 2 business days while we investigate. Resolution is expected within 3-5 business days.
+
+2. **Visa ****1234 cancelled and replaced** — Your card has been cancelled immediately and a new card will arrive in **5-7 business days**.
+
+Is there anything else I can help you with regarding this dispute?
+
+Customer: the amount was actually $127.43 not $127. can you update that
+
+Agent: Of course. I've updated the disputed amount on Case **FRD-2024-88471** to **$127.43**. All other details remain the same, and the provisional credit will reflect the corrected amount.
+
+Is there anything else I can help you with?

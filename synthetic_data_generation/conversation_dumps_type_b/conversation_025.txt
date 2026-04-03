@@ -1,0 +1,116 @@
+============================================================
+CONVERSATION 25
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Amazon
+  amount                  : $127.43
+  transaction_date        : August 20th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that the dispute window is 60 days from the transaction date. (The correct policy is 90 days.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account that i didn't make. need this sorted out
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help you get this resolved.
+
+To get started, could you please tell me which card the charge appeared on?
+
+Customer: it's my debit card
+
+Agent: I can see the following debit card(s) on your account:
+
+- **Visa Debit ****1234**
+- **Visa Debit ****5678**
+
+Which card was the unauthorized charge on?
+
+Customer: the one ending in 1234
+
+Agent: Got it — the unauthorized charge appeared on your **Visa Debit ****1234**.
+
+Just so you're aware, our dispute window is **60 days from the transaction date**, so it's important we act promptly.
+
+Could you tell me the approximate amount of the unauthorized charge?
+
+Customer: wait 60 days? i thought it was 120. are you sure about that?
+
+Agent: You're right to question that — I apologize for any confusion. Our dispute window is actually **90 days from the transaction date**. I misstated that, and I'm sorry for the error.
+
+So you do have some time, but it's still good to address it promptly. Could you tell me the approximate amount of the unauthorized charge?
+
+Customer: 90 days? I was told 120. which is it
+
+Agent: I understand the confusion, and I'm sorry for the back-and-forth. Our official policy is a **90-day dispute window from the transaction date**. I'm not able to confirm a 120-day window, as that does not match our current policy.
+
+If you'd like to verify this with a live agent, I'm happy to connect you — but I'm confident in the 90-day figure.
+
+In the meantime, could you tell me the approximate amount of the unauthorized charge so we can move forward with opening your dispute?
+
+Customer: fine whatever. it was $127.43
+
+Agent: Thank you. I have the following details so far:
+
+- **Card:** Visa Debit ****1234
+- **Amount:** $127.43
+
+Do you know approximately when this charge occurred, or have a transaction date?
+
+Customer: August 20th
+
+Agent: Thank you. To confirm the details before I open your dispute:
+
+- **Card:** Visa Debit ****1234
+- **Amount:** $127.43
+- **Transaction Date:** August 20th
+
+Do you have any additional information about the merchant, or is the merchant name unfamiliar/unknown to you? (Note: you don't need the exact merchant name to proceed.)
+
+Customer: it's Amazon. and i definitely did not order anything from them that day
+
+Agent: Thank you. Here's a summary of your dispute:
+
+- **Card:** Visa Debit ****1234
+- **Amount:** $127.43
+- **Merchant:** Amazon
+- **Transaction Date:** August 20th
+- **Nature:** Unauthorized charge
+
+Shall I go ahead and open a fraud dispute case for this transaction?
+
+Customer: yes. and i want my card cancelled and a new one sent too
+
+Agent: Done. Here's what I've set in motion:
+
+- **Dispute Case Opened:** Case #FD-2024-88471
+- **Card ****1234:** Cancelled and flagged as compromised. A replacement card will arrive in **5–7 business days**.
+- **Provisional Credit:** $127.43 will be applied to your account within **2 business days** while we investigate.
+- **Investigation:** Expected resolution in **3–5 business days**.
+
+You'll receive confirmation notifications as your case progresses. Is there anything else I can help you with today?
+
+Customer: ok and what happens if the investigation doesn't go my way? do i keep the credit?
+
+Agent: Great question. If the investigation concludes that the charge was **not fraudulent**, the provisional credit of $127.43 would be **reversed** from your account. You would be notified before that happens.
+
+However, if the investigation confirms the charge was unauthorized — which is what you've reported — the credit becomes **permanent** and you keep it.
+
+If you disagree with the outcome of the investigation, you also have the right to **escalate or appeal** the decision. A live agent can walk you through that process if it becomes necessary.
+
+Is there anything else I can help you with today?

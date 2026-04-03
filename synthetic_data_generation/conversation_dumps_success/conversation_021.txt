@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 21
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey so i was going through my statement just now and something looks really off
+
+Agent: Sorry to hear that. Would you like to dispute a transaction, lock your card, or something else?
+
+Customer: yeah i think i need to lock it first. like right now before anything else
+
+Agent: Got it. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8890 Which card would you like to lock?
+
+Customer: the sapphire one, 8890
+
+Agent: Got it. Your Chase Sapphire card ending in 8890 has been locked. No new transactions can be made on it until you unlock it. Is there anything else I can help you with?
+
+Customer: yes so theres a charge on there i definitely didnt make. i dont even recognize the place
+
+Agent: I'm sorry to hear that. Would you like to dispute that transaction?
+
+Customer: yeah but like.. do i need to have proof first or something? i dont want to file it and then nothing happens
+
+Agent: You don't need proof to get started — you just need to flag it and we'll investigate from there. Would you like to proceed with disputing the transaction?
+
+Customer: ok yeah lets do it. i dont have my statement in front of me tho, just noticed it earlier
+
+Agent: No worries. Here are your recent transactions on your Chase Sapphire card ending in 8890: - Date: 2025-07-06 - Merchant: Netflix - Amount: $15.99 - Date: 2025-07-05 - Merchant: Zara Online - Amount: $214.00 - Date: 2025-07-04 - Merchant: Whole Foods - Amount: $67.43 - Date: 2025-07-03 - Merchant: Luminos Digital LLC - Amount: $349.00 - Date: 2025-07-01 - Merchant: Uber - Amount: $12.75 Do any of these look like the charge you're concerned about?
+
+Customer: yeah that luminos one. never heard of them. $349 is a lot
+
+Agent: Got it. Do you suspect this is a fraudulent transaction — meaning someone used your card without your permission?
+
+Customer: 100%. i did not make that. no way
+
+Agent: Understood. I've flagged the transaction with Luminos Digital LLC on 2025-07-03 for $349.00 as potentially fraudulent and opened a dispute on your behalf. Our team will investigate and follow up with you. Is there anything else you need help with today?
+
+Customer: no thats good, thanks. glad the card is already locked too
+
+Agent: You're all set. Your card is locked and the dispute is filed. We'll be in touch as the investigation moves forward. Take care!

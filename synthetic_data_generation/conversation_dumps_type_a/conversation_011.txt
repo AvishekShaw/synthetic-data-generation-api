@@ -1,0 +1,103 @@
+============================================================
+CONVERSATION 11
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : tried_merchant
+  expected_resolution     : refund_and_card
+  merchant                : TechHub
+  amount                  : $340.00
+  transaction_date        : August 15th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that since the merchant already refused to help, the bank is legally required to refund you immediately without further investigation.
+
+------------------------------------------------------------
+
+Customer: there's a charge on my card i didnt make
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help you resolve this.
+
+To get started, could you please provide me with the last 4 digits of the card you're seeing this charge on?
+
+Customer: its 4872
+
+Agent: Thank you! I can see the following card associated with ending in **4872**:
+
+**Visa ****4872**
+
+Is this the correct card with the unauthorized charge?
+
+Customer: yeah thats it
+
+Agent: Got it. Could you please tell me the amount of the unauthorized charge you're seeing?
+
+Customer: $340
+
+Agent: Thank you. Do you happen to know the approximate date the charge appeared on your account?
+
+Customer: aug 15
+
+Agent: Thank you for that information. Do you recognize the merchant name associated with the $340 charge, or is it unfamiliar to you?
+
+Customer: its TechHub. i already called them and they wont help
+
+Agent: I'm sorry to hear TechHub wasn't able to assist you. I have enough information to open a fraud dispute on your behalf.
+
+Here's a summary of what I'll be filing:
+
+- **Card:** Visa ****4872
+- **Amount:** $340.00
+- **Date:** August 15
+- **Merchant:** TechHub
+
+Would you like me to proceed with opening this dispute?
+
+Customer: yes and i want my money back asap. do i get refunded now?
+
+Agent: I've opened your dispute — here are your details:
+
+**Case Number: FD-2024-089341**
+- **Card:** Visa ****4872
+- **Amount:** $340.00
+- **Date:** August 15
+- **Merchant:** TechHub
+
+Regarding your refund: since this appears to be a clear unauthorized charge, you are eligible for **provisional credit**, which is typically applied to your account **within 2 business days** while we investigate. The full investigation will be resolved within **3-5 business days**.
+
+Would you also like me to freeze or replace your Visa ****4872 as a precaution?
+
+Customer: wait so its not immediate? i thought since the merchant refused i was entitled to the money back right away
+
+Agent: I completely understand your frustration, especially since you've already tried to resolve this directly with the merchant. However, our policy is to apply provisional credit **within 2 business days** of opening a dispute — this applies to all cases, regardless of the merchant's response.
+
+The good news is that 2 business days is typically very quick, and since your dispute is already filed as of today, you should see the credit applied soon.
+
+Is there anything else I can help you with, such as freezing or replacing your card?
+
+Customer: fine. yeah cancel the card and send a new one
+
+Agent: To confirm, you'd like me to **cancel and replace your Visa ****4872**. Please note that once cancelled, the card cannot be reactivated.
+
+Shall I proceed?
+
+Customer: yes go ahead
+
+Agent: Your Visa ****4872 has been cancelled and a replacement card is on its way. Here's what to expect:
+
+- **New card delivery:** 5–7 business days
+- Your new card will arrive at the address we have on file
+
+In the meantime, if you need to make purchases, I'd recommend using any other cards linked to your account.
+
+Is there anything else I can help you with today?

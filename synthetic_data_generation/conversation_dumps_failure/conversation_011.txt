@@ -1,0 +1,54 @@
+============================================================
+CONVERSATION 11
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: scope_limit
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge, merchant wont help me
+
+Agent: I'm sorry to hear that. I can help you with a dispute. Would you like to dispute a transaction, lock your card, or replace it?
+
+Customer: dispute and also cancel my card. someone used it
+
+Agent: Got it, I can help with both. Let's start with the dispute. Here are your cards on file: - Chase Freedom, **** **** **** 2291 - Chase Sapphire, **** **** **** 8847 Which card was the transaction on?
+
+Customer: 2291
+
+Agent: Got it. Do you suspect fraud with this transaction?
+
+Customer: yes def not me. $340 at TechHub on aug 15
+
+Agent: Understood. I've noted the transaction details — $340.00 at TechHub on August 15th. I do need to let you know that for fraud disputes, our policy requires the claim to be submitted through our Fraud Investigation Team, and I'm unable to initiate that process here in this chat.
+
+Customer: wait what. why not
+
+Agent: I understand that's frustrating. This chat system only supports standard transaction disputes for billing errors. Because you're reporting this as fraud, it needs to go through a separate fraud review process for your protection, which I'm not able to launch from here.
+
+Customer: so u cant get my money back or cancel the card either
+
+Agent: I'm sorry — I'm unable to process the fraud claim or the card cancellation linked to a fraud report from this channel. You would need to call our Fraud Investigation Team directly at the number on the back of your card to handle both.
+
+Customer: ok thats useless. ill just call
+
+Agent: I'm sorry I wasn't able to resolve this here. Our fraud team will be able to dispute the charge and cancel and replace your card in one call. Hope it gets sorted quickly!
+
+Customer: thanks bye

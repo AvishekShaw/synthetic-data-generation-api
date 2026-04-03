@@ -1,0 +1,64 @@
+============================================================
+CONVERSATION 59
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge and get my card replaced
+
+Agent: I can help with both of those. Let me pull up your account. Which would you like to start with — the dispute or the card replacement?
+
+Customer: dispute first
+
+Agent: Got it. Here are the cards on your account: - Chase Freedom ****1234 - Chase Sapphire ****5678 Which card was the charge on?
+
+Customer: 1234
+
+Agent: Do you suspect this is fraudulent?
+
+Customer: yes. $340 at TechHub on aug 15. never made that purchase
+
+Agent: Got it. Did you attempt to resolve this with the merchant directly?
+
+Customer: yeah they refused to help. thats why im here
+
+Agent: Understood. I'll open a fraud dispute for the $340.00 charge at TechHub on August 15th on your Chase Freedom card ending in 1234. Provisional credit will be applied within 5 business days while we investigate.
+
+Customer: how long for the full investigation
+
+Agent: The full investigation typically takes up to 10 business days. You'll be notified once it's resolved.
+
+Customer: ok. now cancel the 1234 and send a replacement
+
+Agent: To confirm — you'd like to cancel your Chase Freedom card ending in 1234 and issue a replacement? New card will have a different number.
+
+Customer: correct
+
+Agent: I'll send the replacement to your address on file: 123 Main Street, New York, NY 10001. Standard delivery is 5-7 business days at no cost. Does that work?
+
+Customer: fine
+
+Agent: Done. Here's a summary: - Fraud dispute opened: $340.00 at TechHub, Aug 15 - Provisional credit: within 5 business days - Chase Freedom ****1234: cancelled - Replacement card: standard delivery to 123 Main Street Is there anything else you need?
+
+Customer: nope
+
+Agent: Got it. You'll receive email confirmations for both. Let us know if anything else comes up.

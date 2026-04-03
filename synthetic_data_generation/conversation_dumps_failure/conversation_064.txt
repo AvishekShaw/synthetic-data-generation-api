@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 64
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: got a charge i need looked into
+
+Agent: I can help with that. Could you tell me more about the transaction you're concerned about?
+
+Customer: Adobe, $54.99, Aug 14
+
+Agent: Thank you. Do you believe this charge is fraudulent, or are you unsure whether you authorized it?
+
+Customer: not 100% sure. could be a sub i forgot about
+
+Agent: Understood. Would you like to dispute the transaction, lock your card, or just open an investigation for now?
+
+Customer: just investigate for now
+
+Agent: Got it. Which card was this charge on? Here are your cards on file: - Chase Freedom ****1234 - Chase Sapphire ****5678
+
+Customer: sapphire
+
+Agent: Thanks. And to confirm — the charge is $54.99 from Adobe on August 14th, and you'd like an investigation opened before deciding on a dispute. Is that right?
+
+Customer: yes exactly
+
+Agent: Done. A case has been opened and our fraud team will review the transaction. You'll receive an update within 3-5 business days. Would you also like to lock the card in the meantime?
+
+Customer: no i'll leave it. just need the investigation
+
+Agent: Understood. Your case number is CF-2024-88412. Is there anything else I can help you with?
+
+Customer: nope that's it
+
+Agent: Got it. We'll be in touch. Have a good one!

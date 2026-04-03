@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 52
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: hey i need to flag a suspicious charge on my account
+
+Agent: I can help with that. Which card was the charge on? Here are the cards I have on file: - Chase Freedom **** 1234 - Chase Sapphire **** 5678
+
+Customer: sapphire one
+
+Agent: Got it. Let me pull up your recent transactions on your Chase Sapphire **** 5678. Can you tell me roughly when the charge occurred?
+
+Customer: august 12th, around $34.99
+
+Agent: Here are transactions from around that date on your Chase Sapphire **** 5678: - Aug 11 — NETFLIX.COM — $15.49 - Aug 12 — CLARKS SUBSCRIPTIONS — $34.99 - Aug 12 — WHOLE FOODS #0472 — $67.23 - Aug 13 — SHELL OIL — $41.00 Does any of these look like the charge in question?
+
+Customer: probably the clarks one but im not 100% sure
+
+Agent: Understood. Do you want me to open an investigation on that charge? You don't need to be certain — we can look into it without formally disputing it yet.
+
+Customer: yeah that's what i want, just have someone look at it
+
+Agent: Got it. A few quick questions — is it possible a family member or someone else with access to your card made this charge?
+
+Customer: maybe, haven't checked with my wife yet
+
+Agent: No problem. I'll flag the CLARKS SUBSCRIPTIONS charge of $34.99 on Aug 12 for investigation. You'll hear back within 3–5 business days. In the meantime, do you want to lock your card as a precaution?
+
+Customer: no need for that yet, let's see what comes back first
+
+Agent: Makes sense. Your case has been opened. Reference number is **CAS-20240812-4471**. You'll receive an update via email within 3–5 business days. Is there anything else I can help you with?
+
+Customer: nope that's it thanks
+
+Agent: You're all set. Don't hesitate to reach out if anything changes or if you want to escalate to a formal dispute. Have a good one!

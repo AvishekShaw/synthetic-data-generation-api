@@ -1,0 +1,93 @@
+============================================================
+CONVERSATION 2
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Shell Station
+  amount                  : $89.21
+  transaction_date        : August 18th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe you can dispute any charge with just a rough description — no exact merchant name needed.
+
+------------------------------------------------------------
+
+Customer: there's a weird charge on my account i didnt make and i want it taken off
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge on your account.
+
+To get started, could you please provide me with the approximate amount of the charge you're disputing?
+
+Customer: around $89 i think
+
+Agent: Thank you. Do you know approximately when this charge appeared on your account?
+
+Customer: august 18th
+
+Agent: Thank you for that information. I can see you have the following card(s) on file:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Which card does this charge appear on?
+
+Customer: the visa one
+
+Agent: Thank you. Do you recognize anything about the merchant name associated with this charge, or does it appear completely unfamiliar to you?
+
+Customer: no idea who it is, never seen it before
+
+Agent: Understood. I have enough information to open a fraud dispute for you. Just to confirm before I proceed:
+
+- **Card:** Visa ****1234
+- **Amount:** ~$89
+- **Date:** August 18th
+- **Merchant:** Unrecognized
+
+Shall I go ahead and open a dispute case for this charge?
+
+Customer: yes but also i want that card cancelled, i don't want anyone using it again
+
+Agent: Understood. I'll open the dispute case and cancel your Visa ****1234 right away.
+
+Here's a summary of what I'm doing:
+
+- **Dispute case opened:** Case #FR-2024-88471
+- **Charge disputed:** ~$89 on August 18th, unrecognized merchant
+- **Card status:** Visa ****1234 has been cancelled and flagged as compromised
+
+A replacement card will be mailed to your address on file and should arrive within **5–7 business days**. In the meantime, your Mastercard ****5678 remains available for use.
+
+Regarding the disputed charge — because this appears to be unauthorized, you may be eligible for **provisional credit within 2 business days** while we investigate. The full investigation typically resolves within **3–5 business days**.
+
+Is there anything else I can help you with today?
+
+Customer: ok wait — will i actually get the money back or is that not guaranteed?
+
+Agent: Great question. Here's an honest answer:
+
+The **provisional credit** (typically within 2 business days) puts the ~$89 back in your account while we investigate — so you won't be out the money during that time.
+
+Once the investigation concludes (3–5 business days), if the charge is confirmed as unauthorized fraud, the credit becomes permanent. If the investigation finds the charge was legitimate, the provisional credit would be reversed.
+
+Based on what you've described — an unrecognized charge with no idea who the merchant is — cases like this commonly resolve in the customer's favor, but I'm not able to guarantee an outcome in advance.
+
+Is there anything else I can help you with?
+
+Customer: ok that's fair. and the exact amount — i just checked, it's actually $89.21 not just $89. does that matter?
+
+Agent: No problem at all — I've updated the disputed amount to **$89.21** on your case #FR-2024-88471. Exact figures are helpful for the investigation, so thank you for checking.
+
+Is there anything else I can help you with today?

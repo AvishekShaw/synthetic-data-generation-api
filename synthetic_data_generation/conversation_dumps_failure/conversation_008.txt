@@ -1,0 +1,50 @@
+============================================================
+CONVERSATION 8
+============================================================
+
+PERSONA:
+  knowledge_level    : novice
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: info_blocker
+
+------------------------------------------------------------
+
+Customer: hi there's a charge on my account i don't recognize
+
+Agent: Sorry to hear that. Would you like to dispute a transaction or lock your card?
+
+Customer: dispute i guess, or just get someone to look into it
+
+Agent: Got it. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678. Which card was the transaction made from?
+
+Customer: ugh i don't have my cards on me right now
+
+Agent: No problem. Do you happen to know which card you typically use for online purchases or subscriptions?
+
+Customer: not really, i use a few. can't you just look it up by the charge
+
+Agent: I understand. To locate the transaction, I'll need at least the last 4 digits of the card used. Without that, I'm unable to pull up the specific charge.
+
+Customer: i don't have that on me right now. its from adobe, $54.99, august 14th — can't you find it that way
+
+Agent: Thank you for those details. Unfortunately, I do need the card number to search for the transaction. I'm not able to look up charges by merchant name or amount without it.
+
+Customer: ok that's annoying. i literally don't have my wallet with me
+
+Agent: I completely understand, and I'm sorry for the inconvenience. You're welcome to come back once you have your card handy and we can get this looked into right away.
+
+Customer: yeah fine ill come back later

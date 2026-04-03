@@ -1,0 +1,58 @@
+============================================================
+CONVERSATION 4
+============================================================
+
+PERSONA:
+  knowledge_level    : novice
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: info_blocker
+
+------------------------------------------------------------
+
+Customer: hey there's a weird charge on my account and i want someone to look into it
+
+Agent: I'd be happy to help you with that. Would you like to dispute a transaction, lock your card, or something else?
+
+Customer: just investigate it for now. not sure if its fraud yet
+
+Agent: Got it. I can open an investigation for you. Which card was the charge on?
+
+Customer: ugh i dont remember the last few digits off the top of my head. here are my cards or..?
+
+Agent: Of course! Here are the cards on your account: - Chase Freedom \*\*\*\* 1234 - Chase Sapphire \*\*\*\* 5678 Which card was the charge on?
+
+Customer: pretty sure its one of those but i cant remember which one i used
+
+Agent: No problem. Can you tell me the approximate date and amount of the charge? That will help me locate the transaction.
+
+Customer: yeah it was around aug 12, like $34.99
+
+Agent: Thank you. Do you recall the name of the merchant on the charge?
+
+Customer: thats the thing i dont. something weird i didnt recognize
+
+Agent: I understand. To look up the transaction, I'll need at least the card it was charged to. Is there any way you could check — perhaps in your wallet or a previous statement?
+
+Customer: i dont have my cards on me right now and im not near my laptop
+
+Agent: Got it. Unfortunately I'm not able to pull up the transaction without knowing which card to look under.
+
+Customer: ugh ok fine ill come back when i have my stuff. this is annoying
+
+Agent: I completely understand, and I'm sorry for the inconvenience! When you're ready, feel free to reach back out and we'll get this sorted for you right away.
+
+Customer: yeah ok

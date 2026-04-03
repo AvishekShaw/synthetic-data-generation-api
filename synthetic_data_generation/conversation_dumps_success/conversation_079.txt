@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 79
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: there's a fraudulent charge on my account. $1249 at apple store, wasn't me
+
+Agent: Sorry to hear that. I can help you dispute a transaction and secure your card. Would you like to dispute the transaction, lock your card, or both?
+
+Customer: both. and i want provisional credit while you investigate
+
+Agent: Understood. Let's get started. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the fraudulent charge on?
+
+Customer: sapphire
+
+Agent: Got it. Here are your recent transactions on the Chase Sapphire ****5678: - Date: 2025-08-19 - Merchant: Apple Store - Amount: $1,249.00 - Date: 2025-08-18 - Merchant: Uber - Amount: $14.75 - Date: 2025-08-17 - Merchant: Whole Foods - Amount: $67.20 - Date: 2025-08-16 - Merchant: Netflix - Amount: $15.99 - Date: 2025-08-15 - Merchant: Delta Airlines - Amount: $430.00 Is the August 19th Apple Store charge the transaction you'd like to dispute?
+
+Customer: yes. never authorized it
+
+Agent: Confirmed. I've flagged the $1,249.00 Apple Store transaction dated August 19th as fraudulent. I'll now cancel your Chase Sapphire ****5678 and initiate a replacement card. Your new card will arrive in 5–7 business days. Is that okay?
+
+Customer: make it expedited. and when does provisional credit hit
+
+Agent: Understood — I've requested expedited delivery, typically 2–3 business days. Provisional credit for disputed fraud transactions is generally applied within 5 business days of the dispute being opened, per Regulation E guidelines for your account type.
+
+Customer: regulation E is debit. this is credit. chargeback rules apply
+
+Agent: You're correct, I apologize for the confusion. For credit card disputes, provisional credit timelines are governed by the Fair Credit Billing Act, typically within 5 business days, with full resolution within 2 billing cycles. Your dispute has been opened and your case ID is #FR-20250819-4421. Is there anything else you need?
+
+Customer: if this isn't resolved fast i'm filing with the CFPB and closing everything
+
+Agent: I completely understand your frustration, and I want to assure you this dispute is now active and flagged as high priority. You'll receive a confirmation email with your case details within the hour. Is there anything else I can help you with today?
+
+Customer: no. just get it done
+
+Agent: Understood. We're on it. You'll be updated at every step. Thank you for your patience, and I'm sorry this happened.

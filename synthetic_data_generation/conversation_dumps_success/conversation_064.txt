@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 64
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hi need help with a charge i don't recognize
+
+Agent: Sorry to hear that. I'd be happy to help you look into that. Could you tell me more about the transaction?
+
+Customer: Adobe, $54.99, August 14th
+
+Agent: Thank you for those details. There are a few ways I can help — would you like to dispute the charge, lock your card, or just open an investigation?
+
+Customer: investigation for now. not 100% sure i didn't authorize it
+
+Agent: Understood. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was this charge on?
+
+Customer: sapphire
+
+Agent: Got it. Let me pull up recent transactions on that card. Here are your recent transactions: - Adobe Inc, $54.99 — August 14 - Whole Foods, $32.10 — August 13 - Shell Gas, $61.40 — August 12 Is this the Adobe charge you're referring to?
+
+Customer: yes that one
+
+Agent: Noted. Can I ask — do you have any Adobe subscriptions, or could a family member have made this purchase?
+
+Customer: possibly a sub i forgot. hence why just investigation not dispute
+
+Agent: That makes sense. I've flagged the transaction for review. Our team will look into the merchant details and transaction history and follow up within 3–5 business days.
+
+Customer: ok. will i get provisional credit while you look into it
+
+Agent: Since this isn't a formal dispute yet, provisional credit won't be issued at this stage. If you decide to escalate to a dispute, you'd be eligible for provisional credit within 5 business days under Reg E guidelines.
+
+Customer: got it. keep it as investigation for now then
+
+Agent: Done. Your case has been opened and you'll hear back within 3–5 business days. Is there anything else I can help you with?
+
+Customer: nope that's it
+
+Agent: Sounds good. Take care, and don't hesitate to reach out if anything changes.

@@ -1,0 +1,77 @@
+============================================================
+CONVERSATION 5
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: minimal
+  prior_contact           : first_contact
+  expected_resolution     : hold
+  merchant                : Unknown
+  amount                  : $300.00
+  transaction_date        : August 17th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe freezing your card happens instantly and automatically blocks all pending charges.
+
+------------------------------------------------------------
+
+Customer: hey i need my card frozen asap there's something weird on my account
+
+Agent: I can freeze your card immediately. To make sure I freeze the right one, which card would you like frozen?
+
+Customer: my visa, the one ending in… hang on i don't have it in front of me. it's my main card, debit visa
+
+Agent: I can see a Visa Debit card ending in **1234** on your account. Would you like me to freeze that card now?
+
+Customer: yes that one, freeze it now please
+
+Agent: Your Visa Debit card ending in **1234** has been frozen immediately. No further transactions can be made on this card.
+
+Now, can you tell me more about the suspicious activity you noticed on your account?
+
+Customer: ok good. so there's this charge i don't recognize, some company i've never heard of
+
+Agent: Got it. Do you know approximately when this charge appeared on your account?
+
+Customer: like this week i think? maybe last few days, i don't have the statement open
+
+Agent: No problem — approximate dates are fine. Can you give me a rough idea of the charge amount?
+
+Customer: maybe like $60 something? not sure of the exact amount
+
+Agent: No problem — exact details aren't required to open a dispute. I have enough information to get started.
+
+I'm opening a fraud dispute case for an unrecognized charge of approximately $60, posted within the last few days to your Visa Debit card ending in **1234**.
+
+**Your case number is: FD-2024-847291**
+
+Our team will investigate and aim to resolve this within **3–5 business days**. If this is confirmed as unauthorized, provisional credit is typically issued within **2 business days** of the case opening.
+
+Would you also like me to cancel this card and send you a replacement, or would you prefer to keep it frozen for now while we investigate?
+
+Customer: yes get me a new card too
+
+Agent: To confirm, I'll be cancelling your Visa Debit card ending in **1234** and issuing a replacement card. This is permanent — your current card number will no longer work even if unfrozen.
+
+Can you confirm the mailing address on file is where you'd like the new card sent?
+
+Customer: yeah that's fine, whatever address you have is correct
+
+Agent: Your Visa Debit card ending in **1234** has been cancelled and a replacement card is on its way to the address on file. You can expect it to arrive in **5–7 business days**.
+
+To recap what's been done today:
+- ✅ Card ending in **1234** frozen and cancelled
+- ✅ Replacement card ordered (5–7 business days)
+- ✅ Fraud dispute opened — Case **FD-2024-847291**
+- ✅ Provisional credit being processed (within 2 business days)
+
+Is there anything else I can help you with today?

@@ -1,0 +1,63 @@
+============================================================
+CONVERSATION 30
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: look I already called about this like a week ago and nobody did anything
+
+Agent: I'm sorry to hear that. I'd like to help you get this resolved. Can you tell me a bit more about what the issue is?
+
+Customer: there's a charge on my account that's not mine. uber eats, $215, august 10th. I did NOT make this
+
+Agent: I understand your frustration. To confirm — you're saying you did not authorize this transaction at all?
+
+Customer: yes exactly. I already said that when I called. can someone just fix this
+
+Agent: Got it. I can help you dispute that transaction and take action on your card. Would you like to start with disputing the charge, or would you prefer to lock/cancel your card first?
+
+Customer: cancel the card. then get my money back
+
+Agent: Understood. Here are your cards on file: - Chase Freedom **** **** **** 3847 - Chase Sapphire **** **** **** 9201 Which card was the Uber Eats charge on?
+
+Customer: the freedom one
+
+Agent: Got it. Just to confirm — you'd like to cancel and replace the Chase Freedom **** 3847, correct?
+
+Customer: yes
+
+Agent: Your Chase Freedom **** 3847 has been cancelled. A replacement card will be mailed to your address on file within 5–7 business days. Would you like to proceed with disputing the $215.00 Uber Eats charge from August 10th now?
+
+Customer: yes please finally lol
+
+Agent: I've located the transaction. Since you're reporting this as unauthorized, I'm flagging it as fraud and opening a dispute. You should receive a confirmation by email within 24 hours. Do you have any questions about what happens next?
+
+Customer: how long till I get the money back
+
+Agent: Dispute investigations typically take up to 10 business days. You'll be notified of the outcome by email once it's resolved.
+
+Customer: ok. and last time nobody followed up. how do I make sure it doesn't happen again
+
+Agent: I understand your concern. I've noted your previous contact in the case, and your dispute has been escalated with a fraud flag, which means it will be prioritized. If you don't hear back within 10 business days, you can reference case number #FR-448821 when you follow up.
+
+Customer: ok good. that's all I needed
+
+Agent: You're all set. Your card has been cancelled and your dispute is in progress. Sorry again for the delay. Is there anything else I can help you with?

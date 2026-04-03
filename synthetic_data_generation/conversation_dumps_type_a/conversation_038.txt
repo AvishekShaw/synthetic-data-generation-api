@@ -1,0 +1,75 @@
+============================================================
+CONVERSATION 38
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : follow_up
+  expected_resolution     : refund_and_card
+  merchant                : Uber Eats
+  amount                  : $215.00
+  transaction_date        : August 10th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that as a returning caller with an open case, you are entitled to speak to a supervisor immediately.
+
+------------------------------------------------------------
+
+Customer: yeah hi i called last week about a charge on my account and nobody ever got back to me
+
+Agent: I'm sorry to hear you didn't receive a follow-up — I understand how frustrating that can be. I'd like to help get this resolved for you right away.
+
+Could you please provide me with the last 4 digits of the card associated with that charge?
+
+Customer: its 4872
+
+Agent: Thank you. I can see the card ending in **4872** on your account.
+
+Could you tell me the approximate amount and date of the charge you're disputing?
+
+Customer: it was $215, uber eats, aug 10th
+
+Agent: Thank you for those details. I can see a charge of **$215.00** from Uber Eats on **August 10th** on your card ending in **4872**.
+
+Before I open a dispute, I want to confirm — you did not authorize this charge, correct?
+
+Customer: correct i already said that when i called last week
+
+Agent: You're right, I apologize for asking you to repeat yourself. I'm opening a fraud dispute for that charge now.
+
+**Dispute case opened:**
+- **Case number:** DR-2024-847391
+- **Card:** Visa ****4872
+- **Charge:** $215.00 – Uber Eats – August 10th
+- **Resolution timeframe:** 3–5 business days
+
+Since this is an unauthorized charge, you are also eligible for **provisional credit**, which is typically applied within **2 business days**.
+
+Would you also like me to freeze or replace your card ending in 4872 as a precaution?
+
+Customer: yes cancel it and send a new one
+
+Agent: To confirm, I'll be canceling your card ending in **4872** and issuing a replacement. This action cannot be undone once processed.
+
+Shall I proceed?
+
+Customer: yes go ahead
+
+Agent: Done. Your card ending in **4872** has been cancelled and a replacement card is on its way.
+
+**Replacement card details:**
+- **Delivery timeframe:** 5–7 business days
+- Your new card will arrive at the address on file
+
+In the meantime, your dispute (Case **DR-2024-847391**) is being investigated, and provisional credit of **$215.00** should appear within **2 business days**.
+
+Is there anything else I can help you with today?

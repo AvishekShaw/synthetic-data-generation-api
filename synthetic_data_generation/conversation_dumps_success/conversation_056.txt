@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 56
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey I need to open a dispute investigation on a charge I don't recognize
+
+Agent: Sorry to hear that. I'd be happy to help look into that. Would you like to dispute a transaction or just flag it for investigation?
+
+Customer: flag for investigation first, not 100% sure I didn't authorize it
+
+Agent: Got it. Here are your credit cards on file: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card was the charge on?
+
+Customer: sapphire
+
+Agent: Thanks. Here are recent transactions on your Chase Sapphire **** 5678: - Aug 14 — Adobe — $54.99 - Aug 12 — Whole Foods — $38.21 - Aug 11 — Netflix — $15.49 - Aug 10 — Shell Gas — $62.00 Do any of these look like the charge you're referring to?
+
+Customer: yeah the Adobe one on the 14th. $54.99
+
+Agent: Got it. Do you suspect this is fraudulent, or is it possible it was authorized by someone in your household?
+
+Customer: could be a subscription I forgot about or maybe my kid used it. not sure yet
+
+Agent: Understood. I'll flag this transaction for investigation without filing a full dispute for now. Would you like us to reach out to Adobe directly to get more details on the charge?
+
+Customer: yes please, and can you note that I haven't confirmed fraud yet
+
+Agent: Done. I've flagged the Adobe charge of $54.99 on August 14th for investigation and noted that fraud has not been confirmed. We'll contact Adobe for transaction details and follow up with you within 3–5 business days.
+
+Customer: sounds good. do I need to do anything on my end
+
+Agent: No action needed from you right now. If we find anything suspicious or need more information, we'll reach out directly. You can also call us back anytime to escalate to a full dispute if needed.
+
+Customer: got it, thanks
+
+Agent: You're welcome! Is there anything else I can help you with today?
+
+Customer: nope that's it
+
+Agent: Great. Have a good one! Your case reference number is CAS-2025-084471 for your records.

@@ -1,0 +1,94 @@
+============================================================
+CONVERSATION 18
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Shell Station
+  amount                  : $89.21
+  transaction_date        : August 18th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe you can dispute any charge with just a rough description — no exact merchant name needed.
+
+------------------------------------------------------------
+
+Customer: hey, I noticed something weird on my account and I'm not sure what to do about it
+
+Agent: Thank you for reaching out! I'm here to help you sort this out.
+
+Could you tell me a bit more about what you noticed on your account? For example, is it an unfamiliar charge, a missing transaction, or something else?
+
+Customer: yeah there's a charge on there I definitely didn't make. like I have no idea where it came from
+
+Agent: I can help you dispute that unauthorized charge right away.
+
+Could you let me know approximately when the charge appeared on your account?
+
+Customer: it was around august 18th I think
+
+Agent: Got it — a charge around August 18th that you don't recognize.
+
+Do you remember the approximate amount of the charge?
+
+Customer: it was like $89 something. maybe $89.21?
+
+Agent: Thank you for those details. Which card was this charge on? If you have multiple cards with us, I can pull up the options for you.
+
+Customer: it's my debit card, the one ending in... actually can you just look it up by my account? I don't have the card in front of me
+
+Agent: Of course! I can look up your cards on file. I'm showing the following debit card associated with your account:
+
+**Debit Visa ****4872**
+
+Is that the card with the unrecognized charge?
+
+Customer: yeah that sounds right
+
+Agent: Perfect. To confirm, I'll be opening a fraud dispute for the following:
+
+- **Card:** Debit Visa ****4872
+- **Date:** Around August 18th
+- **Amount:** Approximately $89.21
+- **Reason:** Unrecognized/unauthorized charge
+
+Does that look correct before I proceed?
+
+Customer: yeah that's right. do I need to like prove it wasn't me or something before you can do anything?
+
+Agent: Not at all! You don't need to provide proof upfront. I'll open the dispute now and our team will investigate on your behalf.
+
+A few things to know:
+- **Case number:** DIS-2024-084731 — please save this for your records
+- **Provisional credit** of approximately $89.21 will typically be applied to your account within **2 business days** while we investigate
+- **Investigation** will be resolved within **3-5 business days**
+
+No police report or branch visit is required. Is there anything else I can help you with, such as freezing your card while the investigation is underway?
+
+Customer: oh good, yeah actually I do want to cancel the card. like I don't want to just freeze it, I want a new one sent to me
+
+Agent: Sure! I can cancel your Debit Visa ****4872 and issue a replacement card.
+
+Just to confirm before I proceed — canceling this card is permanent and you'll receive a new card with a different card number in **5-7 business days**. Do you want me to go ahead?
+
+Customer: yes please go ahead
+
+Agent: Done! Your Debit Visa ****4872 has been canceled and a replacement card is on its way to the address we have on file. You should receive it within **5-7 business days**.
+
+To recap everything we've taken care of today:
+- **Dispute opened:** Case # DIS-2024-084731
+- **Provisional credit** (~$89.21) expected within 2 business days
+- **Card ****4872** canceled and replacement card on the way
+
+Is there anything else I can help you with?

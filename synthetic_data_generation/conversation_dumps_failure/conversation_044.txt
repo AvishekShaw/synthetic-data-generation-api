@@ -1,0 +1,64 @@
+============================================================
+CONVERSATION 44
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize. around $34.99 on august 12th
+
+Agent: I'd be happy to help you look into that. To get started, which account or card did you see this charge on?
+
+Customer: my debit card i think. or maybe credit idk i'd have to check
+
+Agent: No problem. Here are the cards on your account: - Chase Freedom Unlimited, \*\*\*\* \*\*\*\* \*\*\*\* 4821 - Chase Total Checking Debit, \*\*\*\* \*\*\*\* \*\*\*\* 3307 Which one would you like me to pull up?
+
+Customer: the 3307 one
+
+Agent: Got it. Here are recent transactions on that card around August 12th: - Aug 11 — NETFLIX.COM — $15.49 - Aug 12 — CLICKSUB MEDIA — $34.99 - Aug 13 — WALGREENS #0847 — $12.30 Do any of these look like the charge you're referring to?
+
+Customer: yeah probably the clicksub one. i have no idea what that is
+
+Agent: Understood. Do you think it's possible a family member made this purchase, or that it could be a subscription you signed up for at some point?
+
+Customer: maybe? i'm not 100% sure. that's why i want someone to actually look into it
+
+Agent: That makes sense. I can open an investigation on that transaction. This typically takes 5–10 business days for our team to review.
+
+Customer: 5 to 10 days seems like a lot. is there anything faster
+
+Agent: I understand the frustration. Unfortunately that's the standard review window. You'll receive updates by email as the investigation progresses.
+
+Customer: ok well if nothing happens i'm taking this to the cfpb. just so you know
+
+Agent: I completely understand. Your concern has been noted. I've opened an investigation on the $34.99 CLICKSUB MEDIA charge from August 12th. You'll get a confirmation email shortly with a case number.
+
+Customer: ok good. do i need to lock the card too or just wait
+
+Agent: That's up to you. Since you're not certain it's fraud yet, you can wait and see what the investigation finds. But if you'd feel safer, I can lock the card now and we can issue a replacement.
+
+Customer: let's just leave it for now. if it comes back as fraud then yeah replace it
+
+Agent: Sounds good. Your investigation is open and we'll be in touch within 5–10 business days. Is there anything else I can help you with?
+
+Customer: no that's it thanks
+
+Agent: You're all set. Don't hesitate to reach out if anything else comes up. Have a good one.

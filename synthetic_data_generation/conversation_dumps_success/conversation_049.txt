@@ -1,0 +1,51 @@
+============================================================
+CONVERSATION 49
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: need to dispute a fraudulent charge and get my card replaced
+
+Agent: I'm sorry to hear that. I can help you with both of those things. Which card was the transaction made on?
+
+Customer: not sure which one i have on file, can you pull them up
+
+Agent: Of course. Here are your credit cards: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card was the transaction made from?
+
+Customer: sapphire
+
+Agent: Got it. Do you suspect fraud with this transaction?
+
+Customer: yes, 100%. charge from Amazon, $127.43 on August 20th. didn't make it
+
+Agent: Understood. I've noted the details — Amazon, $127.43, August 20th on your Sapphire card. I'll open a fraud dispute for this transaction now. You should receive provisional credit within 5 business days while we investigate.
+
+Customer: good. and i want the card cancelled and a new one issued
+
+Agent: Got it. I'll cancel your Sapphire card ending in 5678 and order a replacement. Your new card should arrive within 5–7 business days. Can you confirm your mailing address is still up to date?
+
+Customer: yes same address
+
+Agent: Perfect. To confirm — I've filed a fraud dispute for the $127.43 Amazon charge from August 20th, cancelled your Sapphire card, and a replacement is on its way. Is there anything else I can help you with?
+
+Customer: that's it, thanks
+
+Agent: You're all set. You'll receive a confirmation email shortly with your dispute case number. Don't hesitate to reach out if you need anything else. Take care!

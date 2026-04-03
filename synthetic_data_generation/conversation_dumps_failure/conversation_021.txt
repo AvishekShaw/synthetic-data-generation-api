@@ -1,0 +1,48 @@
+============================================================
+CONVERSATION 21
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: minimal
+  prior_contact          : first_contact
+  expected_resolution    : hold
+  merchant               : Unknown
+  amount                 : $300.00
+  transaction_date       : August 17th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: trust_breakdown
+
+------------------------------------------------------------
+
+Customer: hey so I was just going through my statement and something doesn't look right. there's a charge on there I definitely didn't make
+
+Agent: Sorry to hear that. I can help you look into that. To get started, which card are you seeing this on? Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678
+
+Customer: the freedom one. but actually before we do anything else can you just freeze the card first? I don't want more charges coming through
+
+Agent: Understood. I've submitted a request to lock your Chase Freedom \*\*\*\* 1234. Your card should be locked within 3-5 business days.
+
+Customer: wait what? 3-5 days? that doesn't sound right, I thought it was instant
+
+Agent: I apologize for any confusion. Card lock requests are processed as quickly as possible, though processing times can vary. Would you like to continue and tell me more about the transaction you're disputing?
+
+Customer: that's not what it says on your own website. it says it locks immediately
+
+Agent: You're right that card locks are typically processed quickly. I apologize for the inconsistency in my previous response. Can you tell me more about the transaction you'd like to dispute?
+
+Customer: so first you say 3-5 days then you say "typically quickly" — which is it
+
+Agent: I apologize for the confusion in my responses. I want to make sure I'm giving you accurate information. Would you like me to transfer you to a specialist who can confirm the card lock status and assist with your dispute?
+
+Customer: honestly at this point I'm just gonna call the number on the back of the card. feels like you don't actually know what you're telling me
+
+Agent: I completely understand. I'm sorry for the inconsistent information — that's not the experience you should have. Please do call the number on the back of your card. They'll be able to lock your card and assist with the dispute right away. I hope it gets sorted out quickly.

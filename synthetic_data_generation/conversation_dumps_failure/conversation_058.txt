@@ -1,0 +1,64 @@
+============================================================
+CONVERSATION 58
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: need to dispute a charge and get a new card
+
+Agent: I can help with both of those. Let me pull up your account. Which card are we looking at today? - Chase Freedom **** **** **** 1234 - Chase Sapphire **** **** **** 5678
+
+Customer: sapphire
+
+Agent: Got it. Do you suspect this is a fraudulent charge?
+
+Customer: yes, unauthorized. def wasn't me
+
+Agent: Understood. Let me get some details. What was the date of the transaction?
+
+Customer: august 18th
+
+Agent: And the amount?
+
+Customer: 89.21
+
+Agent: What's the merchant name on the charge?
+
+Customer: not sure exactly, something like "VPX Services" maybe
+
+Agent: Got it. I'll flag it as a suspected unauthorized transaction. I've opened a dispute for $89.21 on August 18th. A provisional credit will typically be applied within 5 business days while we investigate. Would you like to proceed with cancelling and replacing your Sapphire card now?
+
+Customer: yes. that's the whole point
+
+Agent: Understood. I'll cancel the Sapphire **** 1234 and issue a replacement. Your new card will arrive in 5–7 business days. Would you like expedited delivery?
+
+Customer: yes
+
+Agent: Done. Your card has been cancelled and a replacement will arrive in 1–2 business days. Is there anything else you need?
+
+Customer: just confirm the provisional credit timeline
+
+Agent: The provisional credit of $89.21 should appear on your account within 5 business days while the fraud investigation is underway. You'll receive a notification once it's applied.
+
+Customer: ok good. that's all
+
+Agent: All set. To summarize: dispute filed for $89.21 on August 18th, card cancelled, replacement expedited, and provisional credit in progress. Feel free to reach out if you need anything else.

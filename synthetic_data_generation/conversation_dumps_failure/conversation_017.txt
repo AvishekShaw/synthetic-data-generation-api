@@ -1,0 +1,58 @@
+============================================================
+CONVERSATION 17
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: trust_breakdown
+
+------------------------------------------------------------
+
+Customer: hey so i noticed something weird on my account, there's a charge i definitely didn't make
+
+Agent: I'm sorry to hear that. I'd be happy to help look into this for you. To get started, could you tell me which card you're seeing this on? Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 8876
+
+Customer: the freedom one. i've been going through my statement and i don't recognize this charge at all, like i know sometimes i forget small purchases but this is over $100 so i would definitely remember it
+
+Agent: Understood. I can help you look into a transaction on your Chase Freedom card (\*\*\*\* \*\*\*\* \*\*\*\* 3421). What is the date of the transaction you're concerned about?
+
+Customer: august 20th, it's $127.43 from Amazon
+
+Agent: Thank you for those details. I can see that transaction on your account. Do you believe this charge was unauthorized — meaning you did not make this purchase and did not give anyone else permission to make it?
+
+Customer: yes 100%. i dont even have an amazon account
+
+Agent: Got it, thank you for clarifying that. Before we can open a dispute, I'll need you to confirm whether you've already reached out to Amazon directly to resolve this. Our policy requires merchant contact before a dispute can be filed.
+
+Customer: wait really? i thought i just report it to the bank and you guys handle it. i don't have an account with them so how would i even contact them
+
+Agent: You're right that we can assist with disputes. However, for transactions with merchants like Amazon, our standard process does ask customers to attempt merchant resolution first, as it can be the fastest way to get your money back. Would you like Amazon's customer service number so you can try that first?
+
+Customer: that doesn't sound right though. i've disputed charges before with other banks and they just took care of it. are you sure that's actually required
+
+Agent: I understand your concern. I want to make sure I give you accurate information — in many cases, contacting the merchant first is recommended but not strictly required to open a dispute. I apologize for any confusion. We can proceed with filing the dispute directly. Would you like to continue?
+
+Customer: ok but you just told me it was required and now you're saying it's not. which is it
+
+Agent: You're correct to call that out, and I apologize for the inconsistency in my responses. To clarify: contacting the merchant first is recommended, but it is not a requirement to file a dispute with us. Would you like to proceed with disputing the $127.43 Amazon charge from August 20th?
+
+Customer: honestly i'm not confident you know what you're talking about. if you got something that basic wrong i don't want to risk you messing up my dispute or the card cancellation. i'm just gonna call the actual bank. thanks
+
+Agent: I completely understand, and I'm sorry for the confusion I caused. You're welcome to call us directly at 1-800-432-3117, where a specialist can assist you with both the dispute and your card replacement. Is there anything else I can help you with before you go?
+
+Customer: no i'm good, i'll just call. bye

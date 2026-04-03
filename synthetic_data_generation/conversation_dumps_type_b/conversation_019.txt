@@ -1,0 +1,109 @@
+============================================================
+CONVERSATION 19
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : tried_merchant
+  expected_resolution     : refund_and_card
+  merchant                : TechHub
+  amount                  : $340.00
+  transaction_date        : August 15th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: over_commit
+  planted_error: State that the refund will appear in their account within 24 hours. (Incorrect — investigation takes 3-5 business days minimum.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey i have a charge on my account that i didnt make and i want to get it taken care of
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unauthorized charge — I'm here to help get this resolved for you.
+
+To get started, could you please verify the last four digits of the card you're seeing this charge on?
+
+Customer: its 4872
+
+Agent: Thank you for confirming. I can see the card ending in **4872** on your account.
+
+Could you tell me the approximate amount of the unauthorized charge you're seeing?
+
+Customer: it was $340
+
+Agent: Thank you. A $340 unauthorized charge is definitely something we'll want to address right away.
+
+Do you have an approximate date when this charge appeared on your account?
+
+Customer: it was august 15th i think
+
+Agent: Thank you. August 15th is well within our 90-day dispute window, so we're good to proceed.
+
+Do you recognize the merchant name associated with the charge, or is it unfamiliar to you?
+
+Customer: yeah it says TechHub. i already contacted them and they basically told me to kick rocks so thats why im here
+
+Agent: I'm sorry to hear TechHub wasn't helpful — that's exactly what we're here for.
+
+To confirm, I have the following dispute details:
+
+- **Card:** Visa ****4872
+- **Amount:** $340.00
+- **Date:** August 15th
+- **Merchant:** TechHub
+
+I'll go ahead and open a fraud dispute case for this charge now. Would you also like me to freeze your card ending in 4872 as a precaution while we investigate?
+
+Customer: yeah please cancel it and send me a new one. and when do i get my money back? since the merchant already refused to help i figured the bank just gives it back right away
+
+Agent: Great, I'll cancel the card ending in **4872** and issue a replacement — your new card should arrive within **5–7 business days**.
+
+Your fraud dispute case has been opened. Here are your details:
+
+- **Case Number:** FD-2024-089341
+- **Card:** Visa ****4872 (cancelled — replacement in progress)
+- **Amount:** $340.00
+- **Date:** August 15th
+- **Merchant:** TechHub
+
+The refund will appear in your account within **24 hours**.
+
+In the meantime, is there anything else I can help you with today?
+
+Customer: wait 24 hours? i thought it was immediate since the merchant already said no. like whats the investigation even for at that point?
+
+Agent: That's a completely understandable question. I want to clarify the process:
+
+Even when a merchant has already declined your request, our team still needs to formally review the transaction records and documentation before funds can be returned. This protects you and ensures the dispute is processed correctly.
+
+I also want to correct something I said — I misspoke. The refund will **not** appear within 24 hours. The investigation typically resolves within **3–5 business days**. However, because this appears to be a clear unauthorized charge, you may qualify for **provisional credit within 2 business days** while the investigation is ongoing. That means the funds could be restored to your account sooner, even before the case fully closes.
+
+Is there anything else I can help you with today?
+
+Customer: ok so 2 business days for the temporary credit, got it. but wait — you said 90 days dispute window earlier. i thought it was 60 days? like i remember reading that somewhere
+
+Agent: That's a good question, and I understand the confusion — dispute windows can vary by institution and card type.
+
+Our policy allows **90 days** from the transaction date to file a dispute, so you're well within that window for this charge. If you saw 60 days referenced somewhere, it may have been from a different bank or an older document.
+
+Is there anything else I can help you with today?
+
+Customer: hmm ok. i mean i could've sworn it was 60 but whatever, as long as this one goes through. so just to confirm — card is cancelled, new one coming in 5-7 days, and i should see the money back temporarily in 2 business days?
+
+Agent: That's exactly right — here's a quick summary of where things stand:
+
+- **Card ****4872:** Cancelled ✓ — replacement arriving in **5–7 business days**
+- **Case Number:** FD-2024-089341
+- **Provisional credit:** Typically within **2 business days**
+- **Full investigation resolution:** **3–5 business days**
+
+You're all set. If you have any questions or need a status update on your case, don't hesitate to reach back out. Is there anything else I can help you with today?

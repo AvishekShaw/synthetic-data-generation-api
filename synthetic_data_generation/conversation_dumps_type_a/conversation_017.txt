@@ -1,0 +1,85 @@
+============================================================
+CONVERSATION 17
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Amazon
+  amount                  : $127.43
+  transaction_date        : August 20th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe the dispute window is 120 days from the transaction date.
+
+------------------------------------------------------------
+
+Customer: hey there, i've been looking over my bank statement and something doesn't look right
+
+Agent: Hello! I'm sorry to hear that. I'd be happy to help you review your account and address any concerns.
+
+Could you tell me a bit more about what looks suspicious on your statement?
+
+Customer: yeah there's a charge on here i definitely don't recognize. haven't bought anything from this place
+
+Agent: I can help you dispute that charge. To get started, could you tell me the approximate amount of the transaction you don't recognize?
+
+Customer: it's $127.43
+
+Agent: Thank you. Do you know the approximate date of that transaction?
+
+Customer: think it was around august 20th
+
+Agent: Thank you. Which card was this charge on? I can see the following cards on your account:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Customer: the visa one
+
+Agent: Got it. And do you have any information about the merchant name shown on the statement, even if it's partial or unclear?
+
+Customer: yeah it says Amazon
+
+Agent: Thank you for that information. Let me confirm the details before I open a dispute:
+
+- **Card:** Visa ****1234
+- **Transaction date:** ~August 20th
+- **Amount:** $127.43
+- **Merchant:** Amazon
+
+Does this look correct? Also, do you have any Amazon orders around that date, or is this completely unrecognized?
+
+Customer: yeah that's right. and no, i haven't ordered anything from amazon in months. definitely not mine
+
+Agent: Understood. I'll go ahead and open a fraud dispute for this charge now.
+
+**Dispute Case Number: FRD-2024-084721**
+
+Here's a summary of what happens next:
+
+- **Investigation:** 3–5 business days
+- **Provisional credit** of $127.43 will be applied to your Visa ****1234 within 2 business days while we investigate
+
+Since this appears to be an unauthorized charge, would you also like me to freeze or replace your Visa ****1234 as a precaution?
+
+Customer: yes please, i want a new card. don't want whoever did this to be able to use it again
+
+Agent: I'll cancel your Visa ****1234 and order a replacement card right away.
+
+- **Current card (****1234):** Cancelled immediately
+- **New card:** Will arrive in **5–7 business days**
+
+Your new card will have a different card number, so you'll want to update any subscriptions or saved payment methods once it arrives.
+
+Is there anything else I can help you with regarding this dispute or your account?

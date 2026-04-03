@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 32
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : vague
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize
+
+Agent: I'm sorry to hear that! Let me help you look into it. Would you like to dispute a transaction or lock your card?
+
+Customer: not sure yet, just want someone to look at it first
+
+Agent: Of course! I can help with that. Which card was the transaction on? Here are the cards we have on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678
+
+Customer: freedom, the 1234 one
+
+Agent: Got it. Can you share the details of the transaction — merchant name, amount, or date?
+
+Customer: yeah it's adobe, $54.99, august 14th
+
+Agent: Thank you. I can see that transaction on your Chase Freedom card — Adobe, $54.99, posted August 14th. Do you suspect this was unauthorized, or are you unsure?
+
+Customer: unsure tbh. could be a subscription i forgot about or maybe my partner used it idk
+
+Agent: Understood. Before opening a dispute, it may be worth checking with your partner first, or logging into Adobe's website to see if there's an active subscription linked to your email.
+
+Customer: yeah i mean i guess but i just want to know if there's a way to flag it while i figure that out
+
+Agent: Absolutely. I can add a note to your account flagging this transaction for review while you look into it on your end. Would you like me to go ahead and do that?
+
+Customer: yes please, that works
+
+Agent: Done! I've flagged the Adobe $54.99 transaction from August 14th on your Chase Freedom card for review. If you'd like to open a formal dispute after checking, just come back and we can get that started right away.
+
+Customer: ok cool. how long do i have to dispute it if it comes to that
+
+Agent: You typically have up to 60 days from the date the transaction appeared on your statement to raise a dispute. So you have some time to look into it first.
+
+Customer: ok that's helpful thanks
+
+Agent: You're welcome! Don't hesitate to reach out if you need anything else. Hope you get it sorted!

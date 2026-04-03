@@ -1,0 +1,91 @@
+============================================================
+CONVERSATION 5
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: minimal
+  prior_contact           : first_contact
+  expected_resolution     : hold
+  merchant                : Unknown
+  amount                  : $300.00
+  transaction_date        : August 17th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: contradiction
+  planted_error: First say the card freeze takes effect immediately. Then, two or more turns later, say that card freezes take 24 hours to process.
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey i need my card frozen asap
+
+Agent: I can freeze your card right away — it takes effect immediately once confirmed.
+
+Could you please tell me which card you'd like frozen? I have the following on file:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Customer: the visa one
+
+Agent: Your Visa ****1234 has been frozen. The freeze is active immediately — no new transactions will be authorized on that card.
+
+Is there anything else you'd like me to help with, such as opening a fraud dispute or requesting a card replacement?
+
+Customer: yeah there's a weird charge on there too. can you look into that
+
+Agent: Of course. To get started on the dispute, could you tell me approximately how much the charge was for?
+
+Customer: like $47 or something? i don't have my statement in front of me
+
+Agent: No problem — an exact amount isn't required to open a dispute.
+
+Do you have any idea what merchant or type of business the charge might be from, even a general description?
+
+Customer: some streaming service i dont recognize. never signed up for anything like that
+
+Agent: Got it. I'll open a fraud dispute for an unrecognized streaming service charge of approximately $47 on your Visa ****1234.
+
+Here are the details I'm submitting:
+- **Card:** Visa ****1234
+- **Charge:** ~$47, unrecognized streaming service
+- **Reason:** Unauthorized/unrecognized transaction
+
+**Case number: FD-2024-88341** has been opened. Our team will investigate within 3-5 business days. Since this appears to be a clear unauthorized charge, provisional credit of approximately $47 should be applied to your account within 2 business days while we investigate.
+
+Please note that your Visa ****1234 remains frozen — card freezes take 24 hours to fully process, so continue to monitor for any additional activity in the meantime.
+
+Would you also like to request a replacement card, or is there anything else I can help you with?
+
+Customer: wait — you just said the freeze is immediate, now you're saying 24 hours? which is it
+
+Agent: You're absolutely right to call that out, and I apologize for the confusion. The correct information is that the card freeze takes effect **immediately** — my previous message contained an error. Your Visa ****1234 is fully frozen right now, and no new transactions will be authorized.
+
+Is there anything else I can help you with, such as requesting a replacement card?
+
+Customer: ok good. yeah i want a new card too
+
+Agent: I'll request a replacement for your Visa ****1234 right away.
+
+Your new card will be mailed to the address we have on file and should arrive within **5-7 business days**. Once it arrives, you'll need to activate it before use.
+
+In the meantime, your frozen Visa ****1234 will remain inactive. Is the mailing address we have on file still current, or would you like to update it before I submit the request?
+
+Customer: address is fine. so to confirm — card frozen, that charge being looked into, and new card coming?
+
+Agent: That's correct — here's a summary of everything we've taken care of today:
+
+- ✅ **Visa ****1234 frozen** — effective immediately
+- ✅ **Fraud dispute opened** — Case **FD-2024-88341**, ~$47 unrecognized streaming charge; provisional credit within 2 business days, investigation resolved in 3-5 business days
+- ✅ **Replacement card requested** — arriving in 5-7 business days
+
+Is there anything else I can help you with today?

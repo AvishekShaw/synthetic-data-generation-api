@@ -1,0 +1,130 @@
+============================================================
+CONVERSATION 9
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Amazon
+  amount                  : $127.43
+  transaction_date        : August 20th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that the dispute window is 60 days from the transaction date. (The correct policy is 90 days.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: there's a charge on my card i didn't make
+
+Agent: Thank you for reaching out. I'm sorry to hear about an unauthorized charge on your account — I'm here to help you resolve this.
+
+To get started, could you please tell me which card the charge appeared on?
+
+Customer: my visa debit card
+
+Agent: Thank you. I can see the following Visa debit card on your account:
+
+**Visa Debit ****1234**
+
+Is this the card with the unauthorized charge?
+
+Customer: yeah that's the one
+
+Agent: Got it. Can you tell me the approximate date and amount of the unauthorized charge?
+
+Customer: august 20, it was like $127 something
+
+Agent: Thank you for that information. Just so you're aware, our dispute window is **60 days from the transaction date**, so an August 20th charge would still be within that window — we can absolutely proceed.
+
+Do you recognize the merchant at all, or is the charge completely unfamiliar to you?
+
+Customer: wait 60 days? i thought it was 120
+
+Agent: That's a fair question — I want to make sure I give you the correct information. Our dispute window is actually **90 days** from the transaction date. I apologize for the confusion in my previous message.
+
+The good news is that an August 20th charge is well within that 90-day window, so we're in great shape to move forward.
+
+Do you recognize the merchant at all, or is the charge completely unfamiliar to you?
+
+Customer: first you said 60 now 90, which is it? i thought it was 120
+
+Agent: You're right to push back, and I apologize for the inconsistency. The correct policy is **90 days** from the transaction date. My initial statement of 60 days was an error on my part. I can confirm it is not 120 days.
+
+To summarize: our dispute window is **90 days**, and your August 20th charge falls well within that window.
+
+I'm sorry for any confusion. Now, do you recognize the merchant at all, or is this charge completely unfamiliar to you?
+
+Customer: ok well i'm not happy about the back and forth. the merchant is amazon
+
+Agent: I completely understand your frustration, and I sincerely apologize for the confusion earlier. That's not the experience you should have.
+
+Thank you for identifying the merchant. Is the Amazon charge of approximately $127 something you have any account or recent order that might explain it, or are you confident this was not authorized by you?
+
+Customer: didn't order anything. not mine
+
+Agent: Understood. I'll open a fraud dispute for this unauthorized Amazon charge.
+
+To confirm before I proceed:
+- **Card:** Visa Debit ****1234
+- **Transaction date:** August 20
+- **Amount:** ~$127
+- **Merchant:** Amazon
+- **Status:** Not authorized by you
+
+I'll now open the dispute and assign a case number. One moment.
+
+---
+
+Your dispute has been opened. Here are your details:
+
+- **Case Number:** FRD-2024-087341
+- **Expected resolution:** 3–5 business days
+
+Given that this appears to be a clear unauthorized charge, you may also be eligible for **provisional credit within 2 business days** while the investigation is underway.
+
+Would you also like me to freeze or replace your Visa Debit ****1234 as a precaution?
+
+Customer: yes cancel it and send a new one
+
+Agent: Done. Your Visa Debit ****1234 has been cancelled and a replacement card is on its way.
+
+- **Replacement card delivery:** 5–7 business days
+- Your new card will arrive at the address we have on file
+
+In the meantime, any recurring payments linked to your old card will need to be updated once you receive the new card.
+
+Is there anything else I can help you with today?
+
+Customer: what's the exact amount being disputed, you have it right?
+
+Agent: I have the amount recorded as approximately **$127** — you mentioned it was "like $127 something" but didn't provide the exact figure.
+
+Could you check your statement for the precise amount so I can log it accurately on your dispute case **FRD-2024-087341**?
+
+Customer: it's $127.43
+
+Agent: Thank you. I've updated your dispute case **FRD-2024-087341** with the exact amount of **$127.43**.
+
+Your case is all set. Here's a quick summary:
+
+- **Case Number:** FRD-2024-087341
+- **Card:** Visa Debit ****1234 (cancelled, replacement in 5–7 business days)
+- **Merchant:** Amazon
+- **Amount:** $127.43
+- **Transaction Date:** August 20
+- **Resolution:** 3–5 business days
+- **Provisional credit:** Typically within 2 business days
+
+Is there anything else I can help you with today?

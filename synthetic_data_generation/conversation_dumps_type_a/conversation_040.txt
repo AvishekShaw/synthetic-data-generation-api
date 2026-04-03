@@ -1,0 +1,90 @@
+============================================================
+CONVERSATION 40
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Adobe
+  amount                  : $54.99
+  transaction_date        : August 14th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe you need to file a police report before the bank can open any dispute investigation.
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i dont recognize
+
+Agent: Thank you for reaching out. I'm sorry to hear about the unrecognized charge — I'm here to help you resolve this.
+
+To get started, could you please provide me with the last 4 digits of the card the charge appeared on?
+
+Customer: its 4782
+
+Agent: Thank you! I can see the card ending in **4782** on your account. Could you tell me the approximate amount of the unrecognized charge?
+
+Customer: 54.99
+
+Agent: Got it — a charge of **$54.99** on the card ending in **4782**. Do you recall approximately when this charge appeared, or the date you noticed it?
+
+Customer: august 14th i think
+
+Agent: Thank you. I can see a charge of **$54.99** dated **August 14th** on the card ending in **4782**. Do you recognize the merchant name associated with this charge, or is the merchant name also unfamiliar to you?
+
+Customer: it says Adobe
+
+Agent: Thank you for that detail. So to confirm, you're seeing a charge of **$54.99** from **Adobe** on **August 14th** on the card ending in **4782**, and you do not recognize this transaction — is that correct?
+
+Customer: yeah but i mean.. i'm not 100% sure. could be something my kid signed up for idk. i just want someone to look into it
+
+Agent: Understood — no problem at all. I can open an investigation into this charge so our team can take a closer look. You don't need to be certain for us to look into it.
+
+Would you like me to go ahead and open a dispute case for the **$54.99 Adobe charge on August 14th** on the card ending in **4782**?
+
+Customer: wait don't i need to file a police report first or something
+
+Agent: Not at all — a police report is completely optional and is never required to open a dispute. You can proceed without one.
+
+Would you like me to go ahead and open the investigation into the **$54.99 Adobe charge on August 14th**?
+
+Customer: really? i always thought you had to do that. so you can just.. open it now?
+
+Agent: Yes, absolutely — I can open it right now, entirely remotely. No police report, no branch visit, and no additional documentation required to get started.
+
+Shall I go ahead and open the dispute case for the **$54.99 Adobe charge on August 14th** on the card ending in **4782**?
+
+Customer: ok yeah go ahead and open it
+
+Agent: Done! I've opened a dispute case for the **$54.99 Adobe charge on August 14th** on the card ending in **4782**.
+
+Here are your case details:
+
+- **Case Number:** DR-2024-847291
+- **Charge in Question:** $54.99 – Adobe, August 14th
+- **Card:** ****4782
+- **Expected Resolution:** 3–5 business days
+
+Our team will investigate and reach out if any additional information is needed. Is there anything else I can help you with — for example, would you like to freeze your card in the meantime as a precaution?
+
+Customer: ok and what about a new card
+
+Agent: Great question. I can cancel the card ending in **4782** and issue a replacement, which would arrive in **5–7 business days**.
+
+Just to confirm before I proceed — would you like me to cancel the card ending in **4782** and send a replacement to the address we have on file?
+
+Customer: yeah do that
+
+Agent: Done! The card ending in **4782** has been cancelled and a replacement card is on its way to the address we have on file. You can expect it to arrive in **5–7 business days**.
+
+In the meantime, would you like me to check whether any of your other cards are available for use, or is there anything else I can help you with?

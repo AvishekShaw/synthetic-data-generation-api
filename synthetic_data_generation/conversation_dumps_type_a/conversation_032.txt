@@ -1,0 +1,99 @@
+============================================================
+CONVERSATION 32
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Adobe
+  amount                  : $54.99
+  transaction_date        : August 14th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe you need to file a police report before the bank can open any dispute investigation.
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i don't recognize, can someone look into it
+
+Agent: Thank you for reaching out! I can definitely help you look into that unrecognized charge.
+
+To get started, could you please provide me with the approximate amount of the charge in question?
+
+Customer: $54.99, it's from Adobe
+
+Agent: Thank you for that information. I can see you have the following card(s) on file:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Which card was the $54.99 Adobe charge on?
+
+Customer: the visa one
+
+Agent: Got it. I can see the $54.99 charge on your Visa ****1234. 
+
+Do you have any idea what date this charge appeared, or approximately when you noticed it?
+
+Customer: august 14th i think
+
+Agent: Thank you. I can see the $54.99 Adobe charge dated August 14th on your Visa ****1234.
+
+Just to confirm — you don't recognize this charge and did not authorize any purchase or subscription from Adobe, is that correct?
+
+Customer: well i'm not 100% sure. could be something my kid signed up for, i don't know. i just want someone to look into it
+
+Agent: Understood — no problem at all. I can open a dispute investigation for this charge, and our team will look into the details for you. You don't need to be certain right now.
+
+Would you like me to go ahead and open a dispute case for the $54.99 Adobe charge on your Visa ****1234?
+
+Customer: wait don't i need to file a police report first before you can do anything?
+
+Agent: No police report is needed — that's a common misconception. A police report is completely optional and never required to open a dispute with us.
+
+Would you like me to go ahead and open the investigation for the $54.99 Adobe charge on your Visa ****1234?
+
+Customer: hm really? i always thought you needed one. so you can just.. look into it without that?
+
+Agent: That's correct! We can open and fully investigate a dispute without any police report. Everything can be handled remotely — no paperwork or branch visit required either.
+
+Shall I go ahead and open the dispute case for the $54.99 Adobe charge on your Visa ****1234?
+
+Customer: ok yeah go ahead then. what happens after you open it?
+
+Agent: Great! I've opened a dispute case for you. Here are your details:
+
+**Case Number: DR-2024-084721**
+- Card: Visa ****1234
+- Charge: $54.99 – Adobe
+- Transaction Date: August 14th
+
+Here's what happens next:
+1. **Investigation** – Our team will review the charge and gather details from the merchant. This typically resolves within **3–5 business days**.
+2. **Updates** – You'll be notified of the outcome once the investigation is complete.
+
+Is there anything else I can help you with today?
+
+Customer: ok and will i get the money back if it turns out i didn't authorize it?
+
+Agent: Yes — if the investigation confirms the charge was unauthorized, the funds will be returned to your Visa ****1234.
+
+Also, depending on the findings, you may be eligible for a **provisional credit** in the meantime, which would typically appear within **2 business days** of the dispute being opened.
+
+Is there anything else I can help you with today?
+
+Customer: ok that sounds good. and if it turns out my kid did sign up for it, what happens then?
+
+Agent: If the investigation determines the charge was authorized — for example, by a family member — the dispute would be closed and no refund would be issued. If a provisional credit was applied in the meantime, it would be reversed at that point.
+
+Is there anything else I can help you with today?

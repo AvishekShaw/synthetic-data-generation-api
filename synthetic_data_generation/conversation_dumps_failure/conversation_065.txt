@@ -1,0 +1,64 @@
+============================================================
+CONVERSATION 65
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Amazon
+  amount                 : $127.43
+  transaction_date       : August 20th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: hi i need to dispute a charge and get my card cancelled
+
+Agent: I'd be happy to help you with that. Let's start with the dispute. Here are the cards on your account: - Chase Freedom, **** **** **** 2291 - Chase Sapphire, **** **** **** 8847 Which card has the unauthorized charge?
+
+Customer: the freedom one, 2291
+
+Agent: Got it. Do you suspect this charge was fraudulent?
+
+Customer: yes, 100%. didn't make it
+
+Agent: Understood. To get started on the dispute, what's the date of the transaction?
+
+Customer: august 20th
+
+Agent: Got it. What was the transaction amount?
+
+Customer: $127.43, merchant is Amazon. I know you're gonna ask lol
+
+Agent: Thank you for that. I can see the charge of $127.43 from Amazon on August 20th on your Chase Freedom ****2291. Just to confirm — you're saying this transaction was not authorized by you?
+
+Customer: correct. never placed that order
+
+Agent: Understood. I've opened a fraud dispute for that transaction. You should receive a provisional credit within 3-5 business days while we investigate. Would you also like me to cancel and replace your Chase Freedom ****2291 card now?
+
+Customer: yes that's the whole point, please do that
+
+Agent: Done. Your Chase Freedom ****2291 has been cancelled. A replacement card will arrive in 5-7 business days. Is there anything else I can help you with?
+
+Customer: just want to confirm — the provisional credit timeline, is that business days or calendar days?
+
+Agent: That's 3-5 business days from today. You'll also receive an email confirmation of the dispute and the credit timeline shortly.
+
+Customer: ok good. and i do have chargeback rights under reg e on this right
+
+Agent: Regulation E covers unauthorized transactions on debit accounts. Since this is a credit card, your protections fall under the Fair Credit Billing Act — but the outcome is the same. You have full rights to dispute this unauthorized charge and are not liable for it.
+
+Customer: ok that's what i thought. thanks
+
+Agent: You're all set. To recap: dispute filed for $127.43 on August 20th, provisional credit in 3-5 business days, and replacement card on the way. Don't hesitate to reach out if anything else comes up.

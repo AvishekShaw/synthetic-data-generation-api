@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 20
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey so I noticed something on my account that looks a bit off
+
+Agent: I'm sorry to hear that. I'd be happy to help you look into it. Can you tell me a little more about what you noticed?
+
+Customer: yeah there's a charge I don't really recognize. it was around the 12th of august I think. like $34.99
+
+Agent: I can help you look into that. Which card was this charge on? Here are the cards on your account: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678
+
+Customer: probably the sapphire, that's the one I use most
+
+Agent: Got it. Here are recent transactions on your Chase Sapphire \*\*\*\* 5678 around August 12th: - Aug 11 — NETFLIX.COM — $15.49 - Aug 12 — WHOLEFDS #0823 — $67.14 - Aug 12 — CRUNCHYROLL — $34.99 - Aug 13 — SHELL OIL 34821 — $48.00 Do any of these look like the charge you're referring to?
+
+Customer: yeah that crunchyroll one. I don't even know what that is tbh
+
+Agent: Crunchyroll is a streaming subscription service. Do you think it's possible a family member may have signed up for it, or that you may have subscribed at some point?
+
+Customer: maybe? my son uses my card sometimes. but I definitely didn't sign up for it myself
+
+Agent: Understood. Just to clarify — would you like me to open a dispute for this transaction, or would you prefer to investigate a little further first?
+
+Customer: I mean I don't really want to do a full dispute yet, I just want someone to look into it. like do I have to prove it was fraud before you can do anything?
+
+Agent: Not at all — you don't need to prove anything upfront to start the process. I can flag this transaction for review, which just means our team will take a closer look at it. You can decide about a formal dispute later if needed. Would you like me to go ahead and flag it?
+
+Customer: yeah that works, just flag it for now
+
+Agent: Done. I've flagged the Crunchyroll charge of $34.99 on August 12th on your Chase Sapphire \*\*\*\* 5678 for review. Our team will look into it and you may be contacted if more information is needed. Is there anything else I can help you with?
+
+Customer: no that's it, thanks
+
+Agent: You're welcome! Don't hesitate to reach out if you have any other questions. Have a great day!

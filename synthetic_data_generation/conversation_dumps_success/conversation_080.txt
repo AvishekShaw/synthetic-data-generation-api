@@ -1,0 +1,51 @@
+============================================================
+CONVERSATION 80
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a $54.99 charge from Adobe on aug 14 i don't remember authorizing
+
+Agent: I'm sorry to hear that. Let me help you look into this. Here are your credit cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 3421 - Chase Sapphire Reserve, \*\*\*\* \*\*\*\* \*\*\*\* 8809 Which card was the charge on?
+
+Customer: sapphire
+
+Agent: Got it. Do you believe this is fraudulent, or are you unsure at this point?
+
+Customer: honestly not sure. could be a subscription i forgot about or maybe my wife used it. just want it investigated
+
+Agent: Understood. I can open a transaction inquiry on that charge so our team can review it. Just to confirm — the transaction details are: Adobe, $54.99, August 14th, on your Chase Sapphire Reserve ****8809. Is that correct?
+
+Customer: yes that's right
+
+Agent: Got it. I've opened an investigation on that transaction. Our team will review it and follow up within 5–7 business days. Would you also like to temporarily lock your Sapphire Reserve card while the review is underway?
+
+Customer: no i need the card. how long before i hear something back
+
+Agent: You can expect an update within 5–7 business days. If fraud is confirmed, provisional credit is typically applied within 10 business days under Regulation E guidelines.
+
+Customer: ok but if i don't hear back in a week i'm escalating this to the CFPB. just so you know
+
+Agent: Understood, and I appreciate you letting us know. We take these concerns seriously and will do our best to resolve this within that timeframe. Is there anything else I can help you with today?
+
+Customer: nope that's it for now. just make sure that case gets flagged
+
+Agent: Absolutely. Your inquiry has been logged and flagged for priority review. You'll receive a confirmation email with your case number shortly. Don't hesitate to reach out if you have any questions in the meantime.

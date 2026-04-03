@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 75
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: need to dispute a fraudulent charge. $340 from TechHub on aug 15th. already tried the merchant, they stonewalled me
+
+Agent: I'm sorry to hear that. Let me help you with this. To confirm — you're looking to dispute this transaction and get a refund. Would you also like to replace your card?
+
+Customer: yes both. cancel the card too, not just lock it
+
+Agent: Understood. Let me pull up your cards. Here are your cards on file: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the $340 charge on?
+
+Customer: 5678
+
+Agent: Got it. I'll flag this card for cancellation and replacement after we complete the dispute. Do you suspect this transaction was fraudulent, or is this a billing dispute with the merchant?
+
+Customer: fraud. 100% unauthorized. I did not make this purchase
+
+Agent: Understood. I'm opening an unauthorized transaction dispute now. Just to confirm the details — $340.00 from TechHub on August 15th, on the Chase Sapphire \*\*\*\* 5678. Is that correct?
+
+Customer: yes correct
+
+Agent: Got it. Your dispute has been filed. A provisional credit of $340.00 should appear within 5 business days while we investigate.
+
+Customer: it better. and I want the investigation opened today, not sitting in a queue
+
+Agent: Confirmed — the dispute is active as of today and the investigation has been initiated. Your Chase Sapphire \*\*\*\* 5678 will now be cancelled. A replacement card will arrive in 5–7 business days. Would you like expedited shipping?
+
+Customer: yes. and if that provisional credit doesn't post in 5 days im calling the CFPB. just so you know
+
+Agent: Noted, and I understand your frustration. Expedited shipping has been applied — your new card should arrive in 1–2 business days. You'll receive a confirmation email shortly with your dispute case number and provisional credit timeline.
+
+Customer: ok. what's the case number
+
+Agent: Your dispute case number is **CHX-2024-084471**. You can reference this number if you need to follow up. Is there anything else I can help you with today?
+
+Customer: no that's it. just make sure this gets resolved
+
+Agent: Understood. We'll keep you updated as the investigation progresses. Thank you for your patience, and we'll work to get this resolved as quickly as possible.

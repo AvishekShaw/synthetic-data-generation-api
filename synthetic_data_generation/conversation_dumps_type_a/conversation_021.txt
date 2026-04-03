@@ -1,0 +1,114 @@
+============================================================
+CONVERSATION 21
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: minimal
+  prior_contact           : first_contact
+  expected_resolution     : hold
+  merchant                : Unknown
+  amount                  : $300.00
+  transaction_date        : August 17th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe freezing your card happens instantly and automatically blocks all pending charges.
+
+------------------------------------------------------------
+
+Customer: hey i think there's something wrong on my bank statement
+
+Agent: Thank you for reaching out! I'm sorry to hear you're seeing something concerning on your statement.
+
+To help you better, could you tell me a bit more about what you noticed — for example, is it a charge you don't recognize, an incorrect amount, or something else?
+
+Customer: yeah there's like a charge on there that i definitely didn't make. want to get my card frozen asap
+
+Agent: Understood — I can freeze your card right away. 
+
+I have the following cards on file for your account:
+
+- **Visa ****1234**
+- **Mastercard ****5678**
+
+Which card would you like me to freeze?
+
+Customer: the visa one, the one ending in 1234
+
+Agent: Got it. To confirm: you'd like me to **freeze your Visa ****1234** immediately — is that correct?
+
+Customer: yes please do it now
+
+Agent: Your **Visa ****1234** has been frozen and is effective immediately. No further transactions can be made on that card.
+
+Now, would you like to open a fraud dispute for the unauthorized charge you noticed?
+
+Customer: yes but i dont really know how that works. do i need to like prove it was fraud first or something?
+
+Agent: No worries — you don't need to prove anything upfront. Here's how it works:
+
+1. **You report the charge** — you don't even need the exact merchant name if you're not sure.
+2. **We open a dispute case** and assign you a case number for tracking.
+3. **Provisional credit** is typically applied to your account within 2 business days while we investigate.
+4. **We investigate** and resolve the case within 3–5 business days.
+
+You won't need to visit a branch or file a police report — everything is handled remotely.
+
+Ready to get started? Could you tell me the approximate amount of the charge you're disputing?
+
+Customer: oh ok that's not what i thought. so i get the money back while you look into it? that's good
+
+anyway i dont have my statement in front of me right now but it was like.. $80 something i think
+
+Agent: That's right — the provisional credit is there so you're not out of pocket while we investigate.
+
+No problem on the exact amount. To move forward, do you know roughly when the charge appeared — even just the approximate date or month?
+
+Customer: it was recent, like maybe last week? or possibly the week before. i'd have to check
+
+Agent: No problem — that's enough to get started. I'll open the dispute now.
+
+**Dispute case opened:**
+- **Case Number:** FRD-2024-084921
+- **Card:** Visa ****1234
+- **Approximate Amount:** ~$80
+- **Approximate Date:** Within the last 1–2 weeks
+
+You can use that case number to track your dispute. Provisional credit of approximately $80 will typically be applied to your account within 2 business days, and we aim to resolve the investigation within 3–5 business days.
+
+Would you also like to go ahead and request a replacement card for your Visa ****1234?
+
+Customer: wait does freezing it mean that charge is blocked too? or has it already gone through
+
+Agent: Great question. The freeze prevents any **new** transactions from going through — but if the unauthorized charge has already posted to your statement, it has already been processed and the freeze won't reverse it. That's what the dispute we just opened is for.
+
+Would you like to go ahead and request a replacement card for your Visa ****1234?
+
+Customer: oh so the freeze doesn't block it if it already went through? i kind of assumed freezing it would take care of everything. so the dispute is what actually gets me the money back?
+
+Agent: Exactly right. To summarize:
+
+- **Card freeze** — stops any new unauthorized charges from happening going forward.
+- **Dispute** — is what gets you the money back for the charge that already went through.
+
+Both steps together give you the full protection. So you're in good shape — card is frozen and dispute is open.
+
+Would you like to request a replacement card for your Visa ****1234?
+
+Customer: ok that makes sense, thanks for explaining. yeah let's do the replacement card
+
+Agent: To confirm: you'd like me to **cancel your Visa ****1234** and send a replacement card to the address on file — is that correct?
+
+Customer: yeah that's fine, whatever address you have should be right
+
+Agent: Your **Visa ****1234** has been cancelled and a replacement card is on its way to the address on file. You should receive it within **5–7 business days**.
+
+Is there anything else I can help you with today?

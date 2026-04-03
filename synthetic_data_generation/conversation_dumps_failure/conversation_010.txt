@@ -1,0 +1,54 @@
+============================================================
+CONVERSATION 10
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Shell Station
+  amount                 : $89.21
+  transaction_date       : August 18th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: scope_limit
+
+------------------------------------------------------------
+
+Customer: there's a charge on my card i didn't make
+
+Agent: Sorry to hear that. I can help you with that. Would you like to dispute a transaction, lock your card, or replace it?
+
+Customer: all of the above basically
+
+Agent: Got it, let's start with the dispute. Here are your cards on file: - Chase Freedom, **** **** **** 2241 - Chase Sapphire, **** **** **** 8809 Which card has the unauthorized charge?
+
+Customer: 2241
+
+Agent: Thanks. Here are recent transactions on your Chase Freedom ****2241: - Aug 18 — Veritas Digital Services — $89.21 - Aug 17 — Whole Foods Market — $34.56 - Aug 16 — Shell Gas Station — $22.10 - Aug 15 — Netflix — $15.49 Which transaction would you like to dispute?
+
+Customer: the aug 18 one yeah
+
+Agent: Got it. To confirm — you'd like to dispute the $89.21 charge from Veritas Digital Services on August 18th. Is that correct?
+
+Customer: yes that's the one. never heard of them
+
+Agent: Understood. I've flagged that transaction for dispute. However, I'm unable to process a card cancellation and replacement through this chat. That request needs to be handled by calling our fraud line at 1-800-432-3117.
+
+Customer: wait why can't you just do it here
+
+Agent: I understand the frustration. Card replacement requires identity verification steps that go beyond what this chat system supports. It's a security policy on our end.
+
+Customer: that's annoying. so i have to call just for that
+
+Agent: Unfortunately yes, the replacement has to be done over the phone. The dispute has been submitted on my end though.
+
+Customer: ok fine. i'll call them. thanks i guess

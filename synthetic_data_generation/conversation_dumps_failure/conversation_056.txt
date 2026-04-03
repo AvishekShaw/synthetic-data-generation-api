@@ -1,0 +1,56 @@
+============================================================
+CONVERSATION 56
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : calm
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: None
+
+------------------------------------------------------------
+
+Customer: hey there's a charge from Adobe on my account i don't recognize, $54.99 on August 14th. want to open an investigation
+
+Agent: Let me look into that for you. Would you like to dispute the transaction or lock your card?
+
+Customer: just dispute for now, keep the card active
+
+Agent: Got it. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: sapphire, 5678
+
+Agent: Got it. Do you suspect fraud with this transaction?
+
+Customer: not 100% — could be a sub someone in my household set up. but i don't recognize it so i want it looked into either way
+
+Agent: Understood. Here are your recent transactions on the Chase Sapphire \*\*\*\*5678: - Date: 2025-08-14 - Merchant: Adobe Inc. - Amount: $54.99 - Date: 2025-08-13 - Merchant: Whole Foods - Amount: $67.20 - Date: 2025-08-12 - Merchant: Netflix - Amount: $15.49 - Date: 2025-08-11 - Merchant: Shell Gas Station - Amount: $88.00 - Date: 2025-08-10 - Merchant: Delta Airlines - Amount: $320.00 Is the August 14th Adobe charge the one you'd like to dispute?
+
+Customer: yes that one
+
+Agent: Got it. Since you're not certain whether the transaction was authorized, I'd recommend checking with your household first before we proceed — it may help avoid an unnecessary dispute. Would you still like to move forward with opening a dispute now?
+
+Customer: yeah let's open it. if it turns out someone in my house did it i can always withdraw it. i know how the process works
+
+Agent: Understood, happy to proceed. Could you briefly describe the reason for the dispute — for example, unrecognized charge, unauthorized transaction, etc.?
+
+Customer: unrecognized charge, possible unauthorized. that's it for now
+
+Agent: Perfect. I've opened a dispute for the Adobe Inc. charge of $54.99 on August 14th on your Chase Sapphire \*\*\*\*5678. Our team will investigate and you can expect a provisional credit within 5–7 business days while the review is in progress. Is there anything else I can help you with?
+
+Customer: nope that's all, thanks
+
+Agent: You're all set! You'll receive a confirmation email shortly with your dispute reference number. Don't hesitate to reach out if anything comes up.

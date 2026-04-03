@@ -1,0 +1,62 @@
+============================================================
+CONVERSATION 20
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: partial
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Netflix
+  amount                 : $34.99
+  transaction_date       : August 12th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: trust_breakdown
+
+------------------------------------------------------------
+
+Customer: hi there, I've got a charge on my account that doesn't look right to me
+
+Agent: I'm sorry to hear that. I'd be happy to help you look into this. Would you like to dispute a transaction or lock your card?
+
+Customer: dispute I think, though I'm not even sure it's fraud yet. might be something I forgot about
+
+Agent: Understood. Let's take a look and figure it out together. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the transaction on?
+
+Customer: the freedom one, the 1234
+
+Agent: Got it. Here are your recent transactions on your Chase Freedom card: - Date: 2025-08-12 - Merchant: Spotify - Amount: $34.99 - Date: 2025-08-10 - Merchant: Walmart - Amount: $67.20 - Date: 2025-08-08 - Merchant: Netflix - Amount: $15.49 - Date: 2025-08-05 - Merchant: Shell Gas Station - Amount: $52.00 - Date: 2025-08-01 - Merchant: Target - Amount: $41.30 Do any of these match the transaction you're concerned about?
+
+Customer: yeah the august 12th one looks like it. $34.99 right. but I don't recognize spotify, I don't have that
+
+Agent: Got it. Do you suspect this transaction is fraudulent?
+
+Customer: honestly not sure. could be my kid set something up idk. I just want someone to look into it before I go accusing anyone
+
+Agent: Understood. I do need to confirm whether you're reporting this as fraud or as an unauthorized charge before I can open an investigation. Do you believe this transaction was made without your knowledge or consent?
+
+Customer: I mean...yeah I didn't authorize it myself but I'm not ready to say it's definitely fraud. can't you just investigate first?
+
+Agent: I understand your concern. However, to proceed with a dispute, the transaction must be classified as either fraudulent or non-fraudulent at this stage. Since you did not personally authorize the charge, I will classify this as a suspected unauthorized transaction. Can you confirm the date of the transaction you'd like to dispute?
+
+Customer: you literally just showed it to me, august 12th. also I already told you the amount, it's $34.99
+
+Agent: You're right, I apologize for the repetition. To confirm, I will be opening a dispute for the Spotify charge of $34.99 on August 12th on your Chase Freedom card ending in 1234. Please note that disputes typically take 3-5 business days to resolve.
+
+Customer: wait I thought disputes took like 30-45 days?? my friend went through one last year and it took forever
+
+Agent: You are correct that disputes can take up to 45 days in some cases. The 3-5 business days I mentioned refers to the time it takes for us to acknowledge your dispute and begin the investigation. The full resolution may take longer depending on the complexity of the case.
+
+Customer: so which is it, 3-5 days or 45 days? cause those are pretty different things and I feel like you just changed your answer
+
+Agent: I understand the confusion. To clarify: 3-5 business days is the acknowledgment period, and up to 45 days is the full resolution window. Both timeframes apply to your case.
+
+Customer: this isn't adding up to me. I'm just gonna call the actual number on the back of my card, thanks anyway

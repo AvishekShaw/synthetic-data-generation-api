@@ -1,0 +1,84 @@
+============================================================
+CONVERSATION 12
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Netflix
+  amount                  : $34.99
+  transaction_date        : August 12th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that for uncertain charges, you need to be 100% sure it's fraud before the bank can do anything.
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account that looks off
+
+Agent: I can help you look into that. Could you please provide me with the last 4 digits of the card that has the suspicious charge?
+
+Customer: 4471
+
+Agent: Thank you. I'm pulling up the recent transactions for the card ending in **4471**. Could you tell me the approximate amount of the suspicious charge?
+
+Customer: around $35
+
+Agent: Thank you. Do you recall the approximate date of the transaction, or roughly when it appeared on your account?
+
+Customer: august 12 i think
+
+Agent: I'm showing a transaction on August 12th for **$34.97** from "Metro Quick Stop." Does that match the charge you're questioning, or does something else on that date look unfamiliar?
+
+Customer: hmm not sure, maybe? the amount is close but i dont recognize that name
+
+Agent: That's okay — not recognizing a merchant name is a valid reason to dispute a charge. "Metro Quick Stop" may appear differently than the store's common name, which is common with some retailers.
+
+Would you like me to open a dispute for this $34.97 charge so we can investigate it further?
+
+Customer: wait do i have to be 100% sure it's fraud before you can look into it
+
+Agent: Not at all. You don't need to be certain it's fraud to open a dispute — that's exactly what the investigation is for. If a charge looks unfamiliar or unexpected, that's sufficient reason for us to look into it.
+
+Would you like me to go ahead and open a dispute for the $34.97 charge from August 12th?
+
+Customer: oh ok i didnt know that. yeah go ahead and open it
+
+Agent: To confirm, I'll be opening a dispute for the following:
+
+- **Card:** ending in ****4471**
+- **Amount:** $34.97
+- **Date:** August 12th
+- **Merchant:** Metro Quick Stop
+
+I've opened your dispute and assigned case number **DIS-2847391**. You can reference this number for any follow-up questions.
+
+A few things to know:
+- Our team will investigate and aim to resolve this within **3–5 business days**
+- If the charge is confirmed as unauthorized, provisional credit is typically issued within **2 business days**
+
+Would you also like me to freeze your card ending in 4471 while the investigation is underway, or is there anything else I can help you with?
+
+Customer: actually wait — could it be a subscription? or maybe someone in my family used it
+
+Agent: That's a good thought to check before we proceed. Do you want to take a moment to verify with your family members or review any subscriptions you may have, and then get back to us if the charge still looks unfamiliar?
+
+If you'd like, I can also leave the dispute open as-is — you can still withdraw it later if the charge turns out to be legitimate. Either way, there's no penalty for investigating.
+
+What would you prefer?
+
+Customer: ok leave it open for now. can i still cancel if i figure out it was legit
+
+Agent: Yes, absolutely. You can contact us to withdraw the dispute at any time if you determine the charge is legitimate — just reference case number **DIS-2847391**.
+
+Is there anything else I can help you with today?

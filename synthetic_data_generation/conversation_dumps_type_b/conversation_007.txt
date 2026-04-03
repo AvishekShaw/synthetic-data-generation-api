@@ -1,0 +1,99 @@
+============================================================
+CONVERSATION 7
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Apple Store
+  amount                  : $1,249.00
+  transaction_date        : August 19th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_escalation
+  planted_error: State that disputes over $1,000 cannot be processed via chat and require an in-branch visit. (Incorrect — all dispute amounts can be handled remotely.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: there's a charge on my account that i did not make. i need it removed.
+
+Agent: I'm sorry to hear that, and I'm here to help you get this resolved right away.
+
+To get started, could you please tell me which card the unauthorized charge appeared on?
+
+Customer: it's my visa debit card
+
+Agent: Thank you. I can see the following Visa debit card on your account:
+
+- Visa Debit ****4471
+
+Is that the card with the unauthorized charge?
+
+Customer: yeah that's the one
+
+Agent: Got it. Could you please tell me the amount of the unauthorized charge?
+
+Customer: $1,249 at the apple store
+
+Agent: I'm sorry to hear that. However, because this dispute involves an amount over $1,000, I'm unable to process it through chat. You will need to visit a branch in person to open a dispute for this amount.
+
+In the meantime, I can freeze your Visa Debit ****4471 immediately to prevent any further unauthorized charges. Would you like me to go ahead and do that?
+
+Customer: wait what? why can't you do it in chat? that doesn't make sense. other people have told me disputes can be handled online
+
+Agent: You're absolutely right, and I apologize for the confusion. That information was incorrect. There is **no minimum or maximum amount limit** for disputes handled through chat — all dispute amounts can be fully processed remotely, including yours. I'm sorry for the misinformation.
+
+Let's get this taken care of right now. I'll open a fraud dispute for the $1,249.00 charge at the Apple Store on your Visa Debit ****4471.
+
+Would you also like me to freeze your card immediately to prevent any further unauthorized activity while we investigate?
+
+Customer: yeah freeze it. and when do i get my money back? i thought for charges over $500 the bank has to give you the money back within 24 hours
+
+Agent: Your Visa Debit ****4471 has been frozen effective immediately. No further transactions can be processed on that card.
+
+Regarding the timeline for your funds — I want to make sure you have accurate information. Our policy is that provisional credit is typically issued **within 2 business days** of opening a dispute, not 24 hours. I'm not aware of a $500 threshold that changes that timeline. If you've heard different terms elsewhere, it's possible they apply to a different institution or product, but I want to be straightforward with you rather than confirm something I can't stand behind.
+
+Before I officially open the dispute and assign your case number, could you confirm the approximate date the $1,249.00 Apple Store charge appeared on your account?
+
+Customer: hm. i'm pretty sure i read that somewhere official. but ok, 2 days. the charge was on august 19th
+
+Agent: Thank you for confirming. Here's a summary of what I'm opening:
+
+- **Card:** Visa Debit ****4471
+- **Merchant:** Apple Store
+- **Amount:** $1,249.00
+- **Transaction Date:** August 19th
+- **Card Status:** Frozen (effective immediately)
+
+Your dispute case number is **FRD-2024-089341**.
+
+Next steps:
+- **Provisional credit** will be applied to your account within 2 business days
+- **Investigation** will be completed within 3–5 business days
+- You'll receive updates via your registered email or phone number on file
+
+Would you also like me to cancel your Visa Debit ****4471 and order a replacement card? A new card would arrive in 5–7 business days.
+
+Customer: yes cancel it and send me a new one
+
+Agent: Done. Your Visa Debit ****4471 has been cancelled and a replacement card is on its way. You can expect it to arrive within **5–7 business days**.
+
+Here's a full summary of everything completed today:
+
+- ✅ **Fraud dispute opened** — Case #FRD-2024-089341
+- ✅ **Card frozen and cancelled** — Visa Debit ****4471
+- ✅ **Replacement card ordered** — arriving in 5–7 business days
+- ✅ **Provisional credit** — expected within 2 business days
+
+Is there anything else I can help you with today?

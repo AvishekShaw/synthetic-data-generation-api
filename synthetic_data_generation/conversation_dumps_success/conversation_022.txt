@@ -1,0 +1,63 @@
+============================================================
+CONVERSATION 22
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hi i called about a week ago about a charge i didnt make and was told to wait but i havent heard anything
+
+Agent: I'm sorry to hear you're still waiting on this. I'd be happy to help look into it. Can you tell me which card the charge appeared on?
+
+Customer: i dont remember exactly which one, i have a couple cards with you guys
+
+Agent: No problem! Here are the cards we have on file for you: - Chase Freedom, **** **** **** 3421 - Chase Sapphire Reserve, **** **** **** 8807 Which card had the charge?
+
+Customer: the 8807 one
+
+Agent: Got it. Would you like to dispute a transaction on that card?
+
+Customer: yes but i already reported it last week. im just following up because nobody got back to me and i want to know where things stand
+
+Agent: I understand, and I apologize for the lack of follow-up. Let me pull up the recent transactions on your Chase Sapphire Reserve ending in 8807. Can you confirm the charge you're referring to — the merchant name and amount?
+
+Customer: yeah it was Uber Eats, $215. happened on August 10th. i definitely did not make this, i dont even have the uber eats app
+
+Agent: Thank you for those details. I can see that transaction on your account. To confirm — do you suspect this is fraudulent, meaning someone else used your card without your permission?
+
+Customer: yes 100%. i never made this charge. do i need to like prove that before you can do anything? i thought thats how it works
+
+Agent: You don't need to prove anything upfront — your claim is enough to open a fraud dispute. We'll investigate on your behalf, and the burden isn't on you to provide evidence first. It looks like a dispute case was opened during your previous call. I can escalate this and flag it for urgent review. Would you like me to do that?
+
+Customer: yes please. and also i want the card cancelled and a new one sent. if someone has my details i dont want them using it again
+
+Agent: Absolutely, that's a smart step. Just to confirm — you'd like me to: 1. Escalate the existing fraud dispute for the $215.00 Uber Eats charge from August 10th 2. Cancel your Chase Sapphire Reserve ending in 8807 and send a replacement card Is that right?
+
+Customer: yes exactly that
+
+Agent: Done! I've escalated your dispute for urgent review and your card ending in 8807 has been cancelled. A replacement card will arrive within 5–7 business days. You'll receive an email confirmation shortly, and our disputes team will be in touch with an update within 3–5 business days.
+
+Customer: ok good. and ill still get the money back right? like the $215
+
+Agent: Yes — since this has been flagged as fraud, if the investigation confirms the charge was unauthorized, the $215.00 will be returned to your account. You'll be notified of the outcome once the review is complete. Is there anything else I can help you with today?
+
+Customer: no thats it thanks
+
+Agent: You're welcome! Sorry again for the delay, and we'll get this sorted for you. Take care!

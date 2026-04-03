@@ -1,0 +1,104 @@
+============================================================
+CONVERSATION 19
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : tried_merchant
+  expected_resolution     : refund_and_card
+  merchant                : TechHub
+  amount                  : $340.00
+  transaction_date        : August 15th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that since the merchant already refused to help, the bank is legally required to refund you immediately without further investigation.
+
+------------------------------------------------------------
+
+Customer: hey there, I have a charge on my account that I definitely didn't make and I need help getting it sorted out
+
+Agent: I'm sorry to hear that, and I'm here to help you get this resolved quickly. To get started, could you please verify the last four digits of the card you're seeing the unauthorized charge on?
+
+Customer: sure, it's 4821
+
+Agent: Thank you for confirming. I can see your Visa card ending in **4821** on your account.
+
+Could you tell me the approximate amount of the unauthorized charge you're seeing?
+
+Customer: it was $340, showed up from some place called TechHub
+
+Agent: Thank you for that information. I can see a charge of **$340.00** from **TechHub** on your Visa ending in **4821**.
+
+Do you have an approximate date when this charge appeared on your account?
+
+Customer: it was around the 15th, august 15th i think
+
+Agent: Thank you. I can see the charge dated **August 15th** from **TechHub** for **$340.00** on your Visa ending in **4821** — this falls well within our 90-day dispute window.
+
+Before I open a fraud dispute, I'd like to confirm the details:
+
+- **Card:** Visa ****4821
+- **Merchant:** TechHub
+- **Amount:** $340.00
+- **Date:** August 15th
+
+Is this information correct, and would you like me to proceed with opening a dispute for this charge?
+
+Customer: yes that's right. and look I already tried calling TechHub directly and they basically told me to go away, so at this point the bank should just refund me right? like isn't that how it works
+
+Agent: I completely understand your frustration, and contacting the merchant first is actually a great first step — that information will be helpful for your case.
+
+To clarify how this works: I'll open a formal fraud dispute on your behalf and, since this appears to be an unauthorized charge, I can also request a **provisional credit of $340.00** to your account, typically within **2 business days**, while we investigate. The full investigation typically resolves within **3-5 business days**.
+
+Shall I go ahead and open the dispute and request the provisional credit now?
+
+Customer: wait so it's not automatic? like I still have to wait for an investigation even though the merchant already refused to help me?
+
+Agent: That's a fair question. Yes, a brief investigation is required — this is standard procedure to protect all customers, regardless of the merchant's response. The good news is:
+
+- You **don't** need to wait for the investigation to get your money back. The **provisional credit of $340.00** is applied to your account within **2 business days** of opening the dispute — so you'll have access to those funds while we investigate.
+- The investigation itself wraps up within **3-5 business days**.
+- No branch visit or police report is required — everything is handled remotely.
+
+Would you like me to go ahead and open the dispute and request the provisional credit now?
+
+Customer: ok fine, I guess that works. but I also want my card cancelled and a new one sent out, can you do both at the same time?
+
+Agent: Absolutely — I can take care of both at the same time.
+
+Just to confirm, here's what I'll be doing:
+
+1. **Open a fraud dispute** for the $340.00 TechHub charge (August 15th) and request a provisional credit
+2. **Cancel your Visa ****4821** and issue a replacement card
+
+Your new card will arrive in **5-7 business days**. Would you like me to freeze your current card immediately as well, to prevent any further unauthorized charges while the replacement is in transit?
+
+Customer: yes please do all of that, freeze it now and get the new card sent out
+
+Agent: Perfect. Here's a summary of everything I've completed:
+
+- **Dispute opened** — Case number **FRD-2024-088431** for the $340.00 TechHub charge (August 15th). A provisional credit request has been submitted and should reflect within **2 business days**.
+- **Card frozen** — Your Visa ****4821 is frozen effective immediately.
+- **Replacement card ordered** — A new card will be mailed to the address on file and should arrive in **5-7 business days**.
+
+Is the mailing address we have on file still current, or would you like to update it before we send the replacement?
+
+Customer: address is still the same, that's fine. so is that everything done then?
+
+Agent: Yes, everything is taken care of! Here's a quick recap:
+
+- **Case #FRD-2024-088431** is open and under investigation (3-5 business days)
+- **Provisional credit of $340.00** should appear within 2 business days
+- **Visa ****4821** is frozen immediately
+- **Replacement card** is on its way (5-7 business days)
+
+You'll receive notifications as your case progresses. Is there anything else I can help you with today?

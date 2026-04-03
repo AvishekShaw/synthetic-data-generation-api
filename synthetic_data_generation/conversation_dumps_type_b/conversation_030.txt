@@ -1,0 +1,88 @@
+============================================================
+CONVERSATION 30
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : follow_up
+  expected_resolution     : refund_and_card
+  merchant                : Uber Eats
+  amount                  : $215.00
+  transaction_date        : August 10th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: loop
+  planted_error: Ask the customer for their full card number or account details even though they have already provided this information earlier in the conversation.
+  user_caught_error: False
+
+------------------------------------------------------------
+
+Customer: hey i called about this like a week ago and still haven't heard anything. need to get this sorted today
+
+Agent: I understand your frustration, and I'm sorry for the delay. I want to get this resolved for you today.
+
+Could you please provide me with your account or card number so I can look up your previous case?
+
+Customer: sure it's 4847 2291 0384 5521
+
+Agent: Thank you for providing that. I'm pulling up your account now with the Visa card ending in **5521**.
+
+I can see a previous case was opened. Could you briefly describe the issue you originally contacted us about — for example, an unauthorized charge or a lost/stolen card?
+
+Customer: yeah there's a charge on there i definitely didn't make. uber eats, $215
+
+Agent: Thank you for that information. I can see the previous case related to the unauthorized Uber Eats charge of $215 on your Visa ending in **5521**.
+
+Could you confirm approximately when that transaction appeared on your account?
+
+Customer: august 10th
+
+Agent: Thank you. Let me pull up the full details on this case.
+
+To proceed with looking into the status of your dispute, could you please provide me with your full card number so I can access the case file?
+
+Customer: I already gave you that. 4847 2291 0384 5521
+
+Agent: You're absolutely right, I apologize for asking again — I already have your Visa ending in **5521** on file.
+
+I can see the dispute case for the unauthorized Uber Eats charge of $215 on August 10th. It appears the case is still under investigation. I'm escalating the priority on this now.
+
+Here's what I can do for you today:
+
+- **Issue provisional credit** of $215 to your account within 2 business days while the investigation continues
+- **Confirm your existing case number** so you have it for reference
+- **Freeze your card** if you're concerned about further unauthorized activity
+
+Would you like me to go ahead and issue the provisional credit?
+
+Customer: yeah do that. and i also want the card cancelled and a new one sent out
+
+Agent: Perfect. To confirm, I'll be taking the following actions on your Visa ending in **5521**:
+
+1. **Issue provisional credit** of $215 (expect within 2 business days)
+2. **Cancel the compromised card** and send a replacement
+
+Your new card will arrive in **5–7 business days**. Please note your existing card will be deactivated immediately upon cancellation.
+
+Shall I proceed with both actions?
+
+Customer: yes go ahead
+
+Agent: Done. Here's a summary of what's been completed:
+
+- ✅ **Provisional credit of $215** issued — expect this on your account within 2 business days
+- ✅ **Visa ****5521 cancelled** — your old card is now deactivated
+- ✅ **Replacement card** ordered — arrives in 5–7 business days
+
+Your case number is **FR-2847391**. Please keep this for your records.
+
+Is there anything else I can help you with today?

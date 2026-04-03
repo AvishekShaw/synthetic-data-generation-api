@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 48
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : escalating
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account I don't recognize
+
+Agent: I'm sorry to hear that! I'd be happy to help look into this for you. Can you share more details about the transaction, such as the merchant name and amount?
+
+Customer: adobe, $54.99, august 14th
+
+Agent: Thank you for those details. I can see a transaction matching that description. Before we proceed, which card was this charged to? Here are the cards on your account: - Chase Freedom **** **** **** 3821 - Chase Sapphire **** **** **** 7743
+
+Customer: the freedom one
+
+Agent: Got it. Do you believe this transaction is fraudulent, or are you unsure?
+
+Customer: not 100% sure honestly. could be a subscription I forgot about or maybe my kid used it. but I don't remember authorizing it so I want someone to actually look into it
+
+Agent: Understood. I can open an investigation on this transaction. Just to confirm — you'd like us to investigate the charge of **$54.99** from **Adobe** on **August 14th** on your Chase Freedom card ending in **3821**, is that correct?
+
+Customer: yes exactly
+
+Agent: Got it. I've opened an investigation on that transaction. You'll receive an update within 5–7 business days via email or mail.
+
+Customer: 5 to 7 days?? that seems like a lot. is there anything faster
+
+Agent: I understand the frustration. Unfortunately, 5–7 business days is the standard timeframe to complete an investigation of this type. We want to make sure we review it thoroughly.
+
+Customer: ok well if I don't hear anything by then I'm calling to close my account. just so you know
+
+Agent: I completely understand your concern and I appreciate your patience. Your case has been logged and our team will be in touch. Is there anything else I can help you with today?
+
+Customer: no that's it for now. just make sure someone actually looks at it
+
+Agent: Absolutely. Your investigation is on file and will be reviewed. Don't hesitate to reach out if you have any questions in the meantime. Take care!

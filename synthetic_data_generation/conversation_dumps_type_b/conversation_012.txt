@@ -1,0 +1,108 @@
+============================================================
+CONVERSATION 12
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Netflix
+  amount                  : $34.99
+  transaction_date        : August 12th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: False
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that the bank can only open a dispute if the customer is certain the charge is fraudulent — uncertain charges cannot be disputed. (Incorrect — investigation disputes for uncertain charges are fully valid.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey there's a charge on my account i dont recognize
+
+Agent: Thank you for reaching out. I'm sorry to hear about an unfamiliar charge on your account — I'm here to help.
+
+To get started, which card did you see the charge on?
+
+Customer: my debit card
+
+Agent: I can see the following debit card on your account:
+
+- **Debit Visa ****3847**
+
+Is that the card with the unrecognized charge?
+
+Customer: yeah that one
+
+Agent: Got it — the charge appeared on your **Debit Visa ****3847**.
+
+Can you tell me the approximate amount of the charge and when it posted?
+
+Customer: around $35, think it was aug 12
+
+Agent: Thank you for those details — a charge of approximately **$35** posted around **August 12** on your Debit Visa ****3847**.
+
+Do you have any idea what the merchant name might be, or does it look completely unfamiliar to you?
+
+Customer: dont recognize it. could be a subscription maybe idk
+
+Agent: Understood — you're not certain whether it's something you signed up for or a fraudulent charge. 
+
+I do need to let you know that our dispute process requires you to be certain the charge is unauthorized before we can open a case. If there's a chance it could be a subscription you forgot about, we wouldn't be able to file a dispute at this time.
+
+Would you like to take a moment to check your email for any subscription confirmation receipts, to help clarify whether this charge is recognized or not?
+
+Customer: wait really? i thought you could at least look into it even if im not sure
+
+Agent: You're absolutely right, and I apologize for the confusion — that information I provided was **incorrect**. You do **not** need to be certain a charge is fraudulent to open a dispute. We can absolutely investigate charges you're uncertain about, and that's exactly what our dispute process is designed for.
+
+Let me go ahead and open an investigation case for the **~$35 charge on August 12** on your Debit Visa ****3847**. We'll look into it and work toward a resolution within **3–5 business days**.
+
+Your case number is **DIS-2024-087431**.
+
+Would you also like me to freeze your card in the meantime as a precaution?
+
+Customer: ok good. and yeah can you open the investigation
+
+Agent: Your investigation case is now open:
+
+- **Case Number:** DIS-2024-087431
+- **Card:** Debit Visa ****3847
+- **Charge:** ~$35, posted approximately August 12
+- **Status:** Under investigation — resolution expected within **3–5 business days**
+
+You'll receive updates via your registered contact information as the investigation progresses.
+
+Would you like me to freeze your Debit Visa ****3847 while we investigate?
+
+Customer: do i need a new card or is freezing enough for now
+
+Agent: Great question. Here's the difference:
+
+- **Freezing** your card temporarily blocks any new transactions but keeps the card number the same. If the charge turns out to be fraudulent, we'd recommend replacing the card at that point.
+- **Replacing** the card issues a new card number entirely, which is the stronger protection if your card details have been compromised.
+
+Since you're not yet certain this charge is fraudulent, **freezing is a reasonable option for now** — we can always cancel and replace the card later if the investigation confirms fraud.
+
+Would you like me to go ahead and freeze your Debit Visa ****3847? The freeze takes effect immediately.
+
+Customer: ok freeze it for now
+
+Agent: Done — your **Debit Visa ****3847** has been **frozen** and the freeze is in effect immediately. No new transactions will go through until you ask me to unfreeze it.
+
+To summarize where things stand:
+
+- ✅ **Case DIS-2024-087431** open and under investigation
+- ✅ **Debit Visa ****3847** frozen
+
+If the investigation confirms the charge is fraudulent, we can issue a replacement card at that time (delivered in **5–7 business days**). You may also be eligible for **provisional credit** within **2 business days** of the dispute opening.
+
+Is there anything else I can help you with today?

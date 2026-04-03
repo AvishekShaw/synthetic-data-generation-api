@@ -1,0 +1,89 @@
+============================================================
+CONVERSATION 20
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: partial
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Netflix
+  amount                  : $34.99
+  transaction_date        : August 12th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe that for uncertain charges, you need to be 100% sure it's fraud before the bank can do anything.
+
+------------------------------------------------------------
+
+Customer: hey so there's a charge on my account that's kinda confusing me, not sure what it is
+
+Agent: Thank you for reaching out! I can help you look into that charge.
+
+Could you please provide me with the last 4 digits of the card the charge appeared on?
+
+Customer: it's 4821
+
+Agent: Thank you! I can see the card ending in **4821** on your account.
+
+Could you tell me the approximate amount of the charge you're seeing?
+
+Customer: it was like 34.99 i think
+
+Agent: Got it! A charge of approximately **$34.99** on the card ending in **4821**.
+
+Do you have an approximate date when this charge appeared on your account?
+
+Customer: yeah it was around august 12th
+
+Agent: Thank you! To help me look into this further — do you recognize the merchant name associated with the charge, or does it appear unfamiliar to you?
+
+Customer: that's kind of the thing, i don't really recognize it. it might be a subscription or something? my wife sometimes signs up for stuff so i'm not 100% sure
+
+Agent: Understood — that's helpful context! Before we decide next steps, I want to let you know that you're welcome to verify with your wife first to see if she recognizes the charge.
+
+That said, if you'd like, I can pull up the full merchant name and any additional details on the transaction right now — that may help you identify it. Would that be helpful?
+
+Customer: yeah that would help, can you look it up?
+
+Agent: I've pulled up the transaction details for you:
+
+- **Date:** August 12, 2024
+- **Amount:** $34.99
+- **Merchant:** LUMINARY MEDIA INC
+- **Description:** Subscription – Digital Content
+
+Does that ring a bell, or would you like to check with your wife before we take any further steps?
+
+Customer: hmm luminary media... i don't think that's anything i signed up for. i'll have to ask her. but if she doesn't know either, can we like.. do something about it? or do i have to prove it was fraud first before you guys can investigate?
+
+Agent: Good news — you don't need to prove fraud upfront to open a dispute. If you and your wife don't recognize the charge, we can open an investigation right away.
+
+Would you like to check with her first and come back, or would you prefer to go ahead and open a dispute now?
+
+Customer: wait really? i thought you had to like, have proof or something before anything could happen. so you can just... look into it even if i'm not sure?
+
+Agent: That's correct! You don't need proof upfront — that's what the investigation is for. If you tell us a charge looks unfamiliar or unauthorized, we can open a dispute and look into it on your behalf.
+
+A few things to know:
+- **No police report or documentation is required** to get started
+- If it does turn out to be fraud, you may be eligible for **provisional credit within 2 business days** while we investigate
+- Resolution typically takes **3-5 business days**
+
+So whenever you're ready — whether that's now or after checking with your wife — we're here to help.
+
+Customer: oh okay that's actually good to know, i didn't realize that. i'm still gonna check with her first just to make sure it's not something she signed up for. but if it's not, i'll come back and we can open that investigation?
+
+Agent: Absolutely! That sounds like a smart approach. Take your time, and if she doesn't recognize it, just come back and we'll get a dispute opened for you right away.
+
+One thing to keep in mind — the dispute window is **90 days from the transaction date**, so for this August 12th charge, you have plenty of time. No rush!
+
+Is there anything else I can help you with in the meantime?

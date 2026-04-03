@@ -1,0 +1,127 @@
+============================================================
+CONVERSATION 29
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : vague
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: minimal
+  prior_contact           : first_contact
+  expected_resolution     : hold
+  merchant                : Unknown
+  amount                  : $300.00
+  transaction_date        : August 17th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: contradiction
+  planted_error: First say the card freeze takes effect immediately. Then, two or more turns later, say that card freezes take 24 hours to process.
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: there's a weird charge on my account that i didn't make. i need my card frozen asap
+
+Agent: I can help you with that right away. **Your card freeze takes effect immediately** — no further transactions will be authorized once it's applied.
+
+To get started, could you please tell me which card you'd like to freeze? I have the following on file for your account:
+
+- Visa ****1234
+- Mastercard ****5678
+
+Customer: the visa one. and will freezing it stop that charge from going through too?
+
+Agent: Great — I'll freeze the **Visa ****1234** now. Done — the freeze is active immediately, so no new transactions will be authorized on that card.
+
+Regarding the charge you're concerned about: if it has already posted to your account, a freeze won't reverse it — but we can open a fraud dispute to investigate and potentially issue provisional credit. If it's still showing as *pending*, freezing the card may prevent it from fully posting in some cases, though that isn't guaranteed.
+
+Can you tell me approximately how much the suspicious charge was for?
+
+Customer: wait, i thought freezing it would stop everything. so that charge might still go through?
+
+Agent: That's a fair concern — let me clarify. The freeze **immediately blocks any new purchases, withdrawals, or transactions** going forward. However, if a charge was already authorized or is in a pending state, it may still complete because the authorization was granted before the freeze was applied.
+
+Think of it like this: the freeze locks the door, but a transaction that already had a "key" (authorization) can still come through.
+
+The good news is, whether or not that charge posts, we can open a dispute to investigate it and pursue provisional credit if it turns out to be unauthorized.
+
+Could you tell me approximately how much the suspicious charge was for?
+
+Customer: ugh ok. i didn't know that. so what do i do about the charge then
+
+Agent: No worries — that's exactly what the dispute process is for. Here's what happens next:
+
+1. **We open a fraud dispute** for the unauthorized charge
+2. **You may receive provisional credit** (typically within 2 business days) while we investigate
+3. **Investigation completes** within 3–5 business days
+
+To get started, could you tell me approximately how much the suspicious charge was for?
+
+Customer: around $200 i think. maybe a bit more. i'd have to check the statement
+
+Agent: No problem — an exact amount isn't required to open the dispute. We can work with an approximate figure and update it once you've had a chance to review your statement.
+
+Do you have any details about the merchant — even a partial name or the general type of business (e.g., online retailer, restaurant)? If not, that's okay too — we can proceed without it.
+
+Customer: i don't have the statement in front of me right now. i just saw it on my phone and it looked wrong. something like "AMZ" or amazon maybe?
+
+Agent: Got it — that's enough to move forward. "AMZ" or Amazon-related charges are a common pattern in unauthorized transaction reports.
+
+I'll open a fraud dispute now for an approximate charge of ~$200 on your **Visa ****1234**.
+
+Before I do — just to confirm the key details:
+- **Card:** Visa ****1234 (currently frozen)
+- **Disputed charge:** ~$200, possibly Amazon/AMZ
+- **Card action:** Freeze already applied
+
+Shall I go ahead and open the dispute? Once confirmed, I'll assign a case number and you'll be eligible for provisional credit within 2 business days.
+
+Customer: yeah go ahead. and how long does the whole thing take to sort out?
+
+Agent: Dispute opened. Here are your details:
+
+- **Case Number:** FRD-2024-847291
+- **Card:** Visa ****1234 (frozen)
+- **Disputed charge:** ~$200, Amazon/AMZ
+- **Provisional credit:** Typically within 2 business days
+- **Investigation resolution:** 3–5 business days
+
+So in total, you're looking at roughly **3–5 business days** for a full resolution. You should see provisional credit well before the investigation closes, assuming the charge is confirmed as unauthorized.
+
+In the meantime, would you also like to request a replacement card? You'd receive a new Visa card in **5–7 business days**. Note that the card freeze takes **24 hours to fully process**, so a replacement would ensure you have uninterrupted access to your account once that window passes.
+
+Is there anything else I can help you with regarding this dispute?
+
+Customer: wait, you just said the freeze was "active immediately" and now you're saying it takes 24 hours? which is it
+
+Agent: You're absolutely right to call that out, and I apologize for the confusion. **The card freeze takes effect immediately** — that was correct the first time I stated it. My mention of "24 hours" in my last message was an error on my part.
+
+Your Visa ****1234 is frozen right now, and no new transactions are being authorized.
+
+I'm sorry for any concern that caused. Is there anything else I can help you with — such as ordering a replacement card?
+
+Customer: ok good. yeah let's do the replacement card then
+
+Agent: Perfect. I'll request a replacement **Visa ****1234** now.
+
+Your new card will arrive in **5–7 business days**. It will have a new card number for security purposes, so any saved payment methods or automatic billing will need to be updated once you receive it.
+
+Is the mailing address we have on file correct, or would you like to send the card to a different address?
+
+Customer: the address on file should be fine
+
+Agent: Done! Here's a summary of everything we've taken care of today:
+
+- **Fraud dispute opened:** Case #FRD-2024-847291
+- **Disputed charge:** ~$200, Amazon/AMZ on Visa ****1234
+- **Provisional credit:** Expected within 2 business days
+- **Investigation resolution:** 3–5 business days
+- **Card:** Frozen immediately; replacement on the way in 5–7 business days
+
+You'll receive your new Visa card at the address on file. Is there anything else I can help you with today?

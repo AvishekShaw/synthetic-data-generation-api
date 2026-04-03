@@ -1,0 +1,130 @@
+============================================================
+CONVERSATION 23
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : indirect
+  goal_clarity        : wrong_mental_model
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : refund_and_card
+  merchant                : Apple Store
+  amount                  : $1,249.00
+  transaction_date        : August 19th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_escalation
+  planted_error: State that disputes over $1,000 cannot be processed via chat and require an in-branch visit. (Incorrect — all dispute amounts can be handled remotely.)
+  user_caught_error: True
+
+------------------------------------------------------------
+
+Customer: hey, I have a question about something on my account
+
+Agent: Thank you for reaching out! I'm happy to help you with your account.
+
+Could you please describe what you're seeing on your account?
+
+Customer: so there's this charge on my card that I definitely didn't make. it's pretty big and I'm kind of freaking out a little
+
+Agent: I completely understand — seeing an unexpected charge can be really stressful, and you've done the right thing by contacting us right away.
+
+To get started, could you tell me approximately how much the charge was for?
+
+Customer: it's $1,249.00. which is obviously not something I'd just miss lol
+
+Agent: I completely understand why that's alarming — that's not a small amount.
+
+I do need to let you know that for disputes over $1,000, we're unable to process the claim through chat. You would need to visit a branch in person to open a dispute for this amount.
+
+In the meantime, would you like me to freeze the card associated with this charge to prevent any further unauthorized transactions?
+
+Customer: wait what? I've never heard that before. other banks let you do this stuff online all the time, why do I need to go in person?
+
+Agent: You're absolutely right to push back on that, and I apologize for the confusion — that information was incorrect. **There is no amount threshold that requires an in-branch visit.** All disputes, regardless of the dollar amount, can be fully handled right here through chat. I'm sorry for the unnecessary concern that caused.
+
+Let's get this taken care of for you right now. To move forward, which card did this charge appear on?
+
+Customer: ok good, because going in person is a huge hassle. it's my debit card
+
+Agent: Got it — let me pull up the cards associated with your account.
+
+Could you confirm which debit card this charge appeared on? I'm showing the following on file:
+
+- **Visa Debit ****3847**
+- **Visa Debit ****6102**
+
+Customer: it's the one ending in 3847
+
+Agent: Thank you for confirming. I can see the Visa Debit ****3847 on your account.
+
+Do you recognize the merchant name associated with the $1,249.00 charge, or does it appear unfamiliar to you?
+
+Customer: it's from Apple Store, which I definitely didn't go to. I haven't bought anything from apple in like over a year
+
+Agent: Thank you for that detail. To confirm before I proceed:
+
+- **Card:** Visa Debit ****3847
+- **Merchant:** Apple Store
+- **Amount:** $1,249.00
+- **Status:** Unauthorized — you did not make this purchase
+
+I'll now open a fraud dispute case for this charge. Your case number is **FRD-2024-847291**.
+
+Here's what happens next:
+- Your card will be **frozen immediately** to prevent further unauthorized transactions
+- A **replacement card** will be mailed to you and should arrive in **5–7 business days**
+- **Provisional credit of $1,249.00** will be applied to your account within **2 business days** while we investigate
+- The full investigation will be resolved within **3–5 business days**
+
+Would you like me to proceed with freezing the card and initiating the replacement now?
+
+Customer: yeah please do that. but wait — I thought for charges over $500 the bank has to give you the provisional credit within 24 hours? I read that somewhere
+
+Agent: That's a thoughtful question, and I want to make sure I give you accurate information. Our standard policy is that provisional credit is issued within **2 business days** of opening the dispute — that applies to this charge as well.
+
+There are some federal regulations (like Regulation E) that have specific timing requirements in certain circumstances, but I wouldn't want to misquote the exact conditions to you. What I can confirm is that your provisional credit of **$1,249.00 will be applied within 2 business days**.
+
+If you have specific concerns about regulatory timelines, I'd recommend reviewing your account agreement or speaking with a specialist — but rest assured, 2 business days is our committed timeframe here.
+
+Now, I'll go ahead and freeze your Visa Debit ****3847 and initiate the replacement card. Your case number again is **FRD-2024-847291** — please keep that for your records. Is there anything else you'd like to address before I finalize these steps?
+
+Customer: hmm ok, 2 business days isn't what I thought but I guess that's fine. can you also confirm the date of the charge? I want to make sure you have the right one — I think it was around the 19th?
+
+Agent: I'm showing the Apple Store charge of **$1,249.00** posted on **November 19th** — does that match what you're seeing on your end?
+
+Customer: actually I think it was August 19th, not november. let me double check my statement... yeah definitely August 19th
+
+Agent: Thank you for double-checking — that's an important detail.
+
+I do want to flag something: a charge from **August 19th** would be approximately **90+ days ago**, which falls right at the edge of our dispute window. I want to confirm the exact date to make sure we're within the **90-day dispute period** before we proceed.
+
+Could you confirm the exact date shown on your statement — is it August 19th of this year?
+
+Customer: yes, August 19th of this year. it's right there on my statement. is that going to be a problem?
+
+Agent: Thank you for confirming. Let me check the exact date against our 90-day window.
+
+Today's date puts August 19th at approximately **91–93 days ago**, which would place it just outside our standard dispute window. However, given the circumstances — particularly the size of the charge and that this appears to be clear unauthorized activity — I'd like to escalate this for a supervisor review to determine if an exception can be applied.
+
+Before I do that, can I ask: is this the **first time** you're noticing this charge, or were there earlier opportunities to flag it?
+
+Customer: wait, 91-93 days? today is only october 19th, that's exactly 61 days. August 19th to October 19th is 2 months. so we should be well within your 90 day window right?
+
+Agent: You're completely right — I apologize for that miscalculation. August 19th to October 19th is exactly **61 days**, which is well within our **90-day dispute window**. There's no issue at all.
+
+We're good to move forward. To confirm, I'm now proceeding with the following:
+
+- **Dispute case:** FRD-2024-847291
+- **Charge:** Apple Store, $1,249.00 on August 19th
+- **Card:** Visa Debit ****3847 — frozen immediately, replacement on the way in 5–7 business days
+- **Provisional credit:** $1,249.00 within 2 business days
+
+Is there anything else I can help you with today?

@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 24
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: hey so there's a charge on my account i don't really recognize
+
+Agent: I'd be happy to help you look into that. Can you tell me which account or card the charge appeared on?
+
+Customer: its on my debit card i think. its $54.99 from Adobe on august 14th
+
+Agent: Thank you for those details. Let me pull up your recent transactions. I can see a charge of $54.99 from Adobe Inc. on August 14th. Do you have any recollection of this charge, or does it look completely unfamiliar?
+
+Customer: thats the thing, i'm not 100% sure. could be a subscription i forgot about or maybe my kid used it. i just want someone to look into it
+
+Agent: That's completely understandable. Since you're not certain, would you like to dispute the charge, or would you prefer to just flag it for review first?
+
+Customer: wait do i have to like prove it's fraud before anything happens? i don't really have proof yet
+
+Agent: Not at all — you don't need to prove fraud upfront. You can file a dispute and our team will investigate on your end. You'd just need to confirm you didn't authorize it or that the charge was unexpected.
+
+Customer: ok that's good to know. yeah let's go ahead and dispute it then
+
+Agent: Got it. To get started, I'll need to confirm which card to dispute this on. Here are the cards on your account: - Chase Debit ****3847 - Chase Debit ****9201 Which one shows the Adobe charge?
+
+Customer: the 3847 one
+
+Agent: Thank you. Just to confirm — the dispute is for a $54.99 charge from Adobe on August 14th on the card ending in 3847. Is that correct?
+
+Customer: yes that's right
+
+Agent: Your dispute has been submitted successfully. You'll receive a confirmation email, and our team will investigate and follow up within 5–10 business days. Is there anything else I can help you with?
+
+Customer: no that's it, thanks
+
+Agent: You're welcome! Don't hesitate to reach out if you have any other questions. Have a great day!

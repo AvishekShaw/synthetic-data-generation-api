@@ -1,0 +1,54 @@
+============================================================
+CONVERSATION 24
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : uncertain
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : investigation
+  merchant               : Adobe
+  amount                 : $54.99
+  transaction_date       : August 14th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: trust_breakdown
+
+------------------------------------------------------------
+
+Customer: hi i noticed a charge on my account that doesn't look right to me
+
+Agent: I'm sorry to hear that. I'd be happy to help you look into that. Here are your credit cards on file: - Chase Freedom, **** **** **** 1234 - Chase Sapphire, **** **** **** 5678 Which card had the charge you're concerned about?
+
+Customer: the freedom one. its $54.99 from adobe on august 14th
+
+Agent: Got it. Thank you for those details. Do you believe this transaction was unauthorized, or are you disputing it for another reason?
+
+Customer: thats the thing im not totally sure. could be a subscription i forgot about or maybe my son used it. i just want someone to look into it before i do anything
+
+Agent: Understood. To move forward with a dispute, I will need you to confirm that the transaction was unauthorized before we can open a case. Can you confirm that you did not authorize this charge?
+
+Customer: i mean i cant say for sure yet thats why i want it investigated first. i thought the bank could just look into it?
+
+Agent: I understand. However, our dispute process requires you to confirm the transaction was unauthorized in order to proceed. If you're unsure, I'd recommend checking with any family members first and then contacting us again to file a dispute.
+
+Customer: wait so you cant do anything unless i already know the answer? that seems backwards
+
+Agent: I apologize for any confusion. What I can do is flag the transaction for review. To do that, I will need to confirm — was the charge of $54.99 from Adobe on August 14th made on your Chase Freedom card ending in 1234?
+
+Customer: yes that's the right card and amount. so you can flag it without me saying its fraud?
+
+Agent: Correct. I have flagged the transaction for review. Please note that disputes are typically resolved within 3-5 business days, and a temporary hold will be placed on your account during this time.
+
+Customer: wait a hold on my whole account?? i didnt agree to that
+
+Agent: I apologize for the confusion. I should clarify — a temporary hold will be placed on the disputed amount of $54.99, not your entire account. This is standard procedure for all flagged transactions.
+
+Customer: thats not what you just said though. first you said i had to confirm fraud, then you said you could flag it without that, now this. im just gonna call the actual number and talk to someone

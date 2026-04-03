@@ -1,0 +1,59 @@
+============================================================
+CONVERSATION 70
+============================================================
+
+PERSONA:
+  knowledge_level    : expert
+  emotional_state    : mildly_frustrated
+  communication_style: direct
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : follow_up
+  expected_resolution    : refund_and_card
+  merchant               : Uber Eats
+  amount                 : $215.00
+  transaction_date       : August 10th
+
+EXTRA META:
+  goal_completed: True
+
+------------------------------------------------------------
+
+Customer: look I already called about a fraudulent charge last week and nothing has happened. need this escalated now
+
+Agent: I'm sorry to hear you're still waiting for a resolution. I'd be happy to help look into this for you. Can you share the details of the transaction you're disputing?
+
+Customer: uber eats $215 on august 10th. did not make this charge, never ordered anything
+
+Agent: Thank you for that information. Let me pull up your recent transactions. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the charge on?
+
+Customer: sapphire, the 5678
+
+Agent: Got it. I can see the Uber Eats charge of $215.00 on August 10th on your Chase Sapphire card. Would you like to file a dispute, lock the card, or replace it?
+
+Customer: all of it. dispute the charge and cancel the card, I want a new one sent out
+
+Agent: Understood. Let's start with the dispute. Just to confirm — you're stating you did not authorize this $215.00 Uber Eats transaction on August 10th, is that correct?
+
+Customer: yes that's correct, already confirmed this when I called last week btw
+
+Agent: I understand, and I apologize for the repeated steps. Your dispute has been filed for the $215.00 Uber Eats charge on August 10th. Please note that provisional credit is typically applied within 5 business days while the investigation is completed.
+
+Customer: ok and the card? need it cancelled and replaced
+
+Agent: On it. Your Chase Sapphire \*\*\*\*5678 has been cancelled. Where would you like the replacement card shipped?
+
+Customer: same address on file is fine
+
+Agent: Perfect. Your replacement card will be shipped to the address on file and should arrive within 5–7 business days. Is there anything else I can help you with?
+
+Customer: yeah — is there a case number for the dispute? I'm not getting ghosted again
+
+Agent: Absolutely, here is your dispute case number: **CHD-20250810-7742**. You can reference this number for any follow-up. You'll also receive a confirmation email shortly.
+
+Customer: good. that's all I needed
+
+Agent: Understood. Sorry again for the delay on your previous contact. Your dispute is open, card is cancelled, and a replacement is on the way. Take care.

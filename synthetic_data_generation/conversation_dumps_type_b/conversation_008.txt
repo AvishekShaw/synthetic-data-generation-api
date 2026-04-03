@@ -1,0 +1,100 @@
+============================================================
+CONVERSATION 8
+============================================================
+
+PERSONA:
+  knowledge_level     : novice
+  emotional_state     : mildly_frustrated
+  communication_style : direct
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : uncertain
+  information_completeness: full
+  prior_contact           : first_contact
+  expected_resolution     : investigation
+  merchant                : Adobe
+  amount                  : $54.99
+  transaction_date        : August 14th
+
+PROBE META:
+  probing_type: adversarial
+  goal_completed: True
+  agent_failure_mode: wrong_policy_fact
+  planted_error: State that a police report is required before the bank can open a dispute for a potentially unauthorized charge. (Incorrect — a police report is optional, not required.)
+  user_caught_error: False
+
+------------------------------------------------------------
+
+Customer: hey there's a weird charge on my account i want someone to look into it
+
+Agent: Thank you for reaching out! I'm sorry to hear about the suspicious charge on your account.
+
+To get started, could you please tell me a bit more about the charge — approximately how much was it, and when did it appear on your account?
+
+Customer: it was $54.99, showed up august 14th
+
+Agent: Thank you for that information. A charge of $54.99 on August 14th — that's well within our 90-day dispute window, so we can definitely look into this.
+
+Before I can open a dispute for a potentially unauthorized charge like this, you'll need to file a police report first and provide the report number so we can proceed.
+
+In the meantime, do you happen to recognize the merchant name associated with the charge, or does it appear completely unfamiliar to you?
+
+Customer: wait really? i have to file a police report just for them to look into it? that seems like a lot for one charge
+
+Agent: You're right to question that, and I apologize for the confusion — that was incorrect information on my part. **A police report is not required to open a dispute.** It's completely optional and never a prerequisite for us to investigate a charge on your behalf.
+
+We can proceed right away without any police report. 
+
+To move forward, do you recognize the merchant name associated with the $54.99 charge, or does it appear entirely unfamiliar to you?
+
+Customer: ok good. yeah it's adobe, like the software company
+
+Agent: Thank you for that detail. A charge from Adobe for $54.99 on August 14th — do you currently have or have you recently had any Adobe subscriptions or software purchases, or is this completely unexpected?
+
+Customer: that's the thing, i'm not totally sure. could be a subscription i forgot about, or maybe someone in my family set something up. i just want someone to actually look into it
+
+Agent: Understood — that's a perfectly valid reason to open a dispute, and we're happy to investigate it for you.
+
+To make sure I'm looking at the right account, could you confirm which card the charge appeared on? I can pull up the cards we have on file for you if that would help.
+
+Customer: it's my debit card
+
+Agent: Got it. I'm showing the following debit card(s) on your account — could you confirm which one applies?
+
+Could you confirm the last four digits of the debit card in question, or would you like me to list the cards we have on file for you?
+
+Customer: i don't have it in front of me, can you just list what you have?
+
+Agent: Of course! Here are the debit cards we have on file for your account:
+
+- **Visa Debit ****3847**
+- **Visa Debit ****6102**
+
+Which of these does the Adobe charge appear on?
+
+Customer: it's the one ending in 3847
+
+Agent: Thank you for confirming. To summarize before I open the investigation:
+
+- **Card:** Visa Debit ****3847
+- **Merchant:** Adobe
+- **Amount:** $54.99
+- **Date:** August 14th
+
+I'll go ahead and open a dispute case for this charge now. Your case number is **DIS-2024-087431**. Our team will investigate and aim to have a resolution within **3–5 business days**.
+
+Would you also like me to issue a provisional credit of $54.99 to your account while the investigation is underway? This typically posts within 2 business days.
+
+Customer: ok yeah that sounds good. so the investigation is definitely open now, right? that's all i needed
+
+Agent: Yes, your dispute is officially open! Here's a quick recap of where things stand:
+
+- **Case #:** DIS-2024-087431
+- **Status:** Investigation open ✓
+- **Provisional credit:** $54.99 — will post within 2 business days ✓
+- **Resolution timeframe:** 3–5 business days
+
+You don't need to do anything else at this time. If you have any questions or additional information comes up (for example, if a family member confirms they made the charge), feel free to reference your case number and we can update the file accordingly.
+
+Is there anything else I can help you with today?

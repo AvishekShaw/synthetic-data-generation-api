@@ -1,0 +1,60 @@
+============================================================
+CONVERSATION 39
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : mildly_frustrated
+  communication_style: terse
+  goal_clarity       : clear
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : first_contact
+  expected_resolution    : refund_and_card
+  merchant               : Apple Store
+  amount                 : $1,249.00
+  transaction_date       : August 19th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: impatience
+
+------------------------------------------------------------
+
+Customer: there's a charge i didnt make. need it sorted
+
+Agent: Sorry to hear that. Would you like to dispute a transaction or lock your card?
+
+Customer: dispute and cancel the card. both
+
+Agent: Got it. Here are your credit cards: - Chase Freedom, \*\*\*\* \*\*\*\* \*\*\*\* 1234 - Chase Sapphire, \*\*\*\* \*\*\*\* \*\*\*\* 5678 Which card was the transaction made from?
+
+Customer: no idea which ends in what. it was apple store, $1249
+
+Agent: I understand. To confirm the card, could you check the last 4 digits on the physical card or in your account settings?
+
+Customer: look i dont have the card in front of me. can you just look up the transaction
+
+Agent: I'd be happy to help locate it. Which date was the transaction made?
+
+Customer: august 19th. $1249. apple store. thats all the info you should need
+
+Agent: Thank you. I can see a transaction matching that description on your Chase Sapphire card ending in \*\*\*\* 5678. Can you confirm — did you authorize this transaction?
+
+Customer: no i didnt. thats why im here
+
+Agent: Understood. To proceed with the dispute, I'll need to ask you a few more verification questions. First, can you confirm your full name and date of birth?
+
+Customer: ...i already logged in. you have all that
+
+Agent: I understand your frustration. For security purposes, we do require additional verification for fraud disputes. Could you please confirm your date of birth?
+
+Customer: this is taking forever. fine. 04/12/1986
+
+Agent: Thank you. And could you confirm the billing address associated with your account?
+
+Customer: seriously? ok look im just gonna call. this is too much
+
+Agent: I completely understand. You can reach our fraud team at 1-800-432-3117, available 24/7. I'm sorry we weren't able to resolve this for you here today.

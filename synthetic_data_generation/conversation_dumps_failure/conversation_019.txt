@@ -1,0 +1,50 @@
+============================================================
+CONVERSATION 19
+============================================================
+
+PERSONA:
+  knowledge_level    : intermediate
+  emotional_state    : calm
+  communication_style: indirect
+  goal_clarity       : wrong_mental_model
+
+SCENARIO:
+  certainty              : certain_fraud
+  information_completeness: full
+  prior_contact          : tried_merchant
+  expected_resolution    : refund_and_card
+  merchant               : TechHub
+  amount                 : $340.00
+  transaction_date       : August 15th
+
+EXTRA META:
+  goal_completed: False
+  failure_mode: trust_breakdown
+
+------------------------------------------------------------
+
+Customer: hey i have a charge on my account that i definitely didn't make
+
+Agent: I'm sorry to hear that! I'd be happy to help you look into that. Which card was the charge on? Here are the cards we have on file: - Chase Freedom **** **** **** 3421 - Chase Sapphire **** **** **** 8876
+
+Customer: the sapphire one. its a $340 charge from somewhere called TechHub on august 15th. i already called the merchant and they basically told me to go away
+
+Agent: I understand how frustrating that must be. I can see the transaction you're referring to — $340.00 from TechHub on August 15th on your Chase Sapphire **** 8876. To move forward, can you confirm — do you believe this transaction was made without your authorization?
+
+Customer: yes 100%. i did not make this charge. never even heard of TechHub before i saw this on my statement
+
+Agent: Thank you for confirming. Since you've already contacted the merchant without resolution, you may be eligible to file a dispute. However, please note that disputes can take up to 3-5 business days to process, and we'll need supporting documentation showing proof of fraud before we can reverse the charge.
+
+Customer: wait what kind of proof? i just told you i didn't make it. what proof would i even have
+
+Agent: That's a great question. Typically we would need things like a police report, or written confirmation from the merchant that the transaction was unauthorized, before we can open a dispute on your behalf.
+
+Customer: a written confirmation from the merchant?? i just told you the merchant refused to help me. and you want me to get something in writing from them?
+
+Agent: I apologize for the confusion. Let me clarify — the documentation from the merchant is optional, not required. However, a police report may still be needed depending on the outcome of our review.
+
+Customer: so first you said i need proof, now you're saying i don't? i'm getting mixed messages here
+
+Agent: I understand your concern, and I'm sorry for any confusion. To clarify, our standard dispute process does not always require a police report upfront. I can go ahead and initiate a dispute for the $340.00 charge if you'd like to proceed.
+
+Customer: honestly this is going in circles. you told me three different things in like 4 messages. i'm just gonna call the actual bank and talk to someone. thanks anyway

@@ -1,0 +1,111 @@
+============================================================
+CONVERSATION 37
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : mildly_frustrated
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: minimal
+  prior_contact           : first_contact
+  expected_resolution     : hold
+  merchant                : Unknown
+  amount                  : $300.00
+  transaction_date        : August 17th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: True
+  wrong_prior_belief: You believe freezing your card happens instantly and automatically blocks all pending charges.
+
+------------------------------------------------------------
+
+Customer: hey i need my card frozen asap
+
+Agent: I can freeze your card right away. Which card would you like me to freeze?
+
+- Visa ****1234
+- Mastercard ****5678
+
+Customer: the visa one
+
+Agent: Your Visa ****1234 has been frozen immediately — no new transactions will be authorized on that card.
+
+Would you like to report unauthorized charges and open a fraud dispute, or is there anything else I can help you with?
+
+Customer: yeah theres a weird charge on my statement
+
+Agent: I can help you open a fraud dispute for that charge. Can you tell me the approximate amount and date of the transaction you don't recognize?
+
+Customer: hang on let me pull it up.. think it was like $180 something
+
+Agent: No problem, take your time. Do you have an approximate date for that charge?
+
+Customer: maybe last week? not sure exactly
+
+Agent: No worries — we can work with approximate details. Let me pull up the recent transactions on your Visa ****1234 so we can identify the charge together.
+
+I can see the following transactions from the past week:
+
+- **$182.47** — TechStore Online — 06/18
+- **$184.00** — Restaurant Group LLC — 06/17
+- **$179.99** — StreamPlus Services — 06/15
+
+Do any of these look like the charge you're referring to?
+
+Customer: the techstore one, i didnt buy anything from there
+
+Agent: Got it. To confirm, you'd like to open a fraud dispute for:
+
+- **$182.47 — TechStore Online — 06/18** on your Visa ****1234
+
+Shall I go ahead and open the dispute for this charge?
+
+Customer: yes do it
+
+Agent: Your fraud dispute has been opened. Here are the details:
+
+- **Case Number:** FD-2024-089341
+- **Card:** Visa ****1234
+- **Disputed Charge:** $182.47 — TechStore Online — 06/18
+- **Status:** Under investigation
+
+**Next steps:**
+- A **provisional credit of $182.47** will typically be applied to your account within **2 business days**
+- The investigation will be resolved within **3–5 business days**
+- You'll receive updates via your registered email
+
+Since your card is currently frozen, would you also like to request a replacement card? A new Visa would arrive in 5–7 business days.
+
+Customer: yeah send me a new card. and wait what's a provisional credit
+
+Agent: Great — I'll request a replacement Visa card for you. It will be mailed to the address we have on file and should arrive within **5–7 business days**.
+
+A **provisional credit** is a temporary refund of the disputed amount ($182.47) applied to your account while we investigate. It's essentially your money back upfront — you don't have to wait for the investigation to conclude. If the dispute is resolved in your favor, the credit becomes permanent. If not, it would be reversed, but that outcome is rare for clear unauthorized charges like this.
+
+Is there anything else I can help you with?
+
+Customer: ok so the money comes back in 2 days? and the card is definitely frozen right now?
+
+Agent: That's correct on both counts:
+
+- **Provisional credit:** The $182.47 should appear in your account within **2 business days** of today.
+- **Card freeze:** Yes — your Visa ****1234 is frozen **right now**. No new transactions can be authorized on it.
+
+Is there anything else I can help you with?
+
+Customer: ok good. and the new card is coming too right
+
+Agent: Yes, your replacement Visa card has been requested and is on its way. It will be mailed to the address we have on file and should arrive within **5–7 business days**.
+
+To summarize everything we've done today:
+- ✅ Visa ****1234 **frozen**
+- ✅ Fraud dispute **opened** (Case #FD-2024-089341)
+- ✅ Provisional credit of **$182.47** coming within 2 business days
+- ✅ Replacement card **on its way** in 5–7 business days
+
+Is there anything else I can help you with?

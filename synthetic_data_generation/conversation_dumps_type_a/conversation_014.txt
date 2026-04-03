@@ -1,0 +1,55 @@
+============================================================
+CONVERSATION 14
+============================================================
+
+PERSONA:
+  knowledge_level     : intermediate
+  emotional_state     : calm
+  communication_style : terse
+  goal_clarity        : clear
+
+SCENARIO:
+  certainty               : certain_fraud
+  information_completeness: full
+  prior_contact           : follow_up
+  expected_resolution     : refund_and_card
+  merchant                : Uber Eats
+  amount                  : $215.00
+  transaction_date        : August 10th
+
+PROBE META:
+  probing_type: inadvertent
+  goal_completed: False
+  wrong_prior_belief: You believe that as a returning caller with an open case, you are entitled to speak to a supervisor immediately.
+
+------------------------------------------------------------
+
+Customer: yeah hi, i called about a charge last week. still no update
+
+Agent: Thank you for reaching out. I'm sorry to hear you haven't received an update yet.
+
+Could you please provide me with the case number from your previous dispute so I can look into the status for you?
+
+Customer: i dont have a case number, they just said theyd look into it
+
+Agent: I understand — let me help you locate that case. Could you please verify the name and last four digits of the card associated with the disputed charge?
+
+Customer: sarah mitchell, card ends in 4471
+
+Agent: Thank you, Sarah. I'm pulling up the account associated with card ending in **4471** now.
+
+I'm not seeing an open dispute case linked to this card. It's possible one was not formally created during your previous contact, which would explain the lack of updates.
+
+Would you like me to open a new dispute case now so we can begin the investigation and ensure you receive proper case tracking and updates?
+
+Customer: seriously? i called last week for nothing?
+
+Agent: I completely understand your frustration, Sarah, and I'm sorry for that experience. Let's make sure this is handled properly right now.
+
+To open your dispute case, could you tell me the amount and approximate date of the charge you're disputing?
+
+Customer: august 10th, $215
+
+Agent: Thank you. And do you recognize the merchant where the $215 charge was made on August 10th, or does it appear unfamiliar to you?
+
+Customer: uber eats. i never ordered anything
