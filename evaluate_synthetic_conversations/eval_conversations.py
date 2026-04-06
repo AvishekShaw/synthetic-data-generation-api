@@ -128,6 +128,61 @@ BANKING_JARGON = [
     "zero liability", "fcba",
 ]
 
+# ── Dropout language — per failure_mode (Layer 1, Section F) ──────────────────
+# Each list contains surface signals we expect in the final customer turn when
+# the dropout is genuine.  If none are found, DROPOUT_NOT_PLAUSIBLE is raised.
+DROPOUT_SIGNALS: dict[str, list[str]] = {
+    "impatience": [
+        "forget it", "never mind", "this is taking", "too long", "too much time",
+        "give up", "done with this", "can't do this", "bye", "goodbye", "later",
+        "not worth", "waste of time",
+    ],
+    "info_blocker": [
+        "come back", "come back later", "when i find", "when i have", "when i get",
+        "get back to you", "try again later", "call back", "once i have",
+        "find my", "locate my", "check my",
+    ],
+    "loop_exit": [
+        "same question", "keep asking", "already told you", "already said",
+        "asking again", "going in circles", "round in circles", "over and over",
+        "already answered", "already gave you",
+    ],
+    "trust_breakdown": [
+        "don't trust", "not confident", "speak to someone else", "this isn't working",
+        "unhelpful", "useless", "not helpful", "doesn't help", "waste", "no point",
+        "pointless", "getting nowhere",
+    ],
+    "escalation_exit": [
+        "supervisor", "manager", "speak to someone", "real person", "human",
+        "escalate", "done here", "going elsewhere", "going to call",
+        "speaking to someone else", "not dealing with this",
+    ],
+    "wrong_channel": [
+        "phone", "branch", "in person", "call you", "come in", "in branch",
+        "different channel", "another way", "call the number", "visit",
+    ],
+    "scope_limit": [
+        "can't help", "can't do anything", "thanks anyway", "never mind then",
+        "forget it", "i'll try elsewhere", "ok then", "nothing you can do",
+        "your hands are tied", "nothing to be done",
+    ],
+    "distraction": [
+        "gotta go", "got to go", "have to go", "brb", "talk later",
+        "something came up", "busy", "back later", "catch you later",
+        "deal with this later", "have to run",
+    ],
+}
+
+# Pushback phrases — expected in customer turns when agent makes an error (Type B)
+PUSHBACK_PHRASES = [
+    "actually", "i don't think that's right", "i thought", "are you sure",
+    "that doesn't sound right", "that's not what", "wait,", "hold on",
+    "but i thought", "i was told", "i believe", "shouldn't it be",
+    "is that correct", "can you double check", "that doesn't seem right",
+    "pretty sure", "i read", "i heard", "i checked", "i looked it up",
+    "not what i", "i don't think so", "that seems wrong",
+]
+
 # Concern categories for breadth-first detection
 CONCERN_CATEGORIES = {
     "dispute": [
@@ -179,10 +234,20 @@ class Conversation:
     transaction_date: str        = ""
     # Dialogue
     turns: list = field(default_factory=list)
+    # EXTRA META — populated from dump file header; used for type-specific checks
+    dataset_type: str        = "success"  # success | failure | type_a | type_b
+    goal_completed: bool     = True
+    failure_mode: str        = ""         # impatience | info_blocker | ... (failure only)
+    probing_type: str        = ""         # inadvertent | adversarial (probe only)
+    wrong_prior_belief: str  = ""         # type_a only
+    agent_failure_mode: str  = ""         # type_b only
+    planted_error: str       = ""         # type_b only
+    user_caught_error: Optional[bool] = None  # type_b only
 
 @dataclass
 class EvalResult:
     conv_idx: int
+    dataset_type: str
     knowledge_level: str
     emotional_state: str
     communication_style: str
@@ -234,21 +299,23 @@ def parse_conversation(filepath: Path) -> Optional[Conversation]:
 
     conv = Conversation(idx=idx)
 
-    # ── Parse PERSONA and SCENARIO key: value blocks ──
+    # ── Parse PERSONA, SCENARIO, EXTRA META, and dialogue ──
     in_persona   = False
     in_scenario  = False
+    in_extra_meta = False
     in_dialogue  = False
 
     for line in lines:
         stripped = line.strip()
 
         if stripped == "PERSONA:":
-            in_persona = True;  in_scenario = False;  continue
+            in_persona = True;  in_scenario = False; in_extra_meta = False; continue
         if stripped == "SCENARIO:":
-            in_scenario = True; in_persona  = False;  continue
-        if stripped.startswith("---") and in_persona or in_scenario:
-            if re.match(r"-{4,}", stripped):
-                in_persona = False; in_scenario = False; continue
+            in_scenario = True; in_persona  = False; in_extra_meta = False; continue
+        if stripped == "EXTRA META:":
+            in_extra_meta = True; in_persona = False; in_scenario = False; continue
+        if re.match(r"-{4,}", stripped):
+            in_persona = False; in_scenario = False; in_extra_meta = False; continue
 
         # Key : value pairs (indented with spaces, colon separator)
         kv = re.match(r"\s+([\w_]+)\s*:\s*(.+)", line)
@@ -256,34 +323,59 @@ def parse_conversation(filepath: Path) -> Optional[Conversation]:
             key   = kv.group(1).strip().lower()
             value = kv.group(2).strip()
             if in_persona:
-                if key == "knowledge_level":     conv.knowledge_level     = value
-                elif key == "emotional_state":   conv.emotional_state     = value
-                elif key == "communication_style": conv.communication_style = value
-                elif key == "goal_clarity":      conv.goal_clarity        = value
+                if key == "knowledge_level":       conv.knowledge_level       = value
+                elif key == "emotional_state":     conv.emotional_state       = value
+                elif key == "communication_style": conv.communication_style   = value
+                elif key == "goal_clarity":        conv.goal_clarity          = value
             elif in_scenario:
-                if key == "certainty":               conv.certainty               = value
-                elif key == "information_completeness": conv.information_completeness = value
-                elif key == "prior_contact":          conv.prior_contact            = value
-                elif key == "expected_resolution":    conv.expected_resolution      = value
-                elif key == "merchant":               conv.merchant                 = value
-                elif key == "amount":                 conv.amount                   = value
-                elif key == "transaction_date":       conv.transaction_date         = value
+                if key == "certainty":                  conv.certainty                  = value
+                elif key == "information_completeness": conv.information_completeness   = value
+                elif key == "prior_contact":            conv.prior_contact              = value
+                elif key == "expected_resolution":      conv.expected_resolution        = value
+                elif key == "merchant":                 conv.merchant                   = value
+                elif key == "amount":                   conv.amount                     = value
+                elif key == "transaction_date":         conv.transaction_date           = value
+            elif in_extra_meta:
+                if key == "goal_completed":
+                    conv.goal_completed = value.lower() not in ("false", "0", "no")
+                elif key == "failure_mode":
+                    conv.failure_mode = value
+                elif key == "probing_type":
+                    conv.probing_type = value
+                elif key == "wrong_prior_belief":
+                    conv.wrong_prior_belief = value
+                elif key == "agent_failure_mode":
+                    conv.agent_failure_mode = value
+                elif key == "planted_error":
+                    conv.planted_error = value
+                elif key == "user_caught_error":
+                    conv.user_caught_error = value.lower() not in ("false", "0", "no")
             continue
 
         # Dialogue turns: "Customer: ..." or "Agent: ..."
         m = re.match(r"^(Customer|Agent):\s*(.+)", stripped)
         if m:
-            in_dialogue = True
-            in_persona  = False
-            in_scenario = False
+            in_dialogue   = True
+            in_persona    = False
+            in_scenario   = False
+            in_extra_meta = False
             conv.turns.append(Turn(speaker=m.group(1), text=m.group(2).strip()))
             continue
 
-        # Multi-line continuation within a turn (indented or blank separator)
+        # Multi-line continuation within a turn
         if in_dialogue and conv.turns and stripped and not re.match(r"=+|-{4,}", stripped):
-            # If line doesn't start a new speaker, it's a continuation
             if not re.match(r"^(Customer|Agent):", stripped):
                 conv.turns[-1].text += " " + stripped
+
+    # Derive dataset_type from parsed meta
+    if conv.probing_type == "inadvertent":
+        conv.dataset_type = "type_a"
+    elif conv.probing_type == "adversarial":
+        conv.dataset_type = "type_b"
+    elif not conv.goal_completed:
+        conv.dataset_type = "failure"
+    else:
+        conv.dataset_type = "success"
 
     return conv
 
@@ -335,12 +427,13 @@ def extract_date_month(date_str: str) -> str:
 
 def evaluate(conv: Conversation) -> EvalResult:
     result = EvalResult(
-        conv_idx           = conv.idx,
-        knowledge_level    = conv.knowledge_level,
-        emotional_state    = conv.emotional_state,
-        communication_style= conv.communication_style,
-        goal_clarity       = conv.goal_clarity,
-        certainty          = conv.certainty,
+        conv_idx            = conv.idx,
+        dataset_type        = conv.dataset_type,
+        knowledge_level     = conv.knowledge_level,
+        emotional_state     = conv.emotional_state,
+        communication_style = conv.communication_style,
+        goal_clarity        = conv.goal_clarity,
+        certainty           = conv.certainty,
     )
     warnings = []
 
@@ -513,6 +606,96 @@ def evaluate(conv: Conversation) -> EvalResult:
             f"INDIRECT_STYLE_BUT_VERY_SHORT — avg {result.words_mean:.1f} words"
         )
 
+    # ── F. Type-specific checks ──────────────────────────────────────────
+    dtype = conv.dataset_type
+
+    if dtype == "failure":
+        # F1a. Premature dropout — real dropout needs frustration build-up
+        if len(customer_turns) < 3:
+            warnings.append(
+                f"DROPOUT_TOO_EARLY — only {len(customer_turns)} customer turn(s) before <eos>"
+            )
+
+        # F1b. Plausibility — final customer turn should carry mode-appropriate exit language
+        if customer_turns:
+            final_text = customer_turns[-1].text.lower()
+            mode_signals = DROPOUT_SIGNALS.get(conv.failure_mode, [])
+            if mode_signals and not any(sig in final_text for sig in mode_signals):
+                warnings.append(
+                    f"DROPOUT_NOT_PLAUSIBLE — no [{conv.failure_mode}] exit language "
+                    f"in final customer turn"
+                )
+
+        # F1c. Escalation arc — impatience/escalation_exit must show tone deterioration
+        if conv.failure_mode in ("impatience", "escalation_exit") and len(customer_turns) >= 4:
+            half = len(customer_turns) // 2
+            late_turns  = customer_turns[half:]
+            late_text   = " ".join(t.text.lower() for t in late_turns)
+            late_frustration = (
+                count_phrases(late_text, MILD_FRUSTRATION_MARKERS) > 0 or
+                count_phrases(late_text, STRONG_FRUSTRATION_MARKERS) > 0
+            )
+            if not late_frustration:
+                warnings.append(
+                    f"MISSING_ESCALATION_ARC — [{conv.failure_mode}] but no frustration "
+                    f"markers in the second half of the conversation"
+                )
+
+    elif dtype == "type_a" and conv.wrong_prior_belief:
+        # F2a. Prior belief must surface somewhere in the customer turns
+        STOPWORDS = {
+            "you", "your", "that", "this", "the", "and", "are", "for",
+            "from", "with", "have", "will", "can", "not", "any", "all",
+            "they", "their", "when", "what", "just", "only",
+        }
+        belief_kws = [
+            w for w in re.findall(r"[a-z]+", conv.wrong_prior_belief.lower())
+            if len(w) > 3 and w not in STOPWORDS
+        ]
+        all_cust_lower = " ".join(t.text.lower() for t in customer_turns)
+        matched_kws    = [kw for kw in belief_kws if kw in all_cust_lower]
+
+        if len(matched_kws) < 2:
+            warnings.append(
+                f"PRIOR_BELIEF_ABSENT — wrong prior belief keywords not found in "
+                f"customer turns (looked for: {belief_kws[:6]})"
+            )
+        elif len(customer_turns) >= 4:
+            # F2b. Belief must not vanish silently after appearing
+            half       = len(customer_turns) // 2
+            first_half = " ".join(t.text.lower() for t in customer_turns[:half])
+            second_half= " ".join(t.text.lower() for t in customer_turns[half:])
+            first_hits = sum(1 for kw in belief_kws if kw in first_half)
+            second_hits= sum(1 for kw in belief_kws if kw in second_half)
+            if first_hits >= 2 and second_hits == 0:
+                warnings.append(
+                    "BELIEF_SILENTLY_DROPPED — prior belief keywords appear in "
+                    "first half but disappear in second half with no explicit resolution"
+                )
+
+    elif dtype == "type_b":
+        all_cust_lower = " ".join(t.text.lower() for t in customer_turns)
+        pushback_found = any(p in all_cust_lower for p in PUSHBACK_PHRASES)
+
+        # F3a. Error not caught — no pushback language anywhere
+        if not pushback_found:
+            warnings.append(
+                "ERROR_NOT_CAUGHT — no pushback phrases found; customer appears to "
+                "accept the planted agent error without challenge"
+            )
+
+        # F3b. Label consistency — _meta user_caught_error vs actual transcript
+        if conv.user_caught_error is True and not pushback_found:
+            warnings.append(
+                "USER_CAUGHT_ERROR_LABEL_MISMATCH — _meta says user_caught_error=True "
+                "but no pushback language found in transcript"
+            )
+        elif conv.user_caught_error is False and pushback_found:
+            warnings.append(
+                "USER_CAUGHT_ERROR_LABEL_MISMATCH — _meta says user_caught_error=False "
+                "but pushback language is present in transcript"
+            )
+
     # ── Wrap up ──────────────────────────────────────────────────────────
     result.warnings      = warnings
     result.warning_count = len(warnings)
@@ -559,7 +742,7 @@ def write_csv(results: list, path: Path):
     if not results:
         return
     fieldnames = [
-        "conv_idx", "knowledge_level", "emotional_state",
+        "conv_idx", "dataset_type", "knowledge_level", "emotional_state",
         "communication_style", "goal_clarity", "certainty",
         "num_customer_turns",
         "words_mean", "words_median", "words_p10", "words_p90", "words_stddev",
@@ -704,6 +887,26 @@ def print_summary(results: list, pop_notes: list):
     print(f"  Communication style / turn-length mismatch:      {pct(style_mismatch)}")
     if style_mismatch:       print(f"    convs: {sorted(style_mismatch)}")
 
+    # ── F. Type-specific check summary ──────────────────────────────────────
+    type_specific_keys = [
+        "DROPOUT_TOO_EARLY", "DROPOUT_NOT_PLAUSIBLE", "MISSING_ESCALATION_ARC",
+        "PRIOR_BELIEF_ABSENT", "BELIEF_SILENTLY_DROPPED",
+        "ERROR_NOT_CAUGHT", "USER_CAUGHT_ERROR_LABEL_MISMATCH",
+    ]
+    has_any_type_specific = any(
+        any(k in " ".join(r.warnings) for k in type_specific_keys)
+        for r in results
+    )
+    if has_any_type_specific:
+        print(f"\n{sep}")
+        print("  F. TYPE-SPECIFIC CHECKS")
+        print(sep)
+        for key in type_specific_keys:
+            flagged = [r.conv_idx for r in results if any(key in w for w in r.warnings)]
+            if flagged:
+                print(f"  ⚠  {key}: {pct(flagged)}")
+                print(f"    convs: {sorted(flagged)}")
+
     # Population-level notes
     if pop_notes:
         print(f"\n  Population notes:")
@@ -766,8 +969,16 @@ def fig_warning_summary(results: list):
         "UNEXPECTED_FRUSTRATION":      ("E – Unexpected frustration (calm)",  PALETTE["persona"]),
         "MISSING_STRONG_FRUSTRATION":  ("E – Missing strong frustration",     PALETTE["persona"]),
         "NOVICE_JARGON":               ("E – Novice used jargon first",       PALETTE["persona"]),
-        "DIRECT_STYLE_BUT_LONG_TURNS": ("E – Direct style but long turns",    PALETTE["persona"]),
-        "INDIRECT_STYLE_BUT_VERY_SHORT": ("E – Indirect style but very short", PALETTE["persona"]),
+        "DIRECT_STYLE_BUT_LONG_TURNS":   ("E – Direct style but long turns",       PALETTE["persona"]),
+        "INDIRECT_STYLE_BUT_VERY_SHORT": ("E – Indirect style but very short",      PALETTE["persona"]),
+        # Type-specific (F)
+        "DROPOUT_TOO_EARLY":             ("F – Dropout too early (< 3 turns)",      "#9B5DE5"),
+        "DROPOUT_NOT_PLAUSIBLE":         ("F – Dropout language absent",            "#9B5DE5"),
+        "MISSING_ESCALATION_ARC":        ("F – Missing escalation arc",             "#9B5DE5"),
+        "PRIOR_BELIEF_ABSENT":           ("F – Prior belief absent from transcript","#00BBF9"),
+        "BELIEF_SILENTLY_DROPPED":       ("F – Prior belief silently dropped",      "#00BBF9"),
+        "ERROR_NOT_CAUGHT":              ("F – Planted error not caught",           "#F15BB5"),
+        "USER_CAUGHT_ERROR_LABEL_MISMATCH": ("F – user_caught_error label mismatch","#F15BB5"),
     }
 
     counts = defaultdict(int)
@@ -1340,12 +1551,34 @@ def generate_all_visualisations(results: list):
 # ─────────────────────────────────────────────
 
 def main():
-    dump_files = sorted(DUMPS_DIR.glob("conversation_*.txt"))
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Layer 1 rule-based evaluation of synthetic banking conversations.",
+    )
+    parser.add_argument(
+        "--dumps-dir",
+        default=None,
+        help=(
+            "Directory containing conversation_NNN.txt dump files. "
+            "Defaults to conversation_dumps/ next to this script."
+        ),
+    )
+    parser.add_argument(
+        "--output-csv",
+        default=None,
+        help="Output CSV path. Defaults to eval_results.csv next to this script.",
+    )
+    args = parser.parse_args()
+
+    dumps_dir  = Path(args.dumps_dir)  if args.dumps_dir  else DUMPS_DIR
+    output_csv = Path(args.output_csv) if args.output_csv else OUTPUT_CSV
+
+    dump_files = sorted(dumps_dir.glob("conversation_*.txt"))
     if not dump_files:
-        print(f"No conversation dumps found in {DUMPS_DIR}")
+        print(f"No conversation dumps found in {dumps_dir}")
         return
 
-    print(f"Parsing {len(dump_files)} conversation dump(s) from {DUMPS_DIR} …")
+    print(f"Parsing {len(dump_files)} conversation dump(s) from {dumps_dir} …")
     conversations = []
     for f in dump_files:
         conv = parse_conversation(f)
@@ -1362,7 +1595,7 @@ def main():
     pop_notes = population_checks(results)
 
     print_summary(results, pop_notes)
-    write_csv(results, OUTPUT_CSV)
+    write_csv(results, output_csv)
     generate_all_visualisations(results)
 
 if __name__ == "__main__":

@@ -65,18 +65,47 @@ IMAGES_DIR  = Path(__file__).parent / "images"
 
 DEFAULT_MODEL = "claude-sonnet-4-6"
 
-# Dimension weights for the composite overall_score (must sum to 1.0).
+# Dimension weights per dataset type (must each sum to 1.0).
 # Rationale:
-#   depth_first  + pragmatic  weighted highest — Wang et al.'s most actionable findings
-#   uncertainty  medium       — strong LLM signal, partially overlaps Layer 1
-#   info_drip    lowest       — mostly captured by Layer 1 info density
-#   persona      lowest       — partially captured by Layer 1 persona checks
-DIMENSION_WEIGHTS = {
-    "depth_first": 0.25,
-    "uncertainty": 0.20,
-    "info_drip":   0.15,
-    "pragmatic":   0.25,
-    "persona":     0.15,
+#   success  — standard weights; depth_first + pragmatic highest (Wang et al.)
+#   failure  — dropout_authenticity replaces info_drip as the dominant signal;
+#              depth_first relaxed (pre-dropout section only)
+#   type_a   — prior_belief_coherence added; info_drip tightened (core stress vector)
+#   type_b   — depth_first relaxed (adversarial convs legitimately overlap concerns);
+#              error_catch_quality + pushback_naturalness are the primary signals
+DIMENSION_WEIGHTS: dict[str, dict[str, float]] = {
+    "success": {
+        "depth_first": 0.25,
+        "uncertainty": 0.20,
+        "info_drip":   0.15,
+        "pragmatic":   0.25,
+        "persona":     0.15,
+    },
+    "failure": {
+        "depth_first":          0.15,
+        "uncertainty":          0.15,
+        "info_drip":            0.05,
+        "pragmatic":            0.25,
+        "persona":              0.15,
+        "dropout_authenticity": 0.25,
+    },
+    "type_a": {
+        "depth_first":           0.20,
+        "uncertainty":           0.20,
+        "info_drip":             0.10,
+        "pragmatic":             0.20,
+        "persona":               0.15,
+        "prior_belief_coherence":0.15,
+    },
+    "type_b": {
+        "depth_first":         0.10,
+        "uncertainty":         0.15,
+        "info_drip":           0.10,
+        "pragmatic":           0.20,
+        "persona":             0.15,
+        "error_catch_quality": 0.15,
+        "pushback_naturalness":0.15,
+    },
 }
 
 # Retry config for API calls
@@ -162,31 +191,52 @@ class Conversation:
     amount: str              = ""
     transaction_date: str    = ""
     turns: list = field(default_factory=list)
+    # EXTRA META
+    dataset_type: str        = "success"   # success | failure | type_a | type_b
+    goal_completed: bool     = True
+    failure_mode: str        = ""
+    probing_type: str        = ""
+    wrong_prior_belief: str  = ""
+    agent_failure_mode: str  = ""
+    planted_error: str       = ""
+    user_caught_error: Optional[bool] = None
 
 @dataclass
 class Layer2Result:
     conv_idx: int
+    # Conversation type
+    dataset_type: str        = "success"
     # Persona metadata (copied for convenience)
     knowledge_level: str     = ""
     emotional_state: str     = ""
     communication_style: str = ""
     goal_clarity: str        = ""
     certainty: str           = ""
-    # Dimension scores (1–5)
+    # Core dimension scores (1–5, present for all types)
     depth_first_score: float  = 0.0
     uncertainty_score: float  = 0.0
     info_drip_score:   float  = 0.0
     pragmatic_score:   float  = 0.0
     persona_score:     float  = 0.0
     overall_score:     float  = 0.0
-    # Qualitative fields from judge
+    # Core dimension rationales
     depth_first_rationale: str  = ""
     uncertainty_rationale: str  = ""
     info_drip_rationale:   str  = ""
     pragmatic_rationale:   str  = ""
     persona_rationale:     str  = ""
-    standout_issue:   str       = ""
-    standout_quality: str       = ""
+    # Type-specific scores (populated only for relevant dataset types)
+    dropout_authenticity_score:       float = 0.0   # failure only
+    dropout_authenticity_rationale:   str   = ""
+    prior_belief_coherence_score:     float = 0.0   # type_a only
+    prior_belief_coherence_rationale: str   = ""
+    error_catch_quality_score:        float = 0.0   # type_b only
+    error_catch_quality_rationale:    str   = ""
+    pushback_naturalness_score:       float = 0.0   # type_b only
+    pushback_naturalness_rationale:   str   = ""
+    # Qualitative summary fields
+    standout_issue:   str = ""
+    standout_quality: str = ""
     # Metadata
     model_used: str  = ""
     parse_error: str = ""
@@ -209,17 +259,19 @@ def parse_conversation(filepath: Path) -> Optional[Conversation]:
         return None
 
     conv = Conversation(idx=idx)
-    in_persona = in_scenario = in_dialogue = False
+    in_persona = in_scenario = in_extra_meta = in_dialogue = False
 
     for line in lines:
         stripped = line.strip()
 
         if stripped == "PERSONA:":
-            in_persona = True;  in_scenario = False;  continue
+            in_persona = True;  in_scenario = False; in_extra_meta = False; continue
         if stripped == "SCENARIO:":
-            in_scenario = True; in_persona  = False;  continue
+            in_scenario = True; in_persona  = False; in_extra_meta = False; continue
+        if stripped == "EXTRA META:":
+            in_extra_meta = True; in_persona = False; in_scenario = False; continue
         if re.match(r"-{4,}", stripped):
-            in_persona = False; in_scenario = False;  continue
+            in_persona = False; in_scenario = False; in_extra_meta = False; continue
 
         kv = re.match(r"\s+([\w_]+)\s*:\s*(.+)", line)
         if kv:
@@ -231,26 +283,52 @@ def parse_conversation(filepath: Path) -> Optional[Conversation]:
                 elif key == "communication_style": conv.communication_style   = value
                 elif key == "goal_clarity":        conv.goal_clarity          = value
             elif in_scenario:
-                if key == "certainty":               conv.certainty               = value
-                elif key == "information_completeness": conv.information_completeness = value
-                elif key == "prior_contact":          conv.prior_contact            = value
-                elif key == "expected_resolution":    conv.expected_resolution      = value
-                elif key == "merchant":               conv.merchant                 = value
-                elif key == "amount":                 conv.amount                   = value
-                elif key == "transaction_date":       conv.transaction_date         = value
+                if key == "certainty":                  conv.certainty                  = value
+                elif key == "information_completeness": conv.information_completeness   = value
+                elif key == "prior_contact":            conv.prior_contact              = value
+                elif key == "expected_resolution":      conv.expected_resolution        = value
+                elif key == "merchant":                 conv.merchant                   = value
+                elif key == "amount":                   conv.amount                     = value
+                elif key == "transaction_date":         conv.transaction_date           = value
+            elif in_extra_meta:
+                if key == "goal_completed":
+                    conv.goal_completed = value.lower() not in ("false", "0", "no")
+                elif key == "failure_mode":
+                    conv.failure_mode = value
+                elif key == "probing_type":
+                    conv.probing_type = value
+                elif key == "wrong_prior_belief":
+                    conv.wrong_prior_belief = value
+                elif key == "agent_failure_mode":
+                    conv.agent_failure_mode = value
+                elif key == "planted_error":
+                    conv.planted_error = value
+                elif key == "user_caught_error":
+                    conv.user_caught_error = value.lower() not in ("false", "0", "no")
             continue
 
         m = re.match(r"^(Customer|Agent):\s*(.+)", stripped)
         if m:
-            in_dialogue = True
-            in_persona  = False
-            in_scenario = False
+            in_dialogue   = True
+            in_persona    = False
+            in_scenario   = False
+            in_extra_meta = False
             conv.turns.append(Turn(speaker=m.group(1), text=m.group(2).strip()))
             continue
 
         if in_dialogue and conv.turns and stripped and not re.match(r"=+|-{4,}", stripped):
             if not re.match(r"^(Customer|Agent):", stripped):
                 conv.turns[-1].text += " " + stripped
+
+    # Derive dataset_type from meta
+    if conv.probing_type == "inadvertent":
+        conv.dataset_type = "type_a"
+    elif conv.probing_type == "adversarial":
+        conv.dataset_type = "type_b"
+    elif not conv.goal_completed:
+        conv.dataset_type = "failure"
+    else:
+        conv.dataset_type = "success"
 
     return conv
 
@@ -282,17 +360,108 @@ You evaluate ONLY the customer turns. Ignore whether the agent is good or bad.""
 
 
 def build_user_prompt(conv: Conversation) -> str:
-    # Format the conversation as a readable transcript
+    """Build a type-aware judge prompt.  The five core dimensions are always present;
+    type-specific dimensions are appended based on conv.dataset_type."""
+
     transcript_lines = []
     for turn in conv.turns:
         prefix = "CUSTOMER" if turn.speaker == "Customer" else "AGENT"
         transcript_lines.append(f"[{prefix}]: {turn.text}")
     transcript = "\n".join(transcript_lines)
 
+    dtype = conv.dataset_type
+
+    # ── Type context block injected above the transcript ──────────────────
+    if dtype == "failure":
+        type_context = f"""CONVERSATION TYPE: failure / dropout
+failure_mode: {conv.failure_mode}
+The customer exits before completing their goal.  Evaluate whether the dropout is
+authentic and earned — not whether the customer succeeded."""
+    elif dtype == "type_a":
+        type_context = f"""CONVERSATION TYPE: type_a — inadvertent probing
+wrong_prior_belief assigned to customer: "{conv.wrong_prior_belief}"
+The customer holds a specific misconception. Evaluate whether this belief surfaces
+and shapes the conversation throughout."""
+    elif dtype == "type_b":
+        type_context = f"""CONVERSATION TYPE: type_b — adversarial probing
+planted agent error: "{conv.planted_error}" (type: {conv.agent_failure_mode})
+The agent was instructed to make the above error. Evaluate whether the customer
+caught it and pushed back naturally — not whether they completed their goal."""
+    else:
+        type_context = "CONVERSATION TYPE: success (standard dispute resolution)"
+
+    # ── Type-specific rubric section ──────────────────────────────────────
+    if dtype == "failure":
+        type_rubric = """
+DIMENSION 6 — DROPOUT AUTHENTICITY  [failure conversations only]
+  5: The reason for leaving is clearly grounded in what the agent said or failed to
+     do. The exit feels inevitable given the conversation history. The final customer
+     message reads as a genuine human decision to disengage.
+  3: The exit is plausible but feels slightly abrupt or disconnected from the agent's
+     last response.
+  1: The dropout feels arbitrary — the customer exits even though the agent was being
+     helpful, or the exit language doesn't match the assigned failure_mode."""
+        type_json = """  "dropout_authenticity_score": <integer 1-5>,
+  "dropout_authenticity_rationale": "<one sentence citing a specific turn>","""
+
+    elif dtype == "type_a":
+        type_rubric = """
+DIMENSION 6 — PRIOR BELIEF COHERENCE  [type_a conversations only]
+  5: The wrong prior belief surfaces clearly in the customer's questions or
+     expectations, and either gets corrected by the agent (with the customer reacting
+     naturally) or persists coherently if the agent fails to address it.  The belief
+     leaves a visible footprint across multiple turns.
+  3: The belief appears once but is then silently dropped, or appears only as a
+     passing remark with no downstream effect on the conversation.
+  1: The assigned wrong prior belief is entirely absent — the customer demonstrates
+     accurate process understanding from turn 1."""
+        type_json = """  "prior_belief_coherence_score": <integer 1-5>,
+  "prior_belief_coherence_rationale": "<one sentence citing a specific turn>","""
+
+    elif dtype == "type_b":
+        type_rubric = """
+DIMENSION 6 — ERROR CATCH QUALITY  [type_b conversations only]
+  5: Customer specifically challenges the planted error (the right error, not a
+     different one).  The pushback is precise and references the incorrect fact
+     (e.g. "I thought it was 90 days, not 60").
+  3: Customer expresses general hesitation or asks the agent to confirm, but doesn't
+     specifically identify the planted error.
+  1: Customer accepts the planted error without any pushback, or pushes back on
+     something unrelated to the planted error.
+
+DIMENSION 7 — PUSHBACK NATURALNESS  [type_b conversations only]
+  5: Pushback sounds like a real person who noticed something was off — tentative,
+     referencing where they heard the correct information ("I thought I read somewhere
+     that…").  Tone matches the assigned emotional_state.
+  3: Pushback is present but slightly formulaic or more assertive than a real customer
+     of this persona would be.
+  1: Pushback sounds like a policy-reciting bot ("Per federal regulation 12 CFR…") or
+     is completely absent."""
+        type_json = """  "error_catch_quality_score": <integer 1-5>,
+  "error_catch_quality_rationale": "<one sentence citing a specific turn>",
+  "pushback_naturalness_score": <integer 1-5>,
+  "pushback_naturalness_rationale": "<one sentence citing a specific turn>","""
+
+    else:
+        type_rubric = ""
+        type_json   = ""
+
+    # ── depth_first note for type_b ───────────────────────────────────────
+    depth_first_note = ""
+    if dtype == "type_b":
+        depth_first_note = (
+            " NOTE: in adversarial conversations the customer may legitimately "
+            "raise multiple concerns (their goal + contesting the error) — do not "
+            "penalise this as breadth-first bundling."
+        )
+
     return f"""Below is a synthetic banking dispute conversation with its persona and scenario metadata.
-Evaluate ONLY the CUSTOMER turns on the five dimensions below.
+Evaluate ONLY the CUSTOMER turns on the dimensions below.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
+{type_context}
+━━━━━━━━━━━━━━━━━━━━━━━━
+
 PERSONA ASSIGNED TO CUSTOMER
 ━━━━━━━━━━━━━━━━━━━━━━━━
 knowledge_level:     {conv.knowledge_level}
@@ -324,7 +493,7 @@ Score each dimension 1–5:
   3 = mixed / borderline
   5 = clearly human-like behaviour
 
-DIMENSION 1 — DEPTH-FIRST QUESTIONING
+DIMENSION 1 — DEPTH-FIRST QUESTIONING{depth_first_note}
   5: Customer fully resolves one concern before raising another. Never bundles.
   3: One or two instances of bundling concerns, but mostly sequential.
   1: Customer front-loads multiple concerns (dispute + card cancel + refund ETA) \
@@ -360,7 +529,7 @@ in turn structure and length.
   3: Persona partially shows — some attributes manifest but others are absent or \
 contradict the label.
   1: The assigned persona is not detectable. Conversation could have any persona label.
-
+{type_rubric}
 ━━━━━━━━━━━━━━━━━━━━━━━━
 OUTPUT FORMAT
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -378,6 +547,7 @@ Return ONLY a valid JSON object with exactly these keys. No markdown, no explana
   "pragmatic_rationale": "<one sentence citing a specific turn>",
   "persona_score": <integer 1-5>,
   "persona_rationale": "<one sentence citing a specific turn>",
+{type_json}
   "standout_issue": "<the single most human-unrealistic thing in this conversation, or empty string>",
   "standout_quality": "<the single most realistic thing, or empty string>"
 }}"""
@@ -452,6 +622,7 @@ def save_cache(conv_idx: int, data: dict):
 def compute_result(conv: Conversation, judge: dict, model: str) -> Layer2Result:
     r = Layer2Result(
         conv_idx            = conv.idx,
+        dataset_type        = conv.dataset_type,
         knowledge_level     = conv.knowledge_level,
         emotional_state     = conv.emotional_state,
         communication_style = conv.communication_style,
@@ -477,23 +648,46 @@ def compute_result(conv: Conversation, judge: dict, model: str) -> Layer2Result:
     r.pragmatic_score   = _get_score("pragmatic_score")
     r.persona_score     = _get_score("persona_score")
 
-    # Weighted overall score
-    r.overall_score = round(
-        r.depth_first_score * DIMENSION_WEIGHTS["depth_first"] +
-        r.uncertainty_score * DIMENSION_WEIGHTS["uncertainty"] +
-        r.info_drip_score   * DIMENSION_WEIGHTS["info_drip"]   +
-        r.pragmatic_score   * DIMENSION_WEIGHTS["pragmatic"]   +
-        r.persona_score     * DIMENSION_WEIGHTS["persona"],
-        3,
-    )
-
     r.depth_first_rationale = judge.get("depth_first_rationale", "")
     r.uncertainty_rationale = judge.get("uncertainty_rationale", "")
     r.info_drip_rationale   = judge.get("info_drip_rationale",   "")
     r.pragmatic_rationale   = judge.get("pragmatic_rationale",   "")
     r.persona_rationale     = judge.get("persona_rationale",     "")
-    r.standout_issue        = judge.get("standout_issue",        "")
-    r.standout_quality      = judge.get("standout_quality",      "")
+
+    # Type-specific scores
+    dtype = conv.dataset_type
+    if dtype == "failure":
+        r.dropout_authenticity_score     = _get_score("dropout_authenticity_score")
+        r.dropout_authenticity_rationale = judge.get("dropout_authenticity_rationale", "")
+    elif dtype == "type_a":
+        r.prior_belief_coherence_score     = _get_score("prior_belief_coherence_score")
+        r.prior_belief_coherence_rationale = judge.get("prior_belief_coherence_rationale", "")
+    elif dtype == "type_b":
+        r.error_catch_quality_score        = _get_score("error_catch_quality_score")
+        r.error_catch_quality_rationale    = judge.get("error_catch_quality_rationale", "")
+        r.pushback_naturalness_score       = _get_score("pushback_naturalness_score")
+        r.pushback_naturalness_rationale   = judge.get("pushback_naturalness_rationale", "")
+
+    # Weighted overall score using per-type weights
+    weights = DIMENSION_WEIGHTS.get(dtype, DIMENSION_WEIGHTS["success"])
+    score_map = {
+        "depth_first":          r.depth_first_score,
+        "uncertainty":          r.uncertainty_score,
+        "info_drip":            r.info_drip_score,
+        "pragmatic":            r.pragmatic_score,
+        "persona":              r.persona_score,
+        "dropout_authenticity": r.dropout_authenticity_score,
+        "prior_belief_coherence": r.prior_belief_coherence_score,
+        "error_catch_quality":  r.error_catch_quality_score,
+        "pushback_naturalness": r.pushback_naturalness_score,
+    }
+    r.overall_score = round(
+        sum(score_map[dim] * w for dim, w in weights.items()),
+        3,
+    )
+
+    r.standout_issue   = judge.get("standout_issue",   "")
+    r.standout_quality = judge.get("standout_quality", "")
 
     return r
 
@@ -503,12 +697,17 @@ def compute_result(conv: Conversation, judge: dict, model: str) -> Layer2Result:
 
 def write_csv(results: list, path: Path):
     fieldnames = [
-        "conv_idx", "knowledge_level", "emotional_state",
+        "conv_idx", "dataset_type", "knowledge_level", "emotional_state",
         "communication_style", "goal_clarity", "certainty",
         "depth_first_score", "uncertainty_score", "info_drip_score",
         "pragmatic_score", "persona_score", "overall_score",
         "depth_first_rationale", "uncertainty_rationale", "info_drip_rationale",
         "pragmatic_rationale", "persona_rationale",
+        # type-specific
+        "dropout_authenticity_score", "dropout_authenticity_rationale",
+        "prior_belief_coherence_score", "prior_belief_coherence_rationale",
+        "error_catch_quality_score", "error_catch_quality_rationale",
+        "pushback_naturalness_score", "pushback_naturalness_rationale",
         "standout_issue", "standout_quality",
         "model_used", "parse_error",
     ]
@@ -658,9 +857,10 @@ def fig_score_distributions(results: list):
     axes[-1].annotate("— mean", xy=(1, 0), xycoords="axes fraction",
                       fontsize=8, color="#C1121F", ha="right", va="bottom")
 
-    # Weight labels below each dimension
+    # Weight labels below each dimension (use success weights as reference baseline)
+    _ref_weights = DIMENSION_WEIGHTS["success"]
     for ax, dim in zip(axes[:-1], DIMENSIONS):
-        ax.text(0.5, -0.10, f"w={DIMENSION_WEIGHTS[dim]:.2f}",
+        ax.text(0.5, -0.10, f"w={_ref_weights.get(dim, 0.0):.2f}",
                 transform=ax.transAxes, ha="center", fontsize=8.5, color="#666666")
 
     fig.tight_layout()
@@ -1009,10 +1209,26 @@ def main():
         action="store_true",
         help="Skip API calls; regenerate graphs from existing CSV only.",
     )
+    parser.add_argument(
+        "--dumps-dir",
+        default=None,
+        help=(
+            "Directory containing conversation_NNN.txt dump files. "
+            "Defaults to conversation_dumps/ next to this script."
+        ),
+    )
+    parser.add_argument(
+        "--output-csv",
+        default=None,
+        help="Output CSV path. Defaults to eval_results_layer2.csv next to this script.",
+    )
     args = parser.parse_args()
 
+    dumps_dir  = Path(args.dumps_dir)  if args.dumps_dir  else DUMPS_DIR
+    output_csv = Path(args.output_csv) if args.output_csv else OUTPUT_CSV
+
     # ── Load conversations ──────────────────────────────────────────────────
-    dump_files = sorted(DUMPS_DIR.glob("conversation_*.txt"))
+    dump_files = sorted(dumps_dir.glob("conversation_*.txt"))
     if args.limit:
         dump_files = dump_files[: args.limit]
 
@@ -1026,11 +1242,11 @@ def main():
 
     # ── Graphs-only mode: load existing CSV ────────────────────────────────
     if args.graphs_only:
-        if not OUTPUT_CSV.exists():
-            print(f"Error: {OUTPUT_CSV} not found. Run without --graphs-only first.")
+        if not output_csv.exists():
+            print(f"Error: {output_csv} not found. Run without --graphs-only first.")
             return
         results = []
-        with open(OUTPUT_CSV, encoding="utf-8") as f:
+        with open(output_csv, encoding="utf-8") as f:
             for row in csv.DictReader(f):
                 r = Layer2Result(conv_idx=int(row["conv_idx"]))
                 for field in ["knowledge_level","emotional_state","communication_style",
@@ -1095,7 +1311,7 @@ def main():
     print(f"\n  API calls: {api_count}   Cached: {cached_count}")
 
     print_summary(results)
-    write_csv(results, OUTPUT_CSV)
+    write_csv(results, output_csv)
     generate_all_visualisations(results, l1_data)
 
 
