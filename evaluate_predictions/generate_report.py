@@ -668,6 +668,23 @@ def section_conversation(conversation_rows: list[dict] | None, overall: dict[str
                 except (ValueError, TypeError):
                     pass
         agg["total_role_confused"] = sum(rc_vals) if rc_vals else None
+
+        # Probe signals: aggregate only over probe-type rows
+        tb_rows = [r for r in v_rows if r.get("conversation_type", "") == "type_b"]
+        ta_rows = [r for r in v_rows if r.get("conversation_type", "") == "type_a"]
+        for col in ["pushback_turns_pred", "pushback_missed", "prior_belief_turns_pred"]:
+            subset = tb_rows if col in ("pushback_turns_pred", "pushback_missed") else ta_rows
+            vals = []
+            for r in subset:
+                val = r.get(col, "")
+                if val not in (None, "", "None", "nan"):
+                    try:
+                        vals.append(float(val))
+                    except (ValueError, TypeError):
+                        pass
+            agg[col] = sum(vals) / len(vals) if vals else None
+            agg[f"{col}_n"] = len(subset)
+
         agg["n_conversations"] = len(v_rows)
         conv_agg[v] = agg
 
@@ -715,12 +732,51 @@ def section_conversation(conversation_rows: list[dict] | None, overall: dict[str
         "across conversation turns (higher = better tracking of conversational dynamics).\n"
     )
 
+    # Probe-signal table (only shown when probe data is present)
+    has_probe = any(
+        conv_agg.get(v, {}).get("pushback_turns_pred_n", 0) or
+        conv_agg.get(v, {}).get("prior_belief_turns_pred_n", 0)
+        for v in variants
+    )
+    if has_probe:
+        lines.append("### Probe-Type Signal Summary\n")
+        lines.append(
+            "Averages computed over probe-type conversations only. "
+            "PushbackTurns = mean predicted pushback turns per type_b conversation. "
+            "PushbackMissed = mean turns where ref pushed back but pred didn't. "
+            "PriorBeliefRate = mean fraction of turns expressing wrong prior belief (type_a).\n"
+        )
+        lines.append("| Model | type_b N | PushbackTurns (pred) | PushbackMissed | type_a N | PriorBeliefRate |")
+        lines.append("|---|---|---|---|---|---|")
+        for v in variants:
+            a = conv_agg.get(v, {})
+            tb_n = a.get("pushback_turns_pred_n", 0) or 0
+            ta_n = a.get("prior_belief_turns_pred_n", 0) or 0
+            lines.append(
+                f"| {v} "
+                f"| {tb_n} "
+                f"| {f(a.get('pushback_turns_pred'))} "
+                f"| {f(a.get('pushback_missed'))} "
+                f"| {ta_n} "
+                f"| {f(a.get('prior_belief_turns_pred'))} |"
+            )
+
     conv_img = img("22_conversation_level.png")
     if conv_img:
         lines.append(f"{conv_img}\n")
         lines.append(
             "_Conversation-level metrics distributions. "
             "These capture cross-turn coherence that single-turn metrics cannot measure._"
+        )
+
+    conv_type_img = img("23_by_conversation_type.png")
+    if conv_type_img:
+        lines.append(f"\n{conv_type_img}\n")
+        lines.append(
+            "_Per-conversation-type breakdown: BLEU, style compliance, hedge delta, "
+            "pushback rate (type_b), and prior-belief rate (type_a) stratified by "
+            "conversation type. Use this to assess whether fidelity gaps are driven by "
+            "probe conversations vs standard ones._"
         )
 
     return "\n".join(lines)
@@ -736,11 +792,15 @@ def section_persona(category_rows: list[dict], overall: dict[str, dict]) -> str:
         ("emotional_state",     "Emotional State"),
         ("knowledge_level",     "Knowledge Level"),
         ("goal_clarity",        "Goal Clarity"),
+        ("conversation_type",   "Conversation Type"),
     ]
 
     lines = [
         "## 8. Performance by Persona Category\n",
-        f"{primary_name} scores broken down by persona attribute (LoRA variants, non-EOS examples only).\n",
+        f"{primary_name} scores broken down by persona attribute (LoRA variants, non-EOS examples only). "
+        "**Conversation Type** (success / type_a / type_b) is included — "
+        "lower scores on probe types (type_a, type_b) indicate the model struggles to "
+        "reproduce wrong-prior-belief behaviour or pushback language at the turn level.\n",
     ]
 
     for dim, label in dims:
@@ -1035,7 +1095,8 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
     )
 
     # Table C: Fidelity flags
-    flag_defs = [
+    # Universal flags (all conversation types)
+    flag_defs_universal = [
         ("flag_length_inflated",   "LenInflated"),
         ("flag_length_deflated",   "LenDeflated"),
         ("flag_over_certain",      "OverCertain"),
@@ -1044,22 +1105,78 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
         ("flag_breadth_first_new", "BreadthNew"),
         ("flag_role_confused",     "RoleConf"),
     ]
+    # Probe-type-specific flags (only populated for their respective types)
+    flag_defs_probe = [
+        ("flag_missed_pushback",      "MissedPushback",    "type_b"),
+        ("flag_wrong_belief_missing", "WrongBeliefMissing", "type_a"),
+    ]
+
     lines.append("### C. Fidelity Flags\n")
     lines.append(
         "Fraction of conversations where the predicted sequence raises each flag. "
-        "Lower = better fidelity.\n"
+        "Lower = better fidelity. "
+        "**MissedPushback** = type_b conversations where reference pushes back but prediction doesn't. "
+        "**WrongBeliefMissing** = type_a conversations where reference expresses wrong prior belief but prediction doesn't.\n"
     )
-    header = "| Model | " + " | ".join(d[1] for d in flag_defs) + " |"
-    sep    = "|---" + "|---" * len(flag_defs) + "|"
+
+    all_flag_defs = flag_defs_universal + [(a, l) for a, l, _ in flag_defs_probe]
+    header = "| Model | " + " | ".join(d[1] for d in all_flag_defs) + " |"
+    sep    = "|---" + "|---" * len(all_flag_defs) + "|"
     lines.append(header)
     lines.append(sep)
     for v in variants:
         rs = by_v.get(v, [])
         cells = [v]
-        for attr, _ in flag_defs:
+        for attr, _ in flag_defs_universal:
             rate = flag_pct(rs, attr)
             cells.append(f"{rate:.1f}%" if rate is not None else "—")
+        for attr, _, ctype in flag_defs_probe:
+            # Only compute rate over rows of the relevant conversation type
+            type_rs = [r for r in rs if r.get("conversation_type", "") == ctype]
+            rate = flag_pct(type_rs, attr) if type_rs else None
+            cells.append(f"{rate:.1f}%*" if rate is not None else "—")
         lines.append("| " + " | ".join(cells) + " |")
+
+    lines.append("\n> \\* Probe-type flags computed over type-specific subset only "
+                 "(type_b for MissedPushback, type_a for WrongBeliefMissing).\n")
+
+    # Table D: Probe-signal breakdown by conversation type
+    ctypes_present = sorted({r.get("conversation_type", "") for r in t1_rows} - {""})
+    if len(ctypes_present) > 1:
+        lines.append("### D. Probe-Signal Breakdown by Conversation Type\n")
+        lines.append(
+            "Per-type averages for pushback and prior-belief signals. "
+            "Pushback rate = fraction of predicted turns containing pushback phrases (type_b only). "
+            "Prior-belief rate = fraction of predicted turns expressing the scenario's wrong belief (type_a only).\n"
+        )
+        lines.append("| Model | Conv Type | N convs | Pred Pushback turns | Ref Pushback turns | Pushback missed | Pred PriorBelief rate |")
+        lines.append("|---|---|---|---|---|---|---|")
+        for v in variants:
+            for ctype in ["success", "type_a", "type_b"]:
+                if ctype not in ctypes_present:
+                    continue
+                rs = [r for r in by_v.get(v, []) if r.get("conversation_type", "") == ctype]
+                if not rs:
+                    continue
+                n = len(rs)
+
+                def _mean_col(col):
+                    vals = [float(r[col]) for r in rs
+                            if r.get(col, "") not in (None, "", "None", "nan")]
+                    return sum(vals) / len(vals) if vals else None
+
+                pb_pred = _mean_col("pred_pushback_count") if ctype == "type_b" else None
+                pb_ref  = _mean_col("ref_pushback_count")  if ctype == "type_b" else None
+                pb_miss = flag_pct(rs, "flag_missed_pushback") if ctype == "type_b" else None
+                pr_rate = _mean_col("pred_prior_belief_rate") if ctype == "type_a" else None
+
+                lines.append(
+                    f"| {v} | {ctype} | {n} "
+                    f"| {f(pb_pred) if pb_pred is not None else '—'} "
+                    f"| {f(pb_ref)  if pb_ref  is not None else '—'} "
+                    f"| {f'{pb_miss:.1f}%' if pb_miss is not None else '—'} "
+                    f"| {f(pr_rate) if pr_rate is not None else '—'} |"
+                )
 
     # Flag images
     for img_name in ["cp_01_t1_overview.png", "cp_02_t1_deltas.png", "cp_03_t1_flags.png"]:
@@ -1072,6 +1189,15 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
             "\n_cp_01: Predicted vs reference mean words/turn, hedge rate, certainty rate. "
             "cp_02: Delta bar charts (pred − ref) for key metrics. "
             "cp_03: Fidelity flag heatmap — darker = more flags raised._"
+        )
+
+    conv_type_img = img("cp_06_t1_by_conv_type.png")
+    if conv_type_img:
+        lines.append(f"\n{conv_type_img}\n")
+        lines.append(
+            "_cp_06: Fidelity flag rates stratified by conversation type "
+            "(success / type_a / type_b). "
+            "MissedPushback and WrongBeliefMissing appear only in their respective type columns._"
         )
 
     return "\n".join(lines)
@@ -1104,45 +1230,85 @@ def section_conv_t2(t2_rows: list[dict] | None) -> str | None:
     for r in valid:
         by_v.setdefault(r["model_variant"], []).append(r)
 
-    dims = [
-        ("depth_first_score", "Depth-First"),
-        ("uncertainty_score", "Uncertainty"),
-        ("info_drip_score",   "Info Drip"),
-        ("pragmatic_score",   "Pragmatic"),
-        ("persona_score",     "Persona"),
-        ("overall_score",     "OVERALL"),
-    ]
+    # Per-type dimension definitions (dimensions scored by that type's judge prompt)
+    DIMS_BY_TYPE = {
+        "success": [
+            ("depth_first_score", "Depth-First"),
+            ("uncertainty_score", "Uncertainty"),
+            ("info_drip_score",   "Info Drip"),
+            ("pragmatic_score",   "Pragmatic"),
+            ("persona_score",     "Persona"),
+            ("overall_score",     "OVERALL"),
+        ],
+        "type_a": [
+            ("prior_belief_score",      "PriorBelief"),
+            ("info_incompleteness_score", "InfoIncomplete"),
+            ("depth_first_score",       "Depth-First"),
+            ("uncertainty_score",       "Uncertainty"),
+            ("persona_score",           "Persona"),
+            ("overall_score",           "OVERALL"),
+        ],
+        "type_b": [
+            ("error_detection_score",     "ErrorDetect"),
+            ("pushback_calibration_score","PushbackCalib"),
+            ("uncertainty_score",         "Uncertainty"),
+            ("persona_score",             "Persona"),
+            ("pragmatic_score",           "Pragmatic"),
+            ("overall_score",             "OVERALL"),
+        ],
+    }
 
     lines = [
         "## N. Conversation-Level Tier 2 — LLM Judge Fidelity\n",
         "LLM-as-judge scores measuring how faithfully the predicted conversations "
         "reproduce the human-realism properties of the reference conversations. "
         "Scored 1–5 per dimension: 1 = completely divergent, 5 = indistinguishable from reference. "
-        "The judge evaluates FIDELITY, not absolute quality.\n",
-        "| Model | " + " | ".join(d[1] for d in dims) + " |",
-        "|---" + "|---" * len(dims) + "|",
+        "The judge evaluates FIDELITY, not absolute quality. "
+        "Each conversation type is evaluated by a dedicated judge rubric with type-specific dimensions.\n",
     ]
 
-    for v in variants:
-        rs = by_v.get(v, [])
-        cells = [v] + [f(avg_col(rs, col)) for col, _ in dims]
-        lines.append("| " + " | ".join(cells) + " |")
+    ctypes_in_data = sorted({r.get("conversation_type", "success") or "success" for r in valid})
 
-    # Best and weakest dimension across LoRA
-    lora_valid = [r for r in valid if r.get("model_variant", "").startswith("lora_")]
-    if lora_valid:
-        non_overall = dims[:-1]
-        dim_avgs = {col: avg_col(lora_valid, col) for col, _ in non_overall}
-        dim_avgs = {k: v for k, v in dim_avgs.items() if v is not None}
-        if dim_avgs:
-            weakest   = min(dim_avgs, key=dim_avgs.get)
-            strongest = max(dim_avgs, key=dim_avgs.get)
-            wlabel = dict(dims).get(weakest, weakest)
-            slabel = dict(dims).get(strongest, strongest)
-            lines.append(
-                f"\n> **LoRA weakest fidelity dimension:** {wlabel} ({dim_avgs[weakest]:.2f})  \n"
-                f"> **LoRA strongest fidelity dimension:** {slabel} ({dim_avgs[strongest]:.2f})"
-            )
+    for ctype in ["success", "type_a", "type_b"]:
+        if ctype not in ctypes_in_data:
+            continue
+        dims = DIMS_BY_TYPE[ctype]
+        ctype_rows = [r for r in valid if (r.get("conversation_type", "success") or "success") == ctype]
+        if not ctype_rows:
+            continue
+
+        by_v_ctype: dict[str, list] = {}
+        for r in ctype_rows:
+            by_v_ctype.setdefault(r["model_variant"], []).append(r)
+
+        type_label = {"success": "Success", "type_a": "Type A — Inadvertent Probing",
+                      "type_b": "Type B — Adversarial Probing"}[ctype]
+        lines.append(f"### {type_label} (n={len(ctype_rows)})\n")
+        lines.append("| Model | " + " | ".join(d[1] for d in dims) + " |")
+        lines.append("|---" + "|---" * len(dims) + "|")
+
+        for v in variants:
+            rs = by_v_ctype.get(v, [])
+            if not rs:
+                continue
+            cells = [v] + [f(avg_col(rs, col)) for col, _ in dims]
+            lines.append("| " + " | ".join(cells) + " |")
+
+        # Best and weakest dimension across LoRA for this type
+        lora_valid_ct = [r for r in ctype_rows if r.get("model_variant", "").startswith("lora_")]
+        if lora_valid_ct:
+            non_overall = [(c, l) for c, l in dims if c != "overall_score"]
+            dim_avgs = {col: avg_col(lora_valid_ct, col) for col, _ in non_overall}
+            dim_avgs = {k: v for k, v in dim_avgs.items() if v is not None}
+            if dim_avgs:
+                weakest   = min(dim_avgs, key=dim_avgs.get)
+                strongest = max(dim_avgs, key=dim_avgs.get)
+                wlabel = dict(dims).get(weakest, weakest)
+                slabel = dict(dims).get(strongest, strongest)
+                lines.append(
+                    f"\n> **LoRA weakest ({type_label}):** {wlabel} ({dim_avgs[weakest]:.2f})  \n"
+                    f"> **LoRA strongest ({type_label}):** {slabel} ({dim_avgs[strongest]:.2f})\n"
+                )
 
     for img_name in ["cp_04_t2_scores.png", "cp_05_t2_by_dimension.png"]:
         im = img(img_name)
@@ -1490,16 +1656,32 @@ def section_conv_metric_commentary(has_t1: bool, has_t2: bool) -> str:
         lines.append(
             "**What it measures:** Five dimensions scored 1–5 by an LLM judge "
             "(claude-sonnet-4-6), framed as FIDELITY: does the predicted conversation "
-            "reproduce the same human-realism properties as the reference?\n"
-            "- **Depth-First Questioning** — does the model raise concerns in the same "
-            "sequential order as the reference, or bundle them?\n"
-            "- **Uncertainty Expression** — does the hedge/certainty balance match the reference?\n"
-            "- **Information Drip** — does key scenario info appear in the same turns as reference?\n"
+            "reproduce the same human-realism properties as the reference? "
+            "Each conversation type uses a dedicated judge rubric with type-specific dimensions "
+            "and weights:\n\n"
+            "**Success conversations** (normal dispute resolution):\n"
+            "- **Depth-First Questioning** — does the model raise concerns sequentially, not bundled?\n"
+            "- **Uncertainty Expression** — does hedge/certainty balance match reference?\n"
+            "- **Information Drip** — does key info appear in the same turns as reference?\n"
             "- **Pragmatic Naturalness** — do predicted turns sound as colloquial as reference?\n"
-            "- **Persona Fidelity** — is the assigned persona (emotional state, knowledge, style) "
-            "as visible as in the reference?\n\n"
-            "**Dimension weights:** Depth-First (0.25) · Pragmatic (0.25) · "
-            "Uncertainty (0.20) · Info Drip (0.15) · Persona (0.15)\n\n"
+            "- **Persona Fidelity** — is the assigned persona as visible as in reference?\n"
+            "- *Weights: Depth-First (0.25) · Pragmatic (0.25) · Uncertainty (0.20) · "
+            "Info Drip (0.15) · Persona (0.15)*\n\n"
+            "**Type A — Inadvertent Probing** (user holds a wrong prior belief):\n"
+            "- **Prior Belief Persistence** — does the model maintain the wrong belief long enough "
+            "before being corrected, as the reference does?\n"
+            "- **Info Incompleteness** — does the model withhold or omit information in the same "
+            "pattern as the reference (partial info-drip)?\n"
+            "- **Depth-First Questioning**, **Uncertainty Expression**, **Persona Fidelity** (same as success)\n"
+            "- *Weights: PriorBelief (0.30) · Depth-First (0.20) · InfoIncomplete (0.20) · "
+            "Uncertainty (0.15) · Persona (0.15)*\n\n"
+            "**Type B — Adversarial Probing** (agent makes a planted error, user should push back):\n"
+            "- **Error Detection** — does the model catch and challenge the planted agent error, "
+            "as the reference does?\n"
+            "- **Pushback Calibration** — is the pushback proportionate and appropriately assertive?\n"
+            "- **Uncertainty Expression**, **Persona Fidelity**, **Pragmatic Naturalness** (same as success)\n"
+            "- *Weights: ErrorDetect (0.35) · PushbackCalib (0.25) · Uncertainty (0.15) · "
+            "Persona (0.15) · Pragmatic (0.10)*\n\n"
             "**Strengths:** Holistic, context-aware, captures properties no rule can detect. "
             "Rationale fields explain the score in terms of specific turns.\n\n"
             "**Weaknesses:** Expensive (API cost per conversation). "
@@ -1508,6 +1690,8 @@ def section_conv_metric_commentary(has_t1: bool, has_t2: bool) -> str:
             "Scores are non-deterministic; cached to avoid variance between runs.\n\n"
             "**Recommendation:** Use Tier 2 to explain Tier 1 flag patterns and to identify "
             "the weakest fidelity dimension across model variants. "
+            "For type_b, pay particular attention to ErrorDetect — a model that never pushes back "
+            "will have high turn-level BERTScore but fail this dimension completely. "
             "Do not use Tier 2 overall score alone for model selection — "
             "cross-validate with Tier 1 flags and turn-level BERTScore.\n"
         )
