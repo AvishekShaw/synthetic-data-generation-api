@@ -162,6 +162,7 @@ CATEGORY_SLICES = [
     ("knowledge_level",     "persona"),
     ("goal_clarity",        "persona"),
     ("certainty",           "scenario"),
+    ("conversation_type",   "data_type"),   # success | type_a | type_b
 ]
 
 # Terse word-count threshold (≤ this = compliant)
@@ -213,8 +214,69 @@ FRUSTRATION_MARKERS = [
     "i already", "again",
 ]
 
+# Pushback phrases for type_b conversations (matches generator's list, extended)
+PUSHBACK_PHRASES = [
+    "that's not right", "that's incorrect", "are you sure", "i thought",
+    "i was told", "i've read", "according to", "that doesn't sound right",
+    "wait,", "hold on", "actually,", "i don't think that's", "you said earlier",
+    "but earlier", "you just said", "that contradicts", "that can't be right",
+    "that's wrong", "no, it's", "i believe it's", "reg e", "regulation e",
+    "that's not what", "isn't it", "i'm pretty sure", "i read that",
+]
 
-def style_compliance(predicted_norm: str, persona: dict) -> float:
+# Per-scenario keywords that signal the prior belief is being expressed (type_a only).
+# Keyed by scenario_idx % 8 (type_a uses the same 8 scenarios as success,
+# offset by generation_idx 1000+).
+PRIOR_BELIEF_KEYWORDS: dict = {
+    0: ["120 days", "120-day", "four months"],
+    1: ["description", "rough", "approximate", "don't have the exact"],
+    2: ["legally required", "required by law", "mandatory refund", "must refund", "have to refund"],
+    3: ["100%", "100 percent", "totally sure", "certain before", "sure before", "positive before"],
+    4: ["instantly", "automatically blocks", "immediately blocks", "blocks all pending"],
+    5: ["supervisor", "manager", "entitled", "returning caller", "open case"],
+    6: ["500", "federal law", "24 hours", "24-hour", "provisional within 24"],
+    7: ["police report", "police", "report first", "file a report", "file report"],
+}
+
+
+def conversation_type_from_meta(meta: dict) -> str:
+    """Derive conversation type from _meta dict."""
+    pt = meta.get("probing_type", "")
+    if pt == "inadvertent":
+        return "type_a"
+    if pt == "adversarial":
+        return "type_b"
+    return "success"
+
+
+def scenario_idx_from_gen_idx(gen_idx, conv_type: str) -> int:
+    """Extract scenario index (0–7) from generation_idx for prior belief lookup."""
+    try:
+        g = int(gen_idx or 0)
+    except (TypeError, ValueError):
+        return 0
+    if conv_type == "type_b":
+        return (g - 2000) % 8
+    if conv_type == "type_a":
+        return (g - 1000) % 8
+    return g % 8
+
+
+def check_pushback_turn(text: str) -> bool:
+    """True if this turn contains pushback language (type_b signal)."""
+    tl = text.lower()
+    return any(p in tl for p in PUSHBACK_PHRASES)
+
+
+def check_prior_belief_expressed(text: str, scenario_idx: int) -> bool:
+    """True if this turn expresses the wrong prior belief for the scenario (type_a signal)."""
+    tl = text.lower()
+    keywords = PRIOR_BELIEF_KEYWORDS.get(scenario_idx % 8, [])
+    return any(k in tl for k in keywords)
+
+
+def style_compliance(predicted_norm: str, persona: dict,
+                     conversation_type: str = "success") -> float:
     """
     Returns a 0.0–1.0 compliance score.
     For EOS predictions (empty string) returns 1.0 — no style to violate.
@@ -243,15 +305,18 @@ def style_compliance(predicted_norm: str, persona: dict) -> float:
         score += (0.5 * has_hedge) + (0.5 * long_enough)
 
     # ── Emotional state ──────────────────────────────────────────────
-    if emotion == "mildly_frustrated":
-        checks += 1
-        has_frustration = any(m in predicted_norm for m in FRUSTRATION_MARKERS)
-        score += 1.0 if has_frustration else 0.4   # partial credit (frustration subtle)
-
-    elif emotion == "calm":
-        checks += 1
-        no_frustration = not any(m in predicted_norm for m in FRUSTRATION_MARKERS)
-        score += 1.0 if no_frustration else 0.0
+    # For type_b (adversarial probing), pushback / assertive language is correct
+    # behaviour — even a normally "calm" persona should push back on agent errors.
+    # Suppress the emotion check so we don't penalize legitimate pushback.
+    if conversation_type != "type_b":
+        if emotion == "mildly_frustrated":
+            checks += 1
+            has_frustration = any(m in predicted_norm for m in FRUSTRATION_MARKERS)
+            score += 1.0 if has_frustration else 0.4   # partial credit (frustration subtle)
+        elif emotion == "calm":
+            checks += 1
+            no_frustration = not any(m in predicted_norm for m in FRUSTRATION_MARKERS)
+            score += 1.0 if no_frustration else 0.0
 
     return round(score / checks, 4) if checks > 0 else 1.0   # 1.0 = nothing to violate
 
@@ -835,6 +900,16 @@ class ExampleMetrics:
     # Conversation-level identity (for grouping)
     generation_idx:        object = None
 
+    # ── Conversation type and probe metadata ──────────────────────────────
+    conversation_type:      str    = "success"  # success | type_a | type_b
+    wrong_prior_belief:     str    = ""          # type_a: the prior belief text
+    agent_failure_mode:     str    = ""          # type_b: planted error category
+    user_caught_error:      object = None        # type_b: bool — did user catch it?
+    goal_completed:         object = None        # bool — did conversation reach goal?
+    # Turn-level probe signals
+    is_pushback_turn:       bool   = False       # type_b: turn contains pushback language
+    prior_belief_expressed: bool   = False       # type_a: turn expresses wrong prior belief
+
     # Raw text (for debugging)
     predicted_output:  str = ""
     expected_output:   str = ""
@@ -852,6 +927,15 @@ def compute_metrics_for_example(
     scenario = meta.get("scenario", {})
     inp      = example.get("input", "")
     expected = example.get("expected_output", "")
+
+    # ── Probe / conversation-type metadata ───────────────────────────────
+    conv_type        = conversation_type_from_meta(meta)
+    gen_idx_val      = meta.get("generation_idx")
+    sc_idx           = scenario_idx_from_gen_idx(gen_idx_val, conv_type)
+    wrong_prior      = meta.get("wrong_prior_belief", "")
+    agent_fail_mode  = meta.get("agent_failure_mode", "")
+    caught_error     = meta.get("user_caught_error", None)
+    goal_done        = meta.get("goal_completed", None)
 
     model_data = example.get(model_key, {})
     raw_metrics = model_data.get("metrics", {})
@@ -927,7 +1011,7 @@ def compute_metrics_for_example(
         eos_correct             = pred_is_eos if is_eos else None,
         eos_false_pos           = pred_is_eos if not is_eos else None,
         length_ratio_error      = abs(1.0 - token_ratio) if token_ratio > 0 else 1.0,
-        style_compliance_score  = style_compliance(norm_pred, persona),
+        style_compliance_score  = style_compliance(norm_pred, persona, conv_type),
         meteor_score            = meteor,
         # New metrics (v2 — entity)
         **entity_precision_recall(norm_exp, norm_pred),
@@ -945,6 +1029,16 @@ def compute_metrics_for_example(
         role_confusion_signals  = ", ".join(detect_role_confusion(norm_pred)["role_confusion_signals"]),
         # Conversation identity
         generation_idx          = meta.get("generation_idx"),
+        # Probe / conversation-type metadata
+        conversation_type       = conv_type,
+        wrong_prior_belief      = wrong_prior,
+        agent_failure_mode      = agent_fail_mode,
+        user_caught_error       = caught_error,
+        goal_completed          = goal_done,
+        # Turn-level probe signals (on predicted turn)
+        is_pushback_turn        = (conv_type == "type_b" and check_pushback_turn(norm_pred)),
+        prior_belief_expressed  = (conv_type == "type_a" and
+                                   check_prior_belief_expressed(norm_pred, sc_idx)),
         # Raw text
         predicted_output        = predicted,
         expected_output         = expected,
@@ -1716,6 +1810,32 @@ def print_summary(all_metrics: dict):
                   f"{_fmt(agg['mean_judge_info_cal'])}  "
                   f"{_fmt(agg['mean_judge_overall'])}")
 
+    # ── Table 4: Probe type breakdown (if probe data present) ─────────────
+    has_probes = any(
+        m.conversation_type != "success"
+        for mlist in all_metrics.values()
+        for m in mlist
+    )
+    if has_probes:
+        print(f"\n{sep}")
+        print("  TABLE 4: Metrics by Conversation Type  (LoRA variants, non-EOS examples)")
+        print(f"  {'Model':<18} {'Type':<10} {'N':>4}  {'BLEU':>6}  {'StyleC':>6}  "
+              f"{'PushbkRate':>11}  {'PriorRate':>10}")
+        print(f"  {'─'*18}  {'─'*10}  {'─'*4}  {'─'*6}  {'─'*6}  {'─'*11}  {'─'*10}")
+        for variant in sorted(m for m in all_metrics if m.startswith("lora_")):
+            for ctype in ["success", "type_a", "type_b"]:
+                subset = [m for m in all_metrics[variant]
+                          if m.conversation_type == ctype and not m.is_eos_example]
+                if not subset:
+                    continue
+                bleu = safe_mean([m.bleu_score for m in subset]) or 0
+                stylec = safe_mean([m.style_compliance_score for m in subset]) or 0
+                pushbk = safe_mean([float(m.is_pushback_turn) for m in subset]) or 0
+                prior  = safe_mean([float(m.prior_belief_expressed) for m in subset]) or 0
+                print(f"  {variant:<18} {ctype:<10} {len(subset):>4}  "
+                      f"{bleu:>6.3f}  {stylec:>6.3f}  "
+                      f"{pushbk:>10.1%}  {prior:>9.1%}")
+
     # ── EOS analysis ──────────────────────────────────────────────────────
     print(f"\n{sep}")
     print("  EOS ANALYSIS")
@@ -1819,8 +1939,9 @@ def compute_conversation_metrics(all_metrics: dict) -> list:
             pred_texts = [t.predicted_output for t in non_eos if t.predicted_output.strip()]
             self_bleu = compute_self_bleu(pred_texts) if len(pred_texts) >= 2 else None
 
-            # Persona info
+            # Persona info + conversation type
             persona_info = {}
+            conv_type_val = "success"
             if turns_sorted:
                 t0 = turns_sorted[0]
                 persona_info = {
@@ -1829,10 +1950,22 @@ def compute_conversation_metrics(all_metrics: dict) -> list:
                     "knowledge_level": t0.knowledge_level,
                     "goal_clarity": t0.goal_clarity,
                 }
+                conv_type_val = t0.conversation_type
+
+            # type_b: did any predicted turn catch the error? (compare ref signal)
+            pushback_pred = sum(1 for t in non_eos if t.is_pushback_turn)
+            # type_b: reference pushback rate (recomputed on expected_output side)
+            pushback_ref = sum(
+                1 for t in non_eos
+                if check_pushback_turn(normalize(t.expected_output))
+            ) if conv_type_val == "type_b" else 0
+            # type_a: prior belief present in predicted turns
+            prior_belief_pred = sum(1 for t in non_eos if t.prior_belief_expressed)
 
             rows.append({
                 "model_variant": variant,
                 "generation_idx": gen_idx,
+                "conversation_type": conv_type_val,
                 "n_turns": len(turns_sorted),
                 "n_text_turns": len(non_eos),
                 **persona_info,
@@ -1852,6 +1985,12 @@ def compute_conversation_metrics(all_metrics: dict) -> list:
                 "self_bleu": self_bleu,
                 # Judge
                 "judge_mean": judge_conv_mean,
+                # Probe signals (type_a / type_b — 0 for success)
+                "pushback_turns_pred": pushback_pred,
+                "pushback_turns_ref": pushback_ref,
+                "pushback_missed": (conv_type_val == "type_b" and pushback_ref > 0
+                                    and pushback_pred == 0),
+                "prior_belief_turns_pred": prior_belief_pred,
             })
 
     return rows
@@ -2194,6 +2333,73 @@ def fig_conversation_level(conv_rows: list):
     _save(fig, "22_conversation_level.png")
 
 
+def fig_by_conversation_type(all_metrics: dict):
+    """
+    Figure 23: Key metrics broken out by conversation type (success / type_a / type_b).
+    Shows: BLEU, hedge-rate delta, style compliance, pushback rate (type_b), prior belief
+    rate (type_a). Helps diagnose whether the model behaves differently per data split.
+    """
+    _set_style()
+    lora_variants = sorted(v for v in all_metrics if v.startswith("lora_"))
+    if not lora_variants:
+        return
+
+    conv_types = ["success", "type_a", "type_b"]
+    type_colors = {"success": "#4C9BE8", "type_a": "#E9C46A", "type_b": "#E76F51"}
+
+    metrics_to_plot = [
+        ("bleu_score",            "Mean BLEU",          "non_eos"),
+        ("style_compliance_score","Mean Style Compliance","non_eos"),
+        ("hedge_rate_delta",      "Mean Hedge-Rate Δ",  "non_eos"),
+        ("is_pushback_turn",      "Pushback Turn Rate\n(type_b only)", "non_eos"),
+        ("prior_belief_expressed","Prior Belief Rate\n(type_a only)",  "non_eos"),
+    ]
+
+    n_metrics = len(metrics_to_plot)
+    fig, axes = plt.subplots(1, n_metrics, figsize=(4 * n_metrics, 6))
+    fig.suptitle(
+        "Per-Conversation-Type Metrics  (LoRA variants only)\n"
+        "Stratified by success / type_a (inadvertent probing) / type_b (adversarial probing)",
+        fontsize=13, fontweight="bold", y=1.03,
+    )
+
+    for ax, (attr, title, pool) in zip(axes, metrics_to_plot):
+        x = np.arange(len(lora_variants))
+        w = 0.22
+        for ci, ctype in enumerate(conv_types):
+            vals = []
+            for variant in lora_variants:
+                subset = [
+                    m for m in all_metrics[variant]
+                    if m.conversation_type == ctype and
+                    (pool != "non_eos" or not m.is_eos_example)
+                ]
+                if not subset:
+                    vals.append(0.0)
+                    continue
+                raw = [float(getattr(m, attr)) for m in subset]
+                vals.append(round(np.mean(raw), 4))
+            offset = (ci - 1) * w
+            bars = ax.bar(x + offset, vals, w * 0.9,
+                          label=ctype, color=type_colors[ctype], alpha=0.85)
+            for bar, val in zip(bars, vals):
+                if val > 0.001:
+                    ax.text(bar.get_x() + bar.get_width() / 2,
+                            bar.get_height() + 0.01,
+                            f"{val:.2f}", ha="center", va="bottom", fontsize=7)
+
+        ax.set_xticks(x)
+        ax.set_xticklabels([v.replace("_", " ").upper() for v in lora_variants],
+                           fontsize=8, rotation=25, ha="right")
+        ax.set_title(title, fontsize=10)
+        ax.set_ylim(0, max(ax.get_ylim()[1], 0.15))
+        if ci == 0:
+            ax.legend(fontsize=8, title="Conv. type")
+
+    fig.tight_layout()
+    _save(fig, "23_by_conversation_type.png")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 #  Main
 # ─────────────────────────────────────────────────────────────────────────────
@@ -2433,13 +2639,16 @@ def main():
     print("  [j] Conversation-level metrics …")
     fig_conversation_level(conv_rows)
 
-    print("  ✓  All 10 figures saved.")
+    print("  [k] By conversation type (success / type_a / type_b) …")
+    fig_by_conversation_type(all_metrics)
+
+    print("  ✓  All 11 figures saved.")
 
     print("\n" + "=" * 100)
     print("  Done. Outputs:")
     print(f"    CSVs:    {DETAILED_CSV.name}, {CATEGORY_CSV.name}, "
           f"{COMPARISON_CSV.name}, {CONVERSATION_CSV.name}")
-    print(f"    Images:  {IMAGES_DIR}/13_*.png … 22_*.png")
+    print(f"    Images:  {IMAGES_DIR}/13_*.png … 23_*.png")
     if args.judge:
         print(f"    Cache:   {JUDGE_CACHE_DIR}/")
     print("=" * 100 + "\n")

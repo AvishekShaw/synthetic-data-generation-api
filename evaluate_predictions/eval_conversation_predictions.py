@@ -170,6 +170,42 @@ CONCERN_CATEGORIES = {
     ],
 }
 
+# Pushback phrases — signals user is correcting an agent error (type_b)
+PUSHBACK_PHRASES = [
+    "that's not right", "that's incorrect", "are you sure", "i thought",
+    "i was told", "i've read", "according to", "that doesn't sound right",
+    "wait,", "hold on", "actually,", "i don't think that's", "you said earlier",
+    "but earlier", "you just said", "that contradicts", "that can't be right",
+    "that's wrong", "no, it's", "i believe it's", "reg e", "regulation e",
+    "that's not what", "isn't it", "i'm pretty sure", "i read that",
+]
+
+# Per-scenario keywords that signal the wrong prior belief is expressed (type_a)
+PRIOR_BELIEF_KEYWORDS: dict = {
+    0: ["120 days", "120-day", "four months"],
+    1: ["description", "rough", "approximate", "don't have the exact"],
+    2: ["legally required", "required by law", "mandatory refund", "must refund", "have to refund"],
+    3: ["100%", "100 percent", "totally sure", "certain before", "sure before", "positive before"],
+    4: ["instantly", "automatically blocks", "immediately blocks", "blocks all pending"],
+    5: ["supervisor", "manager", "entitled", "returning caller", "open case"],
+    6: ["500", "federal law", "24 hours", "24-hour", "provisional within 24"],
+    7: ["police report", "police", "report first", "file a report", "file report"],
+}
+
+
+def _scenario_idx_from_gen_idx(gen_idx, conv_type: str) -> int:
+    """Extract scenario index (0–7) from generation_idx."""
+    try:
+        g = int(gen_idx or 0)
+    except (TypeError, ValueError):
+        return 0
+    if conv_type == "type_b":
+        return (g - 2000) % 8
+    if conv_type == "type_a":
+        return (g - 1000) % 8
+    return g % 8
+
+
 # Role-confusion: assistant-side language in predicted user turns
 ROLE_CONFUSION_PHRASES = [
     "i'd be happy to", "i would be happy to", "how can i assist",
@@ -228,6 +264,11 @@ class ReconvConversation:
     amount:                   str = ""
     transaction_date:         str = ""
     expected_resolution:      str = ""
+    # Conversation type + probe metadata (from CSV)
+    conversation_type:    str = "success"   # success | type_a | type_b
+    wrong_prior_belief:   str = ""          # type_a: the prior belief sentence
+    agent_failure_mode:   str = ""          # type_b: planted error category
+    user_caught_error:    object = None     # type_b: bool
     # Ordered customer turns (text only)
     predicted_turns: list = field(default_factory=list)
     reference_turns: list = field(default_factory=list)
@@ -255,6 +296,10 @@ class T1TurnStats:
     frustration_present:    bool = False
     jargon_present:         bool = False
     role_confused_turns:    int  = 0
+    # Probe-type signals
+    pushback_turn_count:     int   = 0    # type_b: turns with pushback language
+    pushback_first_turn_idx: int   = -1   # type_b: first pushback turn index (-1 = none)
+    prior_belief_rate:       float = 0.0  # type_a: fraction of turns expressing prior belief
 
 
 @dataclass
@@ -272,6 +317,10 @@ class T1Result:
     certainty:            str = ""
     information_completeness: str = ""
     n_turns: int = 0
+    # Conversation type + probe metadata
+    conversation_type:  str = "success"
+    wrong_prior_belief: str = ""
+    agent_failure_mode: str = ""
 
     # ── Predicted stats ──────────────────────────────────────────────────────
     pred_words_mean:    float = 0.0
@@ -290,6 +339,10 @@ class T1Result:
     pred_frustration:   bool  = False
     pred_jargon:        bool  = False
     pred_role_confused_turns: int = 0
+    # Probe signals — predicted
+    pred_pushback_count:     int   = 0
+    pred_pushback_first_idx: int   = -1
+    pred_prior_belief_rate:  float = 0.0
 
     # ── Reference stats ──────────────────────────────────────────────────────
     ref_words_mean:    float = 0.0
@@ -307,6 +360,10 @@ class T1Result:
     ref_breadth_first: bool  = False
     ref_frustration:   bool  = False
     ref_jargon:        bool  = False
+    # Probe signals — reference
+    ref_pushback_count:     int   = 0
+    ref_pushback_first_idx: int   = -1
+    ref_prior_belief_rate:  float = 0.0
 
     # ── Delta (pred − ref) ───────────────────────────────────────────────────
     delta_words_mean:    float = 0.0
@@ -327,7 +384,10 @@ class T1Result:
     flag_breadth_first_new: bool = False   # pred shows breadth-first but ref doesn't
     flag_role_confused:     bool = False   # any role confusion in predicted turns
     flag_persona_jargon:    bool = False   # novice predicted jargon not in reference
-    fidelity_flag_count:    int  = 0
+    # Probe-type flags
+    flag_missed_pushback:       bool = False  # type_b: ref pushes back, pred doesn't
+    flag_wrong_belief_missing:  bool = False  # type_a: ref expresses prior belief, pred doesn't
+    fidelity_flag_count:        int  = 0
 
 
 @dataclass
@@ -342,19 +402,31 @@ class T2Result:
     communication_style: str = ""
     goal_clarity:        str = ""
     certainty:           str = ""
+    conversation_type:   str = "success"
     # Fidelity scores 1–5 per dimension
+    # Shared across all types:
     depth_first_score:   float = 0.0
     uncertainty_score:   float = 0.0
-    info_drip_score:     float = 0.0
     pragmatic_score:     float = 0.0
     persona_score:       float = 0.0
     overall_score:       float = 0.0
+    # success + type_a only:
+    info_drip_score:     float = 0.0
+    # type_a specific:
+    prior_belief_score:      float = 0.0   # did user express + update prior belief?
+    info_incompleteness_score: float = 0.0 # incomplete info revealed at right rate?
+    # type_b specific:
+    error_detection_score:   float = 0.0   # did user catch the planted error?
+    pushback_calibration_score: float = 0.0  # was pushback intensity persona-appropriate?
     # Rationales
     depth_first_rationale: str = ""
     uncertainty_rationale: str = ""
     info_drip_rationale:   str = ""
     pragmatic_rationale:   str = ""
     persona_rationale:     str = ""
+    prior_belief_rationale:    str = ""
+    error_detection_rationale: str = ""
+    pushback_calibration_rationale: str = ""
     standout_divergence:   str = ""
     standout_match:        str = ""
     # Metadata
@@ -441,6 +513,26 @@ def reconstruct_conversations(rows: list[dict]) -> dict[tuple[str, str], ReconvC
         key = (variant, gen_idx)
 
         if key not in convs:
+            # Derive conversation_type: prefer explicit CSV column, fall back to gen_idx range
+            ctype = row.get("conversation_type", "")
+            if not ctype:
+                try:
+                    g = int(gen_idx)
+                    ctype = "type_b" if g >= 2000 else ("type_a" if g >= 1000 else "success")
+                except (ValueError, TypeError):
+                    ctype = "success"
+
+            # user_caught_error may be stored as string "True"/"False"
+            uce_raw = row.get("user_caught_error", "")
+            if isinstance(uce_raw, bool):
+                uce = uce_raw
+            elif str(uce_raw).lower() == "true":
+                uce = True
+            elif str(uce_raw).lower() == "false":
+                uce = False
+            else:
+                uce = None
+
             convs[key] = ReconvConversation(
                 model_variant   = variant,
                 generation_idx  = gen_idx,
@@ -454,6 +546,10 @@ def reconstruct_conversations(rows: list[dict]) -> dict[tuple[str, str], ReconvC
                 amount          = row.get("amount", ""),
                 transaction_date = row.get("transaction_date", ""),
                 expected_resolution = row.get("expected_resolution", ""),
+                conversation_type   = ctype,
+                wrong_prior_belief  = row.get("wrong_prior_belief", ""),
+                agent_failure_mode  = row.get("agent_failure_mode", ""),
+                user_caught_error   = uce,
             )
 
         pred = strip_eos(row.get("predicted_output", ""))
@@ -478,6 +574,8 @@ def _compute_turn_stats(
     turns: list[str],
     scenario: dict,
     check_role_confusion: bool = False,
+    conversation_type: str = "success",
+    scenario_idx: int = 0,
 ) -> T1TurnStats:
     """Compute all Tier 1 stats for one turn sequence."""
     stats = T1TurnStats(n_turns=len(turns))
@@ -555,6 +653,28 @@ def _compute_turn_stats(
                 rc += 1
         stats.role_confused_turns = rc
 
+    # F. Probe-type signals
+    if conversation_type == "type_b":
+        pb_count = 0
+        pb_first = -1
+        for i, turn in enumerate(turns):
+            tl = turn.lower()
+            if any(p in tl for p in PUSHBACK_PHRASES):
+                pb_count += 1
+                if pb_first == -1:
+                    pb_first = i
+        stats.pushback_turn_count     = pb_count
+        stats.pushback_first_turn_idx = pb_first
+
+    elif conversation_type == "type_a":
+        keywords = PRIOR_BELIEF_KEYWORDS.get(scenario_idx % 8, [])
+        if keywords and turns:
+            hits = sum(
+                1 for turn in turns
+                if any(k in turn.lower() for k in keywords)
+            )
+            stats.prior_belief_rate = round(hits / len(turns), 3)
+
     return stats
 
 
@@ -570,6 +690,8 @@ def run_tier1(convs: dict) -> list[T1Result]:
 
         size = variant.split("_", 1)[1] if "_" in variant else variant
         is_lora = variant.startswith("lora_")
+        ctype = conv.conversation_type
+        sc_idx = _scenario_idx_from_gen_idx(conv.generation_idx, ctype)
 
         scenario = {
             "merchant_name":   conv.merchant_name,
@@ -577,8 +699,16 @@ def run_tier1(convs: dict) -> list[T1Result]:
             "transaction_date": conv.transaction_date,
         }
 
-        pred_stats = _compute_turn_stats(conv.predicted_turns, scenario, check_role_confusion=True)
-        ref_stats  = _compute_turn_stats(conv.reference_turns, scenario, check_role_confusion=False)
+        pred_stats = _compute_turn_stats(
+            conv.predicted_turns, scenario,
+            check_role_confusion=True,
+            conversation_type=ctype, scenario_idx=sc_idx,
+        )
+        ref_stats = _compute_turn_stats(
+            conv.reference_turns, scenario,
+            check_role_confusion=False,
+            conversation_type=ctype, scenario_idx=sc_idx,
+        )
 
         r = T1Result(
             model_variant   = variant,
@@ -592,6 +722,9 @@ def run_tier1(convs: dict) -> list[T1Result]:
             certainty       = conv.certainty,
             information_completeness = conv.information_completeness,
             n_turns         = conv.n_turns,
+            conversation_type  = ctype,
+            wrong_prior_belief = conv.wrong_prior_belief,
+            agent_failure_mode = conv.agent_failure_mode,
             # Predicted
             pred_words_mean    = pred_stats.words_mean,
             pred_words_std     = pred_stats.words_std,
@@ -609,6 +742,9 @@ def run_tier1(convs: dict) -> list[T1Result]:
             pred_frustration   = pred_stats.frustration_present,
             pred_jargon        = pred_stats.jargon_present,
             pred_role_confused_turns = pred_stats.role_confused_turns,
+            pred_pushback_count      = pred_stats.pushback_turn_count,
+            pred_pushback_first_idx  = pred_stats.pushback_first_turn_idx,
+            pred_prior_belief_rate   = pred_stats.prior_belief_rate,
             # Reference
             ref_words_mean    = ref_stats.words_mean,
             ref_words_std     = ref_stats.words_std,
@@ -625,6 +761,9 @@ def run_tier1(convs: dict) -> list[T1Result]:
             ref_breadth_first = ref_stats.breadth_first_flag,
             ref_frustration   = ref_stats.frustration_present,
             ref_jargon        = ref_stats.jargon_present,
+            ref_pushback_count      = ref_stats.pushback_turn_count,
+            ref_pushback_first_idx  = ref_stats.pushback_first_turn_idx,
+            ref_prior_belief_rate   = ref_stats.prior_belief_rate,
         )
 
         # Deltas (pred − ref)
@@ -641,6 +780,10 @@ def run_tier1(convs: dict) -> list[T1Result]:
         #   length: flag if avg turn is >15% longer/shorter than reference
         #   lexical: flag if abs delta > 0.10 per turn (1 phrase per 10 turns)
         #   info density: flag if pred volunteers meaningfully more facts in T1
+        #
+        # Type-aware suppression:
+        #   type_b: over_certain and under_hedge are suppressed because pushback
+        #           language legitimately raises certainty and lowers hedging.
         flags = 0
         if r.ref_words_mean > 0:
             ratio = r.pred_words_mean / r.ref_words_mean
@@ -649,10 +792,14 @@ def run_tier1(convs: dict) -> list[T1Result]:
             if ratio < 0.85:
                 r.flag_length_deflated = True; flags += 1
 
-        if r.delta_certainty_rate > 0.10:
-            r.flag_over_certain = True; flags += 1
-        if r.delta_hedge_rate < -0.10:
-            r.flag_under_hedge = True; flags += 1
+        # Suppress certainty/hedge flags for type_b — assertive corrective language
+        # is expected and should not be counted as a fidelity failure.
+        if ctype != "type_b":
+            if r.delta_certainty_rate > 0.10:
+                r.flag_over_certain = True; flags += 1
+            if r.delta_hedge_rate < -0.10:
+                r.flag_under_hedge = True; flags += 1
+
         if r.pred_info_density > r.ref_info_density + 0.15:
             r.flag_info_front_loaded = True; flags += 1
         if r.pred_breadth_first and not r.ref_breadth_first:
@@ -662,6 +809,17 @@ def run_tier1(convs: dict) -> list[T1Result]:
         if (r.pred_jargon and not r.ref_jargon
                 and conv.knowledge_level in ("novice", "intermediate")):
             r.flag_persona_jargon = True; flags += 1
+
+        # Probe-type fidelity flags
+        if ctype == "type_b":
+            # Critical: reference had pushback but predicted has none
+            if r.ref_pushback_count > 0 and r.pred_pushback_count == 0:
+                r.flag_missed_pushback = True; flags += 1
+
+        if ctype == "type_a":
+            # Reference expressed prior belief but predicted never did
+            if r.ref_prior_belief_rate > 0.0 and r.pred_prior_belief_rate == 0.0:
+                r.flag_wrong_belief_missing = True; flags += 1
 
         r.fidelity_flag_count = flags
         results.append(r)
@@ -703,7 +861,8 @@ expression. LLM-generated users over-commit and bundle multiple concerns.
 - Chen et al. (2024): Persona attributes must visibly manifest in the dialogue."""
 
 
-def build_judge_prompt(conv: ReconvConversation) -> str:
+def _conv_header(conv: "ReconvConversation") -> str:
+    """Shared header block used by all three judge prompts."""
     ref_transcript  = "\n".join(
         f"[REFERENCE TURN {i+1}]: {t}"
         for i, t in enumerate(conv.reference_turns)
@@ -712,38 +871,191 @@ def build_judge_prompt(conv: ReconvConversation) -> str:
         f"[PREDICTED TURN {i+1}]: {t}"
         for i, t in enumerate(conv.predicted_turns)
     )
+    return (
+        f"━━━━━━━━━━━━━━━━━━━━━━━━\nPERSONA\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"knowledge_level:      {conv.knowledge_level}\n"
+        f"emotional_state:      {conv.emotional_state}\n"
+        f"communication_style:  {conv.communication_style}\n"
+        f"goal_clarity:         {conv.goal_clarity}\n\n"
+        f"SCENARIO\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"certainty:                 {conv.certainty}\n"
+        f"information_completeness:  {conv.information_completeness}\n"
+        f"merchant:                  {conv.merchant_name}\n"
+        f"amount:                    {conv.amount}\n"
+        f"transaction_date:          {conv.transaction_date}\n"
+        f"expected_resolution:       {conv.expected_resolution}\n\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━━\nREFERENCE CUSTOMER TURNS\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"{ref_transcript}\n\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━━\nPREDICTED CUSTOMER TURNS\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"{pred_transcript}"
+    )
 
+
+def build_judge_prompt_type_a(conv: "ReconvConversation") -> str:
+    """Tier 2 judge prompt for type_a (inadvertent probing) conversations."""
+    header = _conv_header(conv)
+    return f"""Below is a TYPE A (inadvertent probing) banking dispute conversation.
+The customer holds a wrong prior belief: {conv.wrong_prior_belief or "(see conversation)"}
+The customer also has information_completeness = {conv.information_completeness}.
+
+Your task is to evaluate whether the PREDICTED customer turns faithfully reproduce
+the human-realism properties of the REFERENCE customer turns.
+
+{header}
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+SCORING RUBRIC
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+Score each dimension 1–5 (1=completely divergent, 3=partial match, 5=faithfully reproduced):
+
+DIMENSION 1 — DEPTH-FIRST QUESTIONING FIDELITY
+  Does the predicted sequence match the reference in how concerns are raised?
+  5: Same sequencing — one concern at a time, same as reference.
+  3: Mostly matches but one turn bundles concerns the reference spread out.
+  1: Predicted front-loads multiple concerns that reference raised sequentially.
+
+DIMENSION 2 — UNCERTAINTY EXPRESSION FIDELITY
+  Does the predicted sequence match the reference's hedge/commitment balance?
+  5: Indistinguishable hedge/certainty balance from reference.
+  3: Slightly more or less certain than reference but same general register.
+  1: Systematically more committed or more uncertain than reference.
+
+DIMENSION 3 — PRIOR BELIEF PERSISTENCE FIDELITY
+  Does the predicted sequence naturally express the wrong prior belief the same way
+  the reference does, and update (or not) when the agent provides correct information?
+  5: Prior belief expressed at same turns, with same persistence/update pattern as reference.
+  3: Some belief expression but weaker, earlier, or misplaced compared to reference.
+  1: Predicted never expresses the prior belief that the reference clearly holds and voices.
+
+DIMENSION 4 — INCOMPLETE INFO REVELATION FIDELITY
+  Given information_completeness = {conv.information_completeness}, does the predicted
+  sequence reveal facts at the same incomplete/partial rate as the reference?
+  5: Information revealed (or withheld) in same turns and order as reference.
+  3: Key facts appear but in different turns or order than reference.
+  1: Predicted front-loads facts when reference dripped them, or vice versa.
+
+DIMENSION 5 — PERSONA FIDELITY
+  Does the predicted sequence manifest the persona as strongly as the reference?
+  5: Emotional state ({conv.emotional_state}), knowledge ({conv.knowledge_level}),
+     and style ({conv.communication_style}) all as visible as in the reference.
+  3: Some persona attributes present but one dimension weaker than reference.
+  1: Predicted has generic tone that does not match reference persona expression.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT FORMAT
+━━━━━━━━━━━━━━━━━━━━━━━━
+Return ONLY a valid JSON object. No markdown, no commentary outside JSON.
+
+{{
+  "depth_first_score": <integer 1-5>,
+  "depth_first_rationale": "<one sentence>",
+  "uncertainty_score": <integer 1-5>,
+  "uncertainty_rationale": "<one sentence>",
+  "prior_belief_score": <integer 1-5>,
+  "prior_belief_rationale": "<one sentence comparing a specific turn>",
+  "info_incompleteness_score": <integer 1-5>,
+  "info_incompleteness_rationale": "<one sentence>",
+  "persona_score": <integer 1-5>,
+  "persona_rationale": "<one sentence>",
+  "standout_divergence": "<the single biggest way the predicted conversation diverges>",
+  "standout_match": "<the single property reproduced most faithfully>"
+}}"""
+
+
+def build_judge_prompt_type_b(conv: "ReconvConversation") -> str:
+    """Tier 2 judge prompt for type_b (adversarial probing) conversations."""
+    header = _conv_header(conv)
+    return f"""Below is a TYPE B (adversarial probing) banking dispute conversation.
+The bank agent made a planted error: {conv.agent_failure_mode or "(see conversation)"}.
+
+Your task is to evaluate whether the PREDICTED customer turns faithfully reproduce
+the human-realism properties of the REFERENCE customer turns, with special focus on
+whether the user catches and responds to the agent's error.
+
+{header}
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+SCORING RUBRIC
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+Score each dimension 1–5 (1=completely divergent, 3=partial match, 5=faithfully reproduced):
+
+DIMENSION 1 — ERROR DETECTION FIDELITY
+  Does the predicted sequence catch the planted agent error ({conv.agent_failure_mode})
+  at approximately the same turn and with the same intensity as the reference?
+  5: Predicted catches the error at the same turn with comparable pushback intensity.
+  3: Error is noticed but at a different turn or with noticeably different intensity.
+  1: Predicted completely misses the error that the reference clearly caught and pushed back on.
+
+DIMENSION 2 — UNCERTAINTY EXPRESSION FIDELITY
+  Does the predicted sequence match the reference's hedge/commitment balance?
+  Note: pushback language is EXPECTED here — assertive certainty is appropriate.
+  5: Certainty/assertiveness in predicted matches the reference's pushback register.
+  3: Slightly more passive or aggressive than reference on correction turns.
+  1: Predicted is systematically more deferential than reference (doesn't push back).
+
+DIMENSION 3 — PUSHBACK CALIBRATION FIDELITY
+  Is the pushback tone proportional to the persona ({conv.emotional_state},
+  {conv.knowledge_level}) the same way it is in the reference?
+  5: Pushback intensity and register perfectly match persona and reference.
+  3: Pushback present but tone is off — e.g., too aggressive for a calm persona
+     or too mild for an escalating expert.
+  1: Pushback tone is completely mismatched to persona compared to reference.
+
+DIMENSION 4 — PRAGMATIC NATURALNESS FIDELITY
+  Do the predicted turns sound as natural and colloquial as the reference?
+  5: Predicted turns are equally natural — no turns more scripted than reference.
+  3: 1–2 predicted turns feel more formal or scripted than reference.
+  1: Multiple predicted turns are noticeably more robotic or templated than reference.
+
+DIMENSION 5 — PERSONA FIDELITY
+  Does the predicted sequence manifest the persona as strongly as the reference?
+  5: Emotional state ({conv.emotional_state}), knowledge ({conv.knowledge_level}),
+     and style ({conv.communication_style}) all as visible as in the reference.
+  3: Some persona attributes present but one dimension weaker than reference.
+  1: Predicted has generic tone that does not match reference persona expression.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT FORMAT
+━━━━━━━━━━━━━━━━━━━━━━━━
+Return ONLY a valid JSON object. No markdown, no commentary outside JSON.
+
+{{
+  "error_detection_score": <integer 1-5>,
+  "error_detection_rationale": "<one sentence citing the specific error turn>",
+  "uncertainty_score": <integer 1-5>,
+  "uncertainty_rationale": "<one sentence>",
+  "pushback_calibration_score": <integer 1-5>,
+  "pushback_calibration_rationale": "<one sentence comparing tone to persona>",
+  "pragmatic_score": <integer 1-5>,
+  "pragmatic_rationale": "<one sentence>",
+  "persona_score": <integer 1-5>,
+  "persona_rationale": "<one sentence>",
+  "standout_divergence": "<the single biggest way the predicted conversation diverges>",
+  "standout_match": "<the single property reproduced most faithfully>"
+}}"""
+
+
+def build_judge_prompt(conv: "ReconvConversation") -> str:
+    """Route to the correct judge prompt based on conversation type."""
+    if conv.conversation_type == "type_a":
+        return build_judge_prompt_type_a(conv)
+    if conv.conversation_type == "type_b":
+        return build_judge_prompt_type_b(conv)
+    # Default: success conversations
+    return _build_judge_prompt_success(conv)
+
+
+def _build_judge_prompt_success(conv: "ReconvConversation") -> str:
+    """Original Tier 2 judge prompt for success conversations."""
+    header = _conv_header(conv)
     return f"""Below is the persona and scenario for a banking dispute conversation, \
 followed by the REFERENCE customer turns (ground truth) and the PREDICTED customer turns \
 (generated by a UserLM model). Evaluate how faithfully the predicted turns reproduce \
 the human-realism properties of the reference.
 
-━━━━━━━━━━━━━━━━━━━━━━━━
-PERSONA
-━━━━━━━━━━━━━━━━━━━━━━━━
-knowledge_level:      {conv.knowledge_level}
-emotional_state:      {conv.emotional_state}
-communication_style:  {conv.communication_style}
-goal_clarity:         {conv.goal_clarity}
-
-SCENARIO
-━━━━━━━━━━━━━━━━━━━━━━━━
-certainty:                 {conv.certainty}
-information_completeness:  {conv.information_completeness}
-merchant:                  {conv.merchant_name}
-amount:                    {conv.amount}
-transaction_date:          {conv.transaction_date}
-expected_resolution:       {conv.expected_resolution}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-REFERENCE CUSTOMER TURNS
-━━━━━━━━━━━━━━━━━━━━━━━━
-{ref_transcript}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-PREDICTED CUSTOMER TURNS
-━━━━━━━━━━━━━━━━━━━━━━━━
-{pred_transcript}
+{header}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 SCORING RUBRIC
@@ -906,6 +1218,8 @@ def run_tier2(convs: dict, model: str, limit: Optional[int],
             print(f"  → [{i}/{total}] {variant} / gen_idx={gen_idx}: loaded from cache")
             judge_response = cached_data
 
+        ctype = conv.conversation_type
+
         r = T2Result(
             model_variant   = variant,
             model_size      = size,
@@ -916,6 +1230,7 @@ def run_tier2(convs: dict, model: str, limit: Optional[int],
             communication_style = conv.communication_style,
             goal_clarity    = conv.goal_clarity,
             certainty       = conv.certainty,
+            conversation_type = ctype,
             model_used      = model,
             cached          = is_cached,
         )
@@ -931,28 +1246,63 @@ def run_tier2(convs: dict, model: str, limit: Optional[int],
             except (TypeError, ValueError):
                 return 0.0
 
-        r.depth_first_score = _score("depth_first_score")
+        # ── Extract scores by conversation type ───────────────────────────────
         r.uncertainty_score = _score("uncertainty_score")
-        r.info_drip_score   = _score("info_drip_score")
         r.pragmatic_score   = _score("pragmatic_score")
         r.persona_score     = _score("persona_score")
-
-        r.overall_score = round(
-            r.depth_first_score * DIMENSION_WEIGHTS["depth_first"] +
-            r.uncertainty_score * DIMENSION_WEIGHTS["uncertainty"] +
-            r.info_drip_score   * DIMENSION_WEIGHTS["info_drip"]   +
-            r.pragmatic_score   * DIMENSION_WEIGHTS["pragmatic"]   +
-            r.persona_score     * DIMENSION_WEIGHTS["persona"],
-            3,
-        )
-
-        r.depth_first_rationale = judge_response.get("depth_first_rationale", "")
         r.uncertainty_rationale = judge_response.get("uncertainty_rationale", "")
-        r.info_drip_rationale   = judge_response.get("info_drip_rationale", "")
         r.pragmatic_rationale   = judge_response.get("pragmatic_rationale", "")
         r.persona_rationale     = judge_response.get("persona_rationale", "")
-        r.standout_divergence   = judge_response.get("standout_divergence", "")
-        r.standout_match        = judge_response.get("standout_match", "")
+
+        if ctype == "type_a":
+            r.depth_first_score         = _score("depth_first_score")
+            r.prior_belief_score        = _score("prior_belief_score")
+            r.info_incompleteness_score = _score("info_incompleteness_score")
+            r.depth_first_rationale     = judge_response.get("depth_first_rationale", "")
+            r.prior_belief_rationale    = judge_response.get("prior_belief_rationale", "")
+            # overall: depth_first(0.20) + uncertainty(0.15) + prior_belief(0.30)
+            #          + info_incompleteness(0.20) + persona(0.15)
+            r.overall_score = round(
+                r.depth_first_score         * 0.20 +
+                r.uncertainty_score         * 0.15 +
+                r.prior_belief_score        * 0.30 +
+                r.info_incompleteness_score * 0.20 +
+                r.persona_score             * 0.15,
+                3,
+            )
+
+        elif ctype == "type_b":
+            r.error_detection_score          = _score("error_detection_score")
+            r.pushback_calibration_score     = _score("pushback_calibration_score")
+            r.error_detection_rationale      = judge_response.get("error_detection_rationale", "")
+            r.pushback_calibration_rationale = judge_response.get("pushback_calibration_rationale", "")
+            # overall: error_detection(0.35) + uncertainty(0.15) + pushback_calibration(0.25)
+            #          + pragmatic(0.10) + persona(0.15)
+            r.overall_score = round(
+                r.error_detection_score      * 0.35 +
+                r.uncertainty_score          * 0.15 +
+                r.pushback_calibration_score * 0.25 +
+                r.pragmatic_score            * 0.10 +
+                r.persona_score              * 0.15,
+                3,
+            )
+
+        else:  # success
+            r.depth_first_score = _score("depth_first_score")
+            r.info_drip_score   = _score("info_drip_score")
+            r.depth_first_rationale = judge_response.get("depth_first_rationale", "")
+            r.info_drip_rationale   = judge_response.get("info_drip_rationale", "")
+            r.overall_score = round(
+                r.depth_first_score * DIMENSION_WEIGHTS["depth_first"] +
+                r.uncertainty_score * DIMENSION_WEIGHTS["uncertainty"] +
+                r.info_drip_score   * DIMENSION_WEIGHTS["info_drip"]   +
+                r.pragmatic_score   * DIMENSION_WEIGHTS["pragmatic"]   +
+                r.persona_score     * DIMENSION_WEIGHTS["persona"],
+                3,
+            )
+
+        r.standout_divergence = judge_response.get("standout_divergence", "")
+        r.standout_match      = judge_response.get("standout_match", "")
 
         results.append(r)
 
@@ -1270,6 +1620,88 @@ def fig_t2_scores(results: list[T2Result]):
     print(f"  ✓ {out.name}")
 
 
+def fig_t1_by_conversation_type(t1_results: list["T1Result"]):
+    """
+    Figure cp_06: Tier 1 fidelity flag rates and probe signals broken out by
+    conversation type (success / type_a / type_b). For type_b shows pushback
+    miss rate; for type_a shows prior-belief-missing rate.
+    """
+    _set_style()
+    if not t1_results:
+        return
+
+    lora_results = [r for r in t1_results if r.is_lora]
+    if not lora_results:
+        lora_results = t1_results
+
+    conv_types  = ["success", "type_a", "type_b"]
+    type_colors = {"success": "#4C9BE8", "type_a": "#E9C46A", "type_b": "#E76F51"}
+    type_labels = {"success": "Success", "type_a": "Type A\n(inadvertent)", "type_b": "Type B\n(adversarial)"}
+
+    # Metrics: (attr, display_label, applicable_types or None for all)
+    metrics = [
+        ("fidelity_flag_count",        "Mean Flag Count",    None),
+        ("flag_role_confused",         "Role Confusion %",   None),
+        ("flag_missed_pushback",       "Missed Pushback %",  ["type_b"]),
+        ("flag_wrong_belief_missing",  "Belief Missing %",   ["type_a"]),
+    ]
+
+    fig, axes = plt.subplots(1, len(metrics), figsize=(14, 5))
+    fig.suptitle(
+        "Tier 1 Fidelity Flags by Conversation Type  (LoRA variants)",
+        fontweight="bold",
+    )
+
+    variants = sorted(set(r.model_variant for r in lora_results))
+
+    for ax, (attr, label, applicable) in zip(axes, metrics):
+        x = np.arange(len(variants))
+        w = 0.22
+        for ci, ctype in enumerate(conv_types):
+            if applicable and ctype not in applicable:
+                # Shade to indicate not applicable
+                offset = (ci - 1) * w
+                ax.bar(x + offset, [0] * len(variants), w * 0.9,
+                       color="#EEEEEE", alpha=0.5, label=ctype if ci == 0 else "")
+                continue
+
+            vals = []
+            for vname in variants:
+                subset = [r for r in lora_results
+                          if r.model_variant == vname and r.conversation_type == ctype]
+                if not subset:
+                    vals.append(0.0)
+                    continue
+                raw = [float(getattr(r, attr)) for r in subset]
+                vals.append(round(np.mean(raw) * (100 if attr != "fidelity_flag_count" else 1), 2))
+            offset = (ci - 1) * w
+            bars = ax.bar(x + offset, vals, w * 0.9,
+                          label=type_labels[ctype], color=type_colors[ctype], alpha=0.85)
+            for bar, val in zip(bars, vals):
+                if val > 0.01:
+                    ax.text(bar.get_x() + bar.get_width() / 2,
+                            bar.get_height() + 0.5,
+                            f"{val:.1f}", ha="center", va="bottom", fontsize=7)
+
+        ax.set_xticks(x)
+        ax.set_xticklabels([v.replace("_", " ").upper() for v in variants],
+                           fontsize=8, rotation=25, ha="right")
+        suffix = "%" if attr != "fidelity_flag_count" else ""
+        ax.set_title(f"{label}{suffix}", fontsize=10)
+        if applicable:
+            ax.set_facecolor("#FAFAFA")
+            ax.text(0.5, 0.95, f"({applicable[0]} only)",
+                    transform=ax.transAxes, ha="center", va="top",
+                    fontsize=8, color="#999")
+
+    axes[0].legend(fontsize=8, title="Conv. type", loc="upper right")
+    fig.tight_layout()
+    out = IMAGES_DIR / "cp_06_t1_by_conv_type.png"
+    plt.savefig(out, dpi=150, bbox_inches="tight")
+    plt.close()
+    print(f"  ✓ {out.name}")
+
+
 def fig_t2_by_dimension(results: list[T2Result]):
     """Figure cp_05: T2 overall score by persona dimension breakdowns."""
     if not results:
@@ -1358,6 +1790,7 @@ def main():
     fig_t1_overview(t1_results)
     fig_t1_deltas(t1_results)
     fig_t1_flags(t1_results)
+    fig_t1_by_conversation_type(t1_results)
 
     # ── Step 5: Tier 2 (optional) ────────────────────────────────────────────
     t2_results = []
