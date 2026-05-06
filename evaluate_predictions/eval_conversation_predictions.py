@@ -180,6 +180,19 @@ PUSHBACK_PHRASES = [
     "that's not what", "isn't it", "i'm pretty sure", "i read that",
 ]
 
+# Dropout exit phrases — signals customer is ending the conversation early (failure)
+DROPOUT_EXIT_PHRASES = [
+    "forget it", "never mind", "nevermind", "forget this", "forget the whole",
+    "going to call", "i'll call", "will call", "call the bank", "call you",
+    "visit a branch", "go to a branch", "come in person", "in person instead",
+    "waste of time", "this is useless", "not worth it", "this is ridiculous",
+    "done here", "closing this", "ending this", "i'm done", "i give up",
+    "have to go", "got to go", "sorry have to", "need to go",
+    "try another way", "try somewhere else", "find another", "another way",
+    "speak to a human", "talk to a human", "speak to someone", "real person",
+    "not going to work", "can't help me", "unable to help",
+]
+
 # Per-scenario keywords that signal the wrong prior belief is expressed (type_a)
 PRIOR_BELIEF_KEYWORDS: dict = {
     0: ["120 days", "120-day", "four months"],
@@ -265,10 +278,11 @@ class ReconvConversation:
     transaction_date:         str = ""
     expected_resolution:      str = ""
     # Conversation type + probe metadata (from CSV)
-    conversation_type:    str = "success"   # success | type_a | type_b
+    conversation_type:    str = "success"   # success | failure | type_a | type_b
     wrong_prior_belief:   str = ""          # type_a: the prior belief sentence
     agent_failure_mode:   str = ""          # type_b: planted error category
     user_caught_error:    object = None     # type_b: bool
+    failure_mode:         str = ""          # failure: dropout mode (impatience, loop_exit, …)
     # Ordered customer turns (text only)
     predicted_turns: list = field(default_factory=list)
     reference_turns: list = field(default_factory=list)
@@ -300,6 +314,7 @@ class T1TurnStats:
     pushback_turn_count:     int   = 0    # type_b: turns with pushback language
     pushback_first_turn_idx: int   = -1   # type_b: first pushback turn index (-1 = none)
     prior_belief_rate:       float = 0.0  # type_a: fraction of turns expressing prior belief
+    dropout_turn_idx:        int   = -1   # failure: index of last turn (exit point, -1 = none)
 
 
 @dataclass
@@ -343,6 +358,7 @@ class T1Result:
     pred_pushback_count:     int   = 0
     pred_pushback_first_idx: int   = -1
     pred_prior_belief_rate:  float = 0.0
+    pred_dropout_turn:       int   = -1   # failure: predicted exit turn index
 
     # ── Reference stats ──────────────────────────────────────────────────────
     ref_words_mean:    float = 0.0
@@ -364,6 +380,7 @@ class T1Result:
     ref_pushback_count:     int   = 0
     ref_pushback_first_idx: int   = -1
     ref_prior_belief_rate:  float = 0.0
+    ref_dropout_turn:       int   = -1   # failure: reference exit turn index
 
     # ── Delta (pred − ref) ───────────────────────────────────────────────────
     delta_words_mean:    float = 0.0
@@ -387,6 +404,17 @@ class T1Result:
     # Probe-type flags
     flag_missed_pushback:       bool = False  # type_b: ref pushes back, pred doesn't
     flag_wrong_belief_missing:  bool = False  # type_a: ref expresses prior belief, pred doesn't
+    flag_dropout_implausible:   bool = False  # failure: last predicted turn has no exit signals
+    # Turn count fidelity (Metric 1)
+    turn_count_delta:           int  = 0      # pred_turns − ref_turns
+    flag_turn_count_mismatch:   bool = False  # abs(delta) >= 2
+    # Escalation trajectory (Metric 2) — only populated for escalating personas
+    pred_escalation_corr:       object = None
+    ref_escalation_corr:        object = None
+    flag_escalation_flat:       bool = False  # ref escalates but pred doesn't
+    # Cross-turn self-contradiction (Metric 3) — predicted turns only
+    pred_self_contradiction:    bool = False
+    flag_self_contradiction:    bool = False
     fidelity_flag_count:        int  = 0
 
 
@@ -418,6 +446,8 @@ class T2Result:
     # type_b specific:
     error_detection_score:   float = 0.0   # did user catch the planted error?
     pushback_calibration_score: float = 0.0  # was pushback intensity persona-appropriate?
+    # failure specific:
+    dropout_authenticity_score: float = 0.0  # was the dropout reason/timing authentic?
     # Rationales
     depth_first_rationale: str = ""
     uncertainty_rationale: str = ""
@@ -427,6 +457,7 @@ class T2Result:
     prior_belief_rationale:    str = ""
     error_detection_rationale: str = ""
     pushback_calibration_rationale: str = ""
+    dropout_authenticity_rationale: str = ""
     standout_divergence:   str = ""
     standout_match:        str = ""
     # Metadata
@@ -472,6 +503,81 @@ def extract_date_tokens(s: str) -> tuple[str, str]:
 
 def strip_eos(text: str) -> str:
     return re.sub(r"\s*<eos>\s*$", "", text, flags=re.IGNORECASE).strip()
+
+
+_ALL_FRUSTRATION_MARKERS = MILD_FRUSTRATION_MARKERS + STRONG_FRUSTRATION_MARKERS
+
+_SCENARIO_MERCHANTS = {"amazon", "netflix", "shell", "techhub", "uber", "adobe", "apple"}
+
+def _spearman_corr(x, y) -> Optional[float]:
+    """Thin wrapper around scipy.stats.spearmanr; returns None if unavailable."""
+    try:
+        from scipy.stats import spearmanr
+        result = spearmanr(x, y)
+        corr = float(result.statistic if hasattr(result, "statistic") else result.correlation)
+        return None if corr != corr else corr  # NaN guard
+    except Exception:
+        return None
+
+
+def compute_escalation_correlation(turns: list) -> Optional[float]:
+    """Spearman corr between turn position and frustration marker count. None if < 3 turns."""
+    if len(turns) < 3:
+        return None
+    counts = [
+        sum(1 for m in _ALL_FRUSTRATION_MARKERS if m in turn.lower())
+        for turn in turns
+    ]
+    corr = _spearman_corr(list(range(len(turns))), counts)
+    return round(corr, 4) if corr is not None else None
+
+
+def detect_self_contradiction(turns: list) -> bool:
+    """Return True if any factual entity (amount, date, merchant) is contradicted across turns."""
+    if len(turns) < 2:
+        return False
+
+    first_amount: str = ""
+    first_date: str = ""
+    first_merchant: str = ""
+
+    for turn in turns:
+        tl = turn.lower()
+
+        # Amount: extract raw digit string from any "$X" pattern
+        amt_matches = re.findall(r"\$[\d,]+(?:\.\d{1,2})?", turn)
+        amt_val = extract_amount_digits(amt_matches[0]) if amt_matches else ""
+        if amt_val:
+            if not first_amount:
+                first_amount = amt_val
+            elif amt_val != first_amount:
+                return True
+
+        # Date: look for "Month DD" or "DD Month" patterns
+        date_match = re.search(
+            r"\b(january|february|march|april|may|june|july|august|september|"
+            r"october|november|december)\s+(\d{1,2})\b"
+            r"|\b(\d{1,2})\s+(january|february|march|april|may|june|july|august"
+            r"|september|october|november|december)\b",
+            tl,
+        )
+        if date_match:
+            date_val = "".join(g for g in date_match.groups() if g)
+            if not first_date:
+                first_date = date_val
+            elif date_val != first_date:
+                return True
+
+        # Merchant name
+        found_merchant = next((m for m in _SCENARIO_MERCHANTS if m in tl), "")
+        if found_merchant:
+            if not first_merchant:
+                first_merchant = found_merchant
+            elif found_merchant != first_merchant:
+                return True
+
+    return False
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Data loading & conversation reconstruction
@@ -550,6 +656,7 @@ def reconstruct_conversations(rows: list[dict]) -> dict[tuple[str, str], ReconvC
                 wrong_prior_belief  = row.get("wrong_prior_belief", ""),
                 agent_failure_mode  = row.get("agent_failure_mode", ""),
                 user_caught_error   = uce,
+                failure_mode        = row.get("failure_mode", ""),
             )
 
         pred = strip_eos(row.get("predicted_output", ""))
@@ -675,6 +782,11 @@ def _compute_turn_stats(
             )
             stats.prior_belief_rate = round(hits / len(turns), 3)
 
+    elif conversation_type == "failure":
+        # Exit turn = index of last turn (that's where dropout happens)
+        if turns:
+            stats.dropout_turn_idx = len(turns) - 1
+
     return stats
 
 
@@ -745,6 +857,7 @@ def run_tier1(convs: dict) -> list[T1Result]:
             pred_pushback_count      = pred_stats.pushback_turn_count,
             pred_pushback_first_idx  = pred_stats.pushback_first_turn_idx,
             pred_prior_belief_rate   = pred_stats.prior_belief_rate,
+            pred_dropout_turn        = pred_stats.dropout_turn_idx,
             # Reference
             ref_words_mean    = ref_stats.words_mean,
             ref_words_std     = ref_stats.words_std,
@@ -764,6 +877,7 @@ def run_tier1(convs: dict) -> list[T1Result]:
             ref_pushback_count      = ref_stats.pushback_turn_count,
             ref_pushback_first_idx  = ref_stats.pushback_first_turn_idx,
             ref_prior_belief_rate   = ref_stats.prior_belief_rate,
+            ref_dropout_turn        = ref_stats.dropout_turn_idx,
         )
 
         # Deltas (pred − ref)
@@ -820,6 +934,31 @@ def run_tier1(convs: dict) -> list[T1Result]:
             # Reference expressed prior belief but predicted never did
             if r.ref_prior_belief_rate > 0.0 and r.pred_prior_belief_rate == 0.0:
                 r.flag_wrong_belief_missing = True; flags += 1
+
+        if ctype == "failure":
+            # Last predicted turn should contain dropout exit language; if none found, flag it
+            if conv.predicted_turns:
+                last_pred = conv.predicted_turns[-1].lower()
+                if not any(p in last_pred for p in DROPOUT_EXIT_PHRASES):
+                    r.flag_dropout_implausible = True; flags += 1
+
+        # Metric 1: Turn Count Fidelity
+        r.turn_count_delta = len(conv.predicted_turns) - len(conv.reference_turns)
+        if abs(r.turn_count_delta) >= 2:
+            r.flag_turn_count_mismatch = True; flags += 1
+
+        # Metric 2: Escalation Trajectory (escalating personas only)
+        if conv.emotional_state == "escalating":
+            r.pred_escalation_corr = compute_escalation_correlation(conv.predicted_turns)
+            r.ref_escalation_corr  = compute_escalation_correlation(conv.reference_turns)
+            if (r.pred_escalation_corr is not None and r.pred_escalation_corr < 0.2
+                    and r.ref_escalation_corr is not None and r.ref_escalation_corr >= 0.2):
+                r.flag_escalation_flat = True; flags += 1
+
+        # Metric 3: Cross-Turn Self-Contradiction (predicted turns only)
+        r.pred_self_contradiction = detect_self_contradiction(conv.predicted_turns)
+        if r.pred_self_contradiction:
+            r.flag_self_contradiction = True; flags += 1
 
         r.fidelity_flag_count = flags
         results.append(r)
@@ -1037,12 +1176,86 @@ Return ONLY a valid JSON object. No markdown, no commentary outside JSON.
 }}"""
 
 
+def build_judge_prompt_failure(conv: "ReconvConversation") -> str:
+    """Tier 2 judge prompt for failure (dropout) conversations."""
+    header = _conv_header(conv)
+    failure_mode = conv.failure_mode or "(see conversation)"
+    return f"""Below is a FAILURE (customer dropout) banking dispute conversation.
+The customer exits early without resolving their goal. Dropout reason: {failure_mode}.
+
+Your task is to evaluate whether the PREDICTED customer turns faithfully reproduce
+the human-realism properties of the REFERENCE customer turns, with special focus on
+whether the dropout feels authentic and persona-appropriate.
+
+{header}
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+SCORING RUBRIC
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+Score each dimension 1–5 (1=completely divergent, 3=partial match, 5=faithfully reproduced):
+
+DIMENSION 1 — DROPOUT AUTHENTICITY FIDELITY
+  Does the predicted sequence exit for the same reason and at a similar point as the reference?
+  The dropout mode is: {failure_mode}.
+  5: Predicted exits with the same trigger, same escalation arc, same turn timing as reference.
+  3: Dropout occurs but earlier/later than reference, or with a different (but plausible) trigger.
+  1: Predicted completes the goal or exits for a completely different reason than reference.
+
+DIMENSION 2 — DEPTH-FIRST QUESTIONING FIDELITY
+  Does the predicted sequence match the reference in how concerns are raised before exiting?
+  5: Same sequencing — one concern at a time, same as reference, through to the exit.
+  3: Mostly matches but one turn bundles concerns the reference spread out.
+  1: Predicted front-loads multiple concerns that reference raised sequentially.
+
+DIMENSION 3 — UNCERTAINTY EXPRESSION FIDELITY
+  Does the predicted sequence match the reference's hedge/commitment balance?
+  5: Indistinguishable hedge/certainty balance from reference.
+  3: Slightly more or less certain than reference but same general register.
+  1: Systematically more committed or more uncertain than reference.
+
+DIMENSION 4 — PRAGMATIC NATURALNESS FIDELITY
+  Do the predicted turns sound as natural and colloquial as the reference?
+  5: Predicted turns are equally natural — no turns more scripted than reference.
+  3: 1–2 predicted turns feel more formal or scripted than reference.
+  1: Multiple predicted turns are noticeably more robotic or templated than reference.
+
+DIMENSION 5 — PERSONA FIDELITY
+  Does the predicted sequence manifest the persona as strongly as the reference?
+  5: Emotional state ({conv.emotional_state}), knowledge ({conv.knowledge_level}),
+     and style ({conv.communication_style}) all as visible as in the reference.
+  3: Some persona attributes present but one dimension weaker than reference.
+  1: Predicted has generic tone that does not match reference persona expression.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT FORMAT
+━━━━━━━━━━━━━━━━━━━━━━━━
+Return ONLY a valid JSON object. No markdown, no commentary outside JSON.
+
+{{
+  "dropout_authenticity_score": <integer 1-5>,
+  "dropout_authenticity_rationale": "<one sentence citing the exit trigger and timing>",
+  "depth_first_score": <integer 1-5>,
+  "depth_first_rationale": "<one sentence>",
+  "uncertainty_score": <integer 1-5>,
+  "uncertainty_rationale": "<one sentence>",
+  "pragmatic_score": <integer 1-5>,
+  "pragmatic_rationale": "<one sentence>",
+  "persona_score": <integer 1-5>,
+  "persona_rationale": "<one sentence>",
+  "standout_divergence": "<the single biggest way the predicted conversation diverges>",
+  "standout_match": "<the single property reproduced most faithfully>"
+}}"""
+
+
 def build_judge_prompt(conv: "ReconvConversation") -> str:
     """Route to the correct judge prompt based on conversation type."""
     if conv.conversation_type == "type_a":
         return build_judge_prompt_type_a(conv)
     if conv.conversation_type == "type_b":
         return build_judge_prompt_type_b(conv)
+    if conv.conversation_type == "failure":
+        return build_judge_prompt_failure(conv)
     # Default: success conversations
     return _build_judge_prompt_success(conv)
 
@@ -1283,6 +1496,22 @@ def run_tier2(convs: dict, model: str, limit: Optional[int],
                 r.uncertainty_score          * 0.15 +
                 r.pushback_calibration_score * 0.25 +
                 r.pragmatic_score            * 0.10 +
+                r.persona_score              * 0.15,
+                3,
+            )
+
+        elif ctype == "failure":
+            r.dropout_authenticity_score    = _score("dropout_authenticity_score")
+            r.depth_first_score             = _score("depth_first_score")
+            r.dropout_authenticity_rationale = judge_response.get("dropout_authenticity_rationale", "")
+            r.depth_first_rationale          = judge_response.get("depth_first_rationale", "")
+            # overall: dropout_authenticity(0.35) + depth_first(0.15) + uncertainty(0.15)
+            #          + pragmatic(0.20) + persona(0.15)
+            r.overall_score = round(
+                r.dropout_authenticity_score * 0.35 +
+                r.depth_first_score          * 0.15 +
+                r.uncertainty_score          * 0.15 +
+                r.pragmatic_score            * 0.20 +
                 r.persona_score              * 0.15,
                 3,
             )

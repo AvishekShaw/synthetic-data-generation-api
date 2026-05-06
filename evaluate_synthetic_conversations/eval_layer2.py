@@ -57,7 +57,13 @@ import numpy as np
 #  Config — all tuneable constants live here
 # ─────────────────────────────────────────────
 
-DUMPS_DIR   = Path(__file__).parent / "conversation_dumps"
+DUMPS_BASE_DIR = Path(__file__).parent.parent / "synthetic_data_generation"
+TYPE_DIRS = {
+    "success": DUMPS_BASE_DIR / "conversation_dumps_success",
+    "failure": DUMPS_BASE_DIR / "conversation_dumps_failure",
+    "type_a":  DUMPS_BASE_DIR / "conversation_dumps_type_a",
+    "type_b":  DUMPS_BASE_DIR / "conversation_dumps_type_b",
+}
 CACHE_DIR   = Path(__file__).parent / "layer2_cache"
 OUTPUT_CSV  = Path(__file__).parent / "eval_results_layer2.csv"
 L1_CSV      = Path(__file__).parent / "eval_results.csv"       # for Fig 10 correlation
@@ -245,7 +251,7 @@ class Layer2Result:
 #  Parser (identical logic to eval_conversations.py)
 # ─────────────────────────────────────────────
 
-def parse_conversation(filepath: Path) -> Optional[Conversation]:
+def parse_conversation(filepath: Path, dataset_type: Optional[str] = None) -> Optional[Conversation]:
     text = filepath.read_text(encoding="utf-8")
     lines = text.splitlines()
 
@@ -320,8 +326,10 @@ def parse_conversation(filepath: Path) -> Optional[Conversation]:
             if not re.match(r"^(Customer|Agent):", stripped):
                 conv.turns[-1].text += " " + stripped
 
-    # Derive dataset_type from meta
-    if conv.probing_type == "inadvertent":
+    # Use explicit dataset_type if provided (from directory name), else derive from meta
+    if dataset_type is not None:
+        conv.dataset_type = dataset_type
+    elif conv.probing_type == "inadvertent":
         conv.dataset_type = "type_a"
     elif conv.probing_type == "adversarial":
         conv.dataset_type = "type_b"
@@ -565,7 +573,7 @@ def call_judge(client: anthropic.Anthropic, conv: Conversation,
         try:
             response = client.messages.create(
                 model=model,
-                max_tokens=512,
+                max_tokens=1500,
                 system=SYSTEM_PROMPT,
                 messages=[{"role": "user", "content": user_prompt}],
             )
@@ -588,8 +596,13 @@ def call_judge(client: anthropic.Anthropic, conv: Conversation,
             time.sleep(wait)
 
         except json.JSONDecodeError as e:
-            # Return a parse error dict so we can still log the failure
-            return {"_parse_error": str(e), "_raw": raw if "raw" in dir() else ""}
+            if attempt < MAX_RETRIES - 1:
+                wait = RETRY_BASE_SEC * (2 ** attempt)
+                print(f"    ⚠  JSON parse error ({e}) — retrying in {wait:.1f}s "
+                      f"(attempt {attempt+1}/{MAX_RETRIES})")
+                time.sleep(wait)
+            else:
+                return {"_parse_error": str(e), "_raw": raw if "raw" in dir() else ""}
 
     return {"_parse_error": f"Max retries ({MAX_RETRIES}) exceeded"}
 
@@ -597,11 +610,11 @@ def call_judge(client: anthropic.Anthropic, conv: Conversation,
 #  Cache helpers
 # ─────────────────────────────────────────────
 
-def cache_path(conv_idx: int) -> Path:
-    return CACHE_DIR / f"conv_{conv_idx:03d}.json"
+def cache_path(conv_idx: int, dataset_type: str) -> Path:
+    return CACHE_DIR / f"conv_{dataset_type}_{conv_idx:03d}.json"
 
-def load_cache(conv_idx: int) -> Optional[dict]:
-    p = cache_path(conv_idx)
+def load_cache(conv_idx: int, dataset_type: str) -> Optional[dict]:
+    p = cache_path(conv_idx, dataset_type)
     if p.exists():
         try:
             return json.loads(p.read_text(encoding="utf-8"))
@@ -609,9 +622,9 @@ def load_cache(conv_idx: int) -> Optional[dict]:
             return None
     return None
 
-def save_cache(conv_idx: int, data: dict):
+def save_cache(conv_idx: int, dataset_type: str, data: dict):
     CACHE_DIR.mkdir(exist_ok=True)
-    cache_path(conv_idx).write_text(
+    cache_path(conv_idx, dataset_type).write_text(
         json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
     )
 
@@ -724,12 +737,12 @@ def write_csv(results: list, path: Path):
 # ─────────────────────────────────────────────
 
 def load_layer1() -> dict:
-    """Returns dict keyed by conv_idx (int) → row dict."""
+    """Returns dict keyed by (conv_idx, dataset_type) → row dict."""
     if not L1_CSV.exists():
         return {}
     with open(L1_CSV, encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        return {int(row["conv_idx"]): row for row in reader}
+        return {(int(row["conv_idx"]), row["dataset_type"]): row for row in reader}
 
 # ─────────────────────────────────────────────
 #  Terminal summary
@@ -938,7 +951,7 @@ def fig_layer1_vs_layer2(results: list, l1_data: dict):
     something different from what the judge penalises.
     """
     _set_style()
-    valid = [r for r in results if not r.parse_error and r.conv_idx in l1_data]
+    valid = [r for r in results if not r.parse_error and (r.conv_idx, r.dataset_type) in l1_data]
 
     if len(valid) < 5:
         print("  ⚠  Not enough Layer 1 data to produce Fig 10 — skipping.")
@@ -954,7 +967,7 @@ def fig_layer1_vs_layer2(results: list, l1_data: dict):
     def _scatter(ax, l1_key, l2_attr, xlabel, ylabel, title, jitter=False):
         x_vals, y_vals, colors = [], [], []
         for r in valid:
-            l1 = l1_data[r.conv_idx]
+            l1 = l1_data[(r.conv_idx, r.dataset_type)]
             try:
                 x = float(l1[l1_key])
             except (KeyError, ValueError):
@@ -1210,11 +1223,12 @@ def main():
         help="Skip API calls; regenerate graphs from existing CSV only.",
     )
     parser.add_argument(
-        "--dumps-dir",
+        "--dumps-base-dir",
         default=None,
         help=(
-            "Directory containing conversation_NNN.txt dump files. "
-            "Defaults to conversation_dumps/ next to this script."
+            "Base directory containing the four type subdirectories "
+            "(conversation_dumps_success, _failure, _type_a, _type_b). "
+            "Defaults to synthetic_data_generation/ in the project root."
         ),
     )
     parser.add_argument(
@@ -1224,21 +1238,31 @@ def main():
     )
     args = parser.parse_args()
 
-    dumps_dir  = Path(args.dumps_dir)  if args.dumps_dir  else DUMPS_DIR
+    if args.dumps_base_dir:
+        base = Path(args.dumps_base_dir)
+        type_dirs = {t: base / d.name for t, d in TYPE_DIRS.items()}
+    else:
+        type_dirs = TYPE_DIRS
+
     output_csv = Path(args.output_csv) if args.output_csv else OUTPUT_CSV
 
     # ── Load conversations ──────────────────────────────────────────────────
-    dump_files = sorted(dumps_dir.glob("conversation_*.txt"))
-    if args.limit:
-        dump_files = dump_files[: args.limit]
-
-    print(f"Parsing {len(dump_files)} conversation(s) …")
     conversations = []
-    for f in dump_files:
-        conv = parse_conversation(f)
-        if conv:
-            conversations.append(conv)
-    print(f"  → {len(conversations)} parsed.")
+    for dtype, dirpath in type_dirs.items():
+        dump_files = sorted(dirpath.glob("conversation_*.txt"))
+        if not dump_files:
+            print(f"  ⚠  No conversation dumps found in {dirpath}")
+            continue
+        print(f"Parsing {len(dump_files)} [{dtype}] conversation(s) from {dirpath} …")
+        for f in dump_files:
+            conv = parse_conversation(f, dataset_type=dtype)
+            if conv:
+                conversations.append(conv)
+
+    if args.limit:
+        conversations = conversations[: args.limit]
+
+    print(f"  → {len(conversations)} total conversations parsed.")
 
     # ── Graphs-only mode: load existing CSV ────────────────────────────────
     if args.graphs_only:
@@ -1248,7 +1272,8 @@ def main():
         results = []
         with open(output_csv, encoding="utf-8") as f:
             for row in csv.DictReader(f):
-                r = Layer2Result(conv_idx=int(row["conv_idx"]))
+                r = Layer2Result(conv_idx=int(row["conv_idx"]),
+                                 dataset_type=row.get("dataset_type", "success"))
                 for field in ["knowledge_level","emotional_state","communication_style",
                                "goal_clarity","certainty","model_used","parse_error",
                                "standout_issue","standout_quality",
@@ -1278,7 +1303,7 @@ def main():
     api_count    = 0
 
     for i, conv in enumerate(conversations, 1):
-        cached = None if args.force else load_cache(conv.idx)
+        cached = None if args.force else load_cache(conv.idx, conv.dataset_type)
 
         if cached:
             cached_count += 1
@@ -1288,7 +1313,7 @@ def main():
             print(f"  [{i:3d}/{len(conversations)}] Conv {conv.idx:03d}  "
                   f"({conv.emotional_state}, {conv.knowledge_level}) …", end=" ", flush=True)
             judge = call_judge(client, conv, args.model)
-            save_cache(conv.idx, judge)
+            save_cache(conv.idx, conv.dataset_type, judge)
             api_count += 1
             source = "api"
 

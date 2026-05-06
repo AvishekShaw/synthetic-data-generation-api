@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(python3:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(python -c \"import evaluate_predictions.eval_predictions\")",
+      "Bash(python -c \"import evaluate_predictions.eval_conversation_predictions\")",
+      "Bash(python -c \"import evaluate_predictions.eval_conversation_predictions; print\\('import OK'\\)\")"
     ]
   }
 }

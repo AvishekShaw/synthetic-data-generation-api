@@ -246,6 +246,8 @@ def conversation_type_from_meta(meta: dict) -> str:
         return "type_a"
     if pt == "adversarial":
         return "type_b"
+    if meta.get("goal_completed") is False:
+        return "failure"
     return "success"
 
 
@@ -901,11 +903,12 @@ class ExampleMetrics:
     generation_idx:        object = None
 
     # ── Conversation type and probe metadata ──────────────────────────────
-    conversation_type:      str    = "success"  # success | type_a | type_b
+    conversation_type:      str    = "success"  # success | failure | type_a | type_b
     wrong_prior_belief:     str    = ""          # type_a: the prior belief text
     agent_failure_mode:     str    = ""          # type_b: planted error category
     user_caught_error:      object = None        # type_b: bool — did user catch it?
     goal_completed:         object = None        # bool — did conversation reach goal?
+    failure_mode:           str    = ""          # failure: dropout mode (impatience, loop_exit, …)
     # Turn-level probe signals
     is_pushback_turn:       bool   = False       # type_b: turn contains pushback language
     prior_belief_expressed: bool   = False       # type_a: turn expresses wrong prior belief
@@ -936,6 +939,7 @@ def compute_metrics_for_example(
     agent_fail_mode  = meta.get("agent_failure_mode", "")
     caught_error     = meta.get("user_caught_error", None)
     goal_done        = meta.get("goal_completed", None)
+    failure_mode     = meta.get("failure_mode", "")
 
     model_data = example.get(model_key, {})
     raw_metrics = model_data.get("metrics", {})
@@ -1035,6 +1039,7 @@ def compute_metrics_for_example(
         agent_failure_mode      = agent_fail_mode,
         user_caught_error       = caught_error,
         goal_completed          = goal_done,
+        failure_mode            = failure_mode,
         # Turn-level probe signals (on predicted turn)
         is_pushback_turn        = (conv_type == "type_b" and check_pushback_turn(norm_pred)),
         prior_belief_expressed  = (conv_type == "type_a" and

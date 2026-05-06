@@ -1107,8 +1107,9 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
     ]
     # Probe-type-specific flags (only populated for their respective types)
     flag_defs_probe = [
-        ("flag_missed_pushback",      "MissedPushback",    "type_b"),
+        ("flag_missed_pushback",      "MissedPushback",     "type_b"),
         ("flag_wrong_belief_missing", "WrongBeliefMissing", "type_a"),
+        ("flag_dropout_implausible",  "DropoutImplausible", "failure"),
     ]
 
     lines.append("### C. Fidelity Flags\n")
@@ -1116,7 +1117,9 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
         "Fraction of conversations where the predicted sequence raises each flag. "
         "Lower = better fidelity. "
         "**MissedPushback** = type_b conversations where reference pushes back but prediction doesn't. "
-        "**WrongBeliefMissing** = type_a conversations where reference expresses wrong prior belief but prediction doesn't.\n"
+        "**WrongBeliefMissing** = type_a conversations where reference expresses wrong prior belief but prediction doesn't. "
+        "**DropoutImplausible** = failure conversations where the predicted exit lacks mode-appropriate "
+        "dropout language (e.g. no impatience/escalation signals before leaving).\n"
     )
 
     all_flag_defs = flag_defs_universal + [(a, l) for a, l, _ in flag_defs_probe]
@@ -1137,22 +1140,24 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
             cells.append(f"{rate:.1f}%*" if rate is not None else "—")
         lines.append("| " + " | ".join(cells) + " |")
 
-    lines.append("\n> \\* Probe-type flags computed over type-specific subset only "
-                 "(type_b for MissedPushback, type_a for WrongBeliefMissing).\n")
+    lines.append("\n> \\* Type-specific flags computed over type-specific subset only "
+                 "(type_b for MissedPushback, type_a for WrongBeliefMissing, "
+                 "failure for DropoutImplausible).\n")
 
     # Table D: Probe-signal breakdown by conversation type
     ctypes_present = sorted({r.get("conversation_type", "") for r in t1_rows} - {""})
     if len(ctypes_present) > 1:
-        lines.append("### D. Probe-Signal Breakdown by Conversation Type\n")
+        lines.append("### D. Type-Specific Signal Breakdown\n")
         lines.append(
-            "Per-type averages for pushback and prior-belief signals. "
-            "Pushback rate = fraction of predicted turns containing pushback phrases (type_b only). "
-            "Prior-belief rate = fraction of predicted turns expressing the scenario's wrong belief (type_a only).\n"
+            "Per-type averages for pushback, prior-belief, and dropout signals. "
+            "Pushback = predicted pushback turns per conversation (type_b only). "
+            "PriorBelief rate = fraction of predicted turns expressing the scenario's wrong belief (type_a only). "
+            "DropoutTurn = mean turn index at which the predicted conversation exits (failure only).\n"
         )
-        lines.append("| Model | Conv Type | N convs | Pred Pushback turns | Ref Pushback turns | Pushback missed | Pred PriorBelief rate |")
-        lines.append("|---|---|---|---|---|---|---|")
+        lines.append("| Model | Conv Type | N convs | Pred Pushback turns | Ref Pushback turns | Pushback missed | Pred PriorBelief rate | Pred DropoutTurn | Ref DropoutTurn | DropoutImplausible |")
+        lines.append("|---|---|---|---|---|---|---|---|---|---|")
         for v in variants:
-            for ctype in ["success", "type_a", "type_b"]:
+            for ctype in ["success", "failure", "type_a", "type_b"]:
                 if ctype not in ctypes_present:
                     continue
                 rs = [r for r in by_v.get(v, []) if r.get("conversation_type", "") == ctype]
@@ -1165,17 +1170,23 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
                             if r.get(col, "") not in (None, "", "None", "nan")]
                     return sum(vals) / len(vals) if vals else None
 
-                pb_pred = _mean_col("pred_pushback_count") if ctype == "type_b" else None
-                pb_ref  = _mean_col("ref_pushback_count")  if ctype == "type_b" else None
-                pb_miss = flag_pct(rs, "flag_missed_pushback") if ctype == "type_b" else None
-                pr_rate = _mean_col("pred_prior_belief_rate") if ctype == "type_a" else None
+                pb_pred     = _mean_col("pred_pushback_count")   if ctype == "type_b"  else None
+                pb_ref      = _mean_col("ref_pushback_count")    if ctype == "type_b"  else None
+                pb_miss     = flag_pct(rs, "flag_missed_pushback") if ctype == "type_b" else None
+                pr_rate     = _mean_col("pred_prior_belief_rate") if ctype == "type_a"  else None
+                do_pred     = _mean_col("pred_dropout_turn")      if ctype == "failure" else None
+                do_ref      = _mean_col("ref_dropout_turn")       if ctype == "failure" else None
+                do_implaus  = flag_pct(rs, "flag_dropout_implausible") if ctype == "failure" else None
 
                 lines.append(
                     f"| {v} | {ctype} | {n} "
-                    f"| {f(pb_pred) if pb_pred is not None else '—'} "
-                    f"| {f(pb_ref)  if pb_ref  is not None else '—'} "
+                    f"| {f(pb_pred)   if pb_pred    is not None else '—'} "
+                    f"| {f(pb_ref)    if pb_ref     is not None else '—'} "
                     f"| {f'{pb_miss:.1f}%' if pb_miss is not None else '—'} "
-                    f"| {f(pr_rate) if pr_rate is not None else '—'} |"
+                    f"| {f(pr_rate)   if pr_rate    is not None else '—'} "
+                    f"| {f(do_pred)   if do_pred    is not None else '—'} "
+                    f"| {f(do_ref)    if do_ref     is not None else '—'} "
+                    f"| {f'{do_implaus:.1f}%' if do_implaus is not None else '—'} |"
                 )
 
     # Flag images
@@ -1196,8 +1207,9 @@ def section_conv_t1(t1_rows: list[dict] | None) -> str | None:
         lines.append(f"\n{conv_type_img}\n")
         lines.append(
             "_cp_06: Fidelity flag rates stratified by conversation type "
-            "(success / type_a / type_b). "
-            "MissedPushback and WrongBeliefMissing appear only in their respective type columns._"
+            "(success / failure / type_a / type_b). "
+            "MissedPushback, WrongBeliefMissing, and DropoutImplausible appear only in their "
+            "respective type columns._"
         )
 
     return "\n".join(lines)
@@ -1240,21 +1252,29 @@ def section_conv_t2(t2_rows: list[dict] | None) -> str | None:
             ("persona_score",     "Persona"),
             ("overall_score",     "OVERALL"),
         ],
-        "type_a": [
-            ("prior_belief_score",      "PriorBelief"),
-            ("info_incompleteness_score", "InfoIncomplete"),
-            ("depth_first_score",       "Depth-First"),
-            ("uncertainty_score",       "Uncertainty"),
-            ("persona_score",           "Persona"),
-            ("overall_score",           "OVERALL"),
+        "failure": [
+            ("dropout_authenticity_score", "DropoutAuth"),
+            ("pragmatic_score",            "Pragmatic"),
+            ("persona_score",              "Persona"),
+            ("depth_first_score",          "Depth-First"),
+            ("uncertainty_score",          "Uncertainty"),
+            ("overall_score",              "OVERALL"),
         ],
-        "type_b": [
-            ("error_detection_score",     "ErrorDetect"),
-            ("pushback_calibration_score","PushbackCalib"),
+        "type_a": [
+            ("prior_belief_score",        "PriorBelief"),
+            ("info_incompleteness_score", "InfoIncomplete"),
+            ("depth_first_score",         "Depth-First"),
             ("uncertainty_score",         "Uncertainty"),
             ("persona_score",             "Persona"),
-            ("pragmatic_score",           "Pragmatic"),
             ("overall_score",             "OVERALL"),
+        ],
+        "type_b": [
+            ("error_detection_score",      "ErrorDetect"),
+            ("pushback_calibration_score", "PushbackCalib"),
+            ("uncertainty_score",          "Uncertainty"),
+            ("persona_score",              "Persona"),
+            ("pragmatic_score",            "Pragmatic"),
+            ("overall_score",              "OVERALL"),
         ],
     }
 
@@ -1269,7 +1289,7 @@ def section_conv_t2(t2_rows: list[dict] | None) -> str | None:
 
     ctypes_in_data = sorted({r.get("conversation_type", "success") or "success" for r in valid})
 
-    for ctype in ["success", "type_a", "type_b"]:
+    for ctype in ["success", "failure", "type_a", "type_b"]:
         if ctype not in ctypes_in_data:
             continue
         dims = DIMS_BY_TYPE[ctype]
@@ -1281,8 +1301,12 @@ def section_conv_t2(t2_rows: list[dict] | None) -> str | None:
         for r in ctype_rows:
             by_v_ctype.setdefault(r["model_variant"], []).append(r)
 
-        type_label = {"success": "Success", "type_a": "Type A — Inadvertent Probing",
-                      "type_b": "Type B — Adversarial Probing"}[ctype]
+        type_label = {
+            "success": "Success",
+            "failure": "Failure — Dropout",
+            "type_a":  "Type A — Inadvertent Probing",
+            "type_b":  "Type B — Adversarial Probing",
+        }[ctype]
         lines.append(f"### {type_label} (n={len(ctype_rows)})\n")
         lines.append("| Model | " + " | ".join(d[1] for d in dims) + " |")
         lines.append("|---" + "|---" * len(dims) + "|")
@@ -1667,6 +1691,14 @@ def section_conv_metric_commentary(has_t1: bool, has_t2: bool) -> str:
             "- **Persona Fidelity** — is the assigned persona as visible as in reference?\n"
             "- *Weights: Depth-First (0.25) · Pragmatic (0.25) · Uncertainty (0.20) · "
             "Info Drip (0.15) · Persona (0.15)*\n\n"
+            "**Failure — Dropout conversations** (customer exits before goal completion):\n"
+            "- **Dropout Authenticity** — does the model exit at a plausible point and with "
+            "mode-appropriate exit language, matching the reference's dropout pattern?\n"
+            "- **Pragmatic Naturalness** — do the pre-exit turns sound as colloquial and "
+            "frustrated as the reference, rather than ending abruptly?\n"
+            "- **Persona Fidelity**, **Depth-First Questioning**, **Uncertainty Expression** (same as success)\n"
+            "- *Weights: DropoutAuth (0.25) · Pragmatic (0.25) · Persona (0.15) · "
+            "Depth-First (0.15) · Uncertainty (0.15) · Info Drip (0.05)*\n\n"
             "**Type A — Inadvertent Probing** (user holds a wrong prior belief):\n"
             "- **Prior Belief Persistence** — does the model maintain the wrong belief long enough "
             "before being corrected, as the reference does?\n"
@@ -1690,6 +1722,9 @@ def section_conv_metric_commentary(has_t1: bool, has_t2: bool) -> str:
             "Scores are non-deterministic; cached to avoid variance between runs.\n\n"
             "**Recommendation:** Use Tier 2 to explain Tier 1 flag patterns and to identify "
             "the weakest fidelity dimension across model variants. "
+            "For failure conversations, pay particular attention to DropoutAuth — a model that "
+            "ends abruptly without earned frustration build-up will score low here regardless "
+            "of turn-level BERTScore. "
             "For type_b, pay particular attention to ErrorDetect — a model that never pushes back "
             "will have high turn-level BERTScore but fail this dimension completely. "
             "Do not use Tier 2 overall score alone for model selection — "

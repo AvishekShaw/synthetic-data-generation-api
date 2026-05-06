@@ -40,7 +40,13 @@ import numpy as np
 #  Config
 # ─────────────────────────────────────────────
 
-DUMPS_DIR   = Path(__file__).parent / "conversation_dumps"
+DUMPS_BASE_DIR = Path(__file__).parent.parent / "synthetic_data_generation"
+TYPE_DIRS = {
+    "success": DUMPS_BASE_DIR / "conversation_dumps_success",
+    "failure": DUMPS_BASE_DIR / "conversation_dumps_failure",
+    "type_a":  DUMPS_BASE_DIR / "conversation_dumps_type_a",
+    "type_b":  DUMPS_BASE_DIR / "conversation_dumps_type_b",
+}
 OUTPUT_CSV  = Path(__file__).parent / "eval_results.csv"
 IMAGES_DIR  = Path(__file__).parent / "images"
 
@@ -283,7 +289,7 @@ class EvalResult:
 #  Parser
 # ─────────────────────────────────────────────
 
-def parse_conversation(filepath: Path) -> Optional[Conversation]:
+def parse_conversation(filepath: Path, dataset_type: Optional[str] = None) -> Optional[Conversation]:
     text = filepath.read_text(encoding="utf-8")
     lines = text.splitlines()
 
@@ -367,8 +373,10 @@ def parse_conversation(filepath: Path) -> Optional[Conversation]:
             if not re.match(r"^(Customer|Agent):", stripped):
                 conv.turns[-1].text += " " + stripped
 
-    # Derive dataset_type from parsed meta
-    if conv.probing_type == "inadvertent":
+    # Use explicit dataset_type if provided (from directory name), else derive from meta
+    if dataset_type is not None:
+        conv.dataset_type = dataset_type
+    elif conv.probing_type == "inadvertent":
         conv.dataset_type = "type_a"
     elif conv.probing_type == "adversarial":
         conv.dataset_type = "type_b"
@@ -1556,11 +1564,12 @@ def main():
         description="Layer 1 rule-based evaluation of synthetic banking conversations.",
     )
     parser.add_argument(
-        "--dumps-dir",
+        "--dumps-base-dir",
         default=None,
         help=(
-            "Directory containing conversation_NNN.txt dump files. "
-            "Defaults to conversation_dumps/ next to this script."
+            "Base directory containing the four type subdirectories "
+            "(conversation_dumps_success, _failure, _type_a, _type_b). "
+            "Defaults to synthetic_data_generation/ in the project root."
         ),
     )
     parser.add_argument(
@@ -1570,24 +1579,29 @@ def main():
     )
     args = parser.parse_args()
 
-    dumps_dir  = Path(args.dumps_dir)  if args.dumps_dir  else DUMPS_DIR
+    if args.dumps_base_dir:
+        base = Path(args.dumps_base_dir)
+        type_dirs = {t: base / d.name for t, d in TYPE_DIRS.items()}
+    else:
+        type_dirs = TYPE_DIRS
+
     output_csv = Path(args.output_csv) if args.output_csv else OUTPUT_CSV
 
-    dump_files = sorted(dumps_dir.glob("conversation_*.txt"))
-    if not dump_files:
-        print(f"No conversation dumps found in {dumps_dir}")
-        return
-
-    print(f"Parsing {len(dump_files)} conversation dump(s) from {dumps_dir} …")
     conversations = []
-    for f in dump_files:
-        conv = parse_conversation(f)
-        if conv:
-            conversations.append(conv)
-        else:
-            print(f"  ⚠  Could not parse {f.name}")
+    for dtype, dirpath in type_dirs.items():
+        dump_files = sorted(dirpath.glob("conversation_*.txt"))
+        if not dump_files:
+            print(f"  ⚠  No conversation dumps found in {dirpath}")
+            continue
+        print(f"Parsing {len(dump_files)} [{dtype}] conversation(s) from {dirpath} …")
+        for f in dump_files:
+            conv = parse_conversation(f, dataset_type=dtype)
+            if conv:
+                conversations.append(conv)
+            else:
+                print(f"  ⚠  Could not parse {f.name}")
 
-    print(f"  → {len(conversations)} conversations parsed successfully.")
+    print(f"  → {len(conversations)} total conversations parsed successfully.")
 
     print("Running evaluation …")
     results = [evaluate(c) for c in conversations]
