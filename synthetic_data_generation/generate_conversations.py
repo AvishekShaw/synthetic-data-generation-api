@@ -33,12 +33,17 @@ Usage:
 import json
 import os
 import re
+import sys
 import time
 import random
 import argparse
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Optional
+
+# Allow running from repo root or from inside synthetic_data_generation/
+sys.path.insert(0, str(Path(__file__).parent))
+from content_pools import sample_content  # noqa: E402
 
 
 # ─────────────────────────────────────────────
@@ -60,10 +65,12 @@ class Scenario:
     information_completeness: str   # full | partial | minimal
     prior_contact: str              # first_contact | tried_merchant | follow_up
     expected_resolution: str        # refund_and_card | investigation | hold
-    # Content: fills in the details
+    # Content: sampled per-conversation via content_pools.sample_content()
     merchant_name: str              # e.g. "Amazon", "Netflix"
     amount: str                     # e.g. "$127.43"
-    transaction_date: str           # e.g. "August 20th"
+    transaction_date: str           # e.g. "March 4"
+    card_type: str                  # e.g. "Visa", "debit card"
+    channel: str                    # e.g. "online", "in-store"
 
 
 # ─────────────────────────────────────────────
@@ -93,32 +100,25 @@ PERSONAS = [
 ]
 
 # 8 structural scenario templates covering distinct conversation paths.
-# Content (merchant, amount, date) is varied across templates to add diversity.
+# Content fields (merchant_name, amount, transaction_date, card_type, channel)
+# are left empty here and sampled per-conversation via content_pools.sample_content().
 SCENARIOS = [
     # 1. Clean dispute — has everything, first contact, wants full resolution
-    Scenario("certain_fraud", "full",    "first_contact",   "refund_and_card",
-             "Amazon",        "$127.43", "August 20th"),
+    Scenario("certain_fraud", "full",    "first_contact",  "refund_and_card",  "", "", "", "", ""),
     # 2. Partial info — knows it's fraud, missing merchant details
-    Scenario("certain_fraud", "partial", "first_contact",   "refund_and_card",
-             "Shell Station", "$89.21",  "August 18th"),
+    Scenario("certain_fraud", "partial", "first_contact",  "refund_and_card",  "", "", "", "", ""),
     # 3. Already tried merchant — frustrated from the start
-    Scenario("certain_fraud", "full",    "tried_merchant",  "refund_and_card",
-             "TechHub",       "$340.00", "August 15th"),
+    Scenario("certain_fraud", "full",    "tried_merchant", "refund_and_card",  "", "", "", "", ""),
     # 4. Uncertain — not sure if they authorized it (forgotten subscription?)
-    Scenario("uncertain",     "partial", "first_contact",   "investigation",
-             "Netflix",       "$34.99",  "August 12th"),
+    Scenario("uncertain",     "partial", "first_contact",  "investigation",    "", "", "", "", ""),
     # 5. Minimal info — just noticed something odd, wants card frozen first
-    Scenario("certain_fraud", "minimal", "first_contact",   "hold",
-             "Unknown",       "$300.00", "August 17th"),
+    Scenario("certain_fraud", "minimal", "first_contact",  "hold",             "", "", "", "", ""),
     # 6. Follow-up — already called bank, no response, calling back
-    Scenario("certain_fraud", "full",    "follow_up",       "refund_and_card",
-             "Uber Eats",     "$215.00", "August 10th"),
+    Scenario("certain_fraud", "full",    "follow_up",      "refund_and_card",  "", "", "", "", ""),
     # 7. High stakes — large amount, wants immediate action
-    Scenario("certain_fraud", "full",    "first_contact",   "refund_and_card",
-             "Apple Store",   "$1,249.00","August 19th"),
+    Scenario("certain_fraud", "full",    "first_contact",  "refund_and_card",  "", "", "", "", ""),
     # 8. Uncertain with full info — has the details but genuinely not sure
-    Scenario("uncertain",     "full",    "first_contact",   "investigation",
-             "Adobe",         "$54.99",  "August 14th"),
+    Scenario("uncertain",     "full",    "first_contact",  "investigation",    "", "", "", "", ""),
 ]
 
 
@@ -727,11 +727,11 @@ def generate_all(args):
     print(f"\n=== UserLM Synthetic Data Generator  [mode: {mode}] ===\n")
 
     # generation_idx offsets keep each mode's conversations in a distinct range:
-    #   success  → 0–499
-    #   failure  → 500–999
-    #   type_a   → 1000+  (generate_probe_conversations.py)
-    #   type_b   → 2000+  (generate_probe_conversations.py)
-    idx_offset = 500 if mode == "failure" else 0
+    #   success  →   0 –  99,999
+    #   failure  → 100,000 – 199,999
+    #   type_a   → 200,000 – 299,999  (generate_probe_conversations.py)
+    #   type_b   → 300,000 – 399,999  (generate_probe_conversations.py)
+    idx_offset = 100_000 if mode == "failure" else 0
 
     # Load few-shot examples (optional — omitted on first run)
     if args.data_path:
@@ -808,6 +808,21 @@ def generate_all(args):
         if global_idx in generated_indices:
             print(f"  [{combo_idx+1}/{total_available}] Skipping (already done)")
             continue
+
+        # Sample content for this conversation (seeded for reproducibility)
+        rng = random.Random(args.seed * 1_000_000 + global_idx)
+        content = sample_content(rng)
+        scenario = Scenario(
+            certainty=scenario.certainty,
+            information_completeness=scenario.information_completeness,
+            prior_contact=scenario.prior_contact,
+            expected_resolution=scenario.expected_resolution,
+            merchant_name=content["merchant_name"],
+            amount=content["amount"],
+            transaction_date=content["transaction_date"],
+            card_type=content["card_type"],
+            channel=content["channel"],
+        )
 
         # Resolve failure mode for this persona (failure mode only)
         failure_mode = PERSONA_FAILURE_MAP.get(pidx) if mode == "failure" else None
@@ -991,6 +1006,12 @@ def main():
             "Default is 3 (test run). "
             "Pass 'all' (or -1) to generate the full persona × scenario set."
         ),
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Base random seed for reproducible content sampling (default: 42).",
     )
 
     # Anthropic options

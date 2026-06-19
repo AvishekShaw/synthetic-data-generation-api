@@ -41,11 +41,16 @@ generation_idx offsets (to avoid collision with success conversations):
 import json
 import os
 import re
+import sys
 import time
 import random
 import argparse
 from dataclasses import dataclass, asdict
 from pathlib import Path
+
+# Allow running from repo root or from inside synthetic_data_generation/
+sys.path.insert(0, str(Path(__file__).parent))
+from content_pools import sample_content  # noqa: E402
 
 
 # ─────────────────────────────────────────────
@@ -66,9 +71,12 @@ class Scenario:
     information_completeness: str
     prior_contact: str
     expected_resolution: str
+    # Content: sampled per-conversation via content_pools.sample_content()
     merchant_name: str
     amount: str
     transaction_date: str
+    card_type: str
+    channel: str
 
 
 @dataclass
@@ -95,16 +103,18 @@ PERSONAS = [
     Persona("expert",        "escalating",        "direct",   "clear"),
 ]
 
-# 8 structural scenario templates — same as generate_conversations.py
+# 8 structural scenario templates — same as generate_conversations.py.
+# Content fields (merchant_name, amount, transaction_date, card_type, channel)
+# are left empty here and sampled per-conversation via content_pools.sample_content().
 SCENARIOS = [
-    Scenario("certain_fraud", "full",    "first_contact",  "refund_and_card",  "Amazon",      "$127.43",   "August 20th"),
-    Scenario("certain_fraud", "partial", "first_contact",  "refund_and_card",  "Shell Station","$89.21",   "August 18th"),
-    Scenario("certain_fraud", "full",    "tried_merchant", "refund_and_card",  "TechHub",     "$340.00",   "August 15th"),
-    Scenario("uncertain",     "partial", "first_contact",  "investigation",    "Netflix",     "$34.99",    "August 12th"),
-    Scenario("certain_fraud", "minimal", "first_contact",  "hold",             "Unknown",     "$300.00",   "August 17th"),
-    Scenario("certain_fraud", "full",    "follow_up",      "refund_and_card",  "Uber Eats",   "$215.00",   "August 10th"),
-    Scenario("certain_fraud", "full",    "first_contact",  "refund_and_card",  "Apple Store", "$1,249.00", "August 19th"),
-    Scenario("uncertain",     "full",    "first_contact",  "investigation",    "Adobe",       "$54.99",    "August 14th"),
+    Scenario("certain_fraud", "full",    "first_contact",  "refund_and_card",  "", "", "", "", ""),
+    Scenario("certain_fraud", "partial", "first_contact",  "refund_and_card",  "", "", "", "", ""),
+    Scenario("certain_fraud", "full",    "tried_merchant", "refund_and_card",  "", "", "", "", ""),
+    Scenario("uncertain",     "partial", "first_contact",  "investigation",    "", "", "", "", ""),
+    Scenario("certain_fraud", "minimal", "first_contact",  "hold",             "", "", "", "", ""),
+    Scenario("certain_fraud", "full",    "follow_up",      "refund_and_card",  "", "", "", "", ""),
+    Scenario("certain_fraud", "full",    "first_contact",  "refund_and_card",  "", "", "", "", ""),
+    Scenario("uncertain",     "full",    "first_contact",  "investigation",    "", "", "", "", ""),
 ]
 
 
@@ -724,8 +734,12 @@ def write_conversation_dump(
 def generate_all(args) -> None:
     print(f"\n=== UserLM Probe Generator  [mode: {args.mode}] ===\n")
 
-    # generation_idx offsets keep probe conversations separate from success ones
-    idx_offset = 1000 if args.mode == "type_a" else 2000
+    # generation_idx offsets keep each mode in a distinct range:
+    #   success  →   0 –  99,999  (generate_conversations.py)
+    #   failure  → 100,000 – 199,999  (generate_conversations.py)
+    #   type_a   → 200,000 – 299,999
+    #   type_b   → 300,000 – 399,999
+    idx_offset = 200_000 if args.mode == "type_a" else 300_000
 
     combinations = [
         (combo_idx, scenario_idx, persona, scenario)
@@ -775,6 +789,21 @@ def generate_all(args) -> None:
         if global_idx in generated_indices:
             print(f"  [{combo_idx + 1}/{total_available}] Skipping (already done)")
             continue
+
+        # Sample content for this conversation (seeded for reproducibility)
+        rng = random.Random(args.seed * 1_000_000 + global_idx)
+        content = sample_content(rng)
+        scenario = Scenario(
+            certainty=scenario.certainty,
+            information_completeness=scenario.information_completeness,
+            prior_contact=scenario.prior_contact,
+            expected_resolution=scenario.expected_resolution,
+            merchant_name=content["merchant_name"],
+            amount=content["amount"],
+            transaction_date=content["transaction_date"],
+            card_type=content["card_type"],
+            channel=content["channel"],
+        )
 
         label = (
             f"[{combo_idx + 1}/{total_available}] "
@@ -903,6 +932,12 @@ def main() -> None:
     parser.add_argument(
         "--model", default="claude-sonnet-4-6",
         help="Anthropic model name (default: claude-sonnet-4-6).",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Base random seed for reproducible content sampling (default: 42).",
     )
 
     args = parser.parse_args()

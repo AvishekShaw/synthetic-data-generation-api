@@ -1,0 +1,59 @@
+"""
+content_pools.py
+
+Sampling helpers for per-conversation content diversity.
+Imported by generate_conversations.py and generate_probe_conversations.py.
+"""
+
+import math
+import random
+import datetime
+
+MERCHANTS = [
+    "Amazon", "Walmart", "Target", "Best Buy", "Apple Store", "Netflix",
+    "Spotify", "Uber", "Uber Eats", "DoorDash", "Lyft", "Shell", "Chevron",
+    "Starbucks", "Costco", "Home Depot", "Steam", "PlayStation Store",
+    "Adobe", "Microsoft", "Google Play", "Airbnb", "Expedia", "Delta Air Lines",
+    "CVS Pharmacy", "Walgreens", "Nike", "Etsy", "eBay", "PayPal",
+    "Cash App", "Venmo", "Zelle transfer", "Wayfair", "Instacart", "GrubHub",
+    "AT&T", "Verizon", "Comcast", "Planet Fitness", "Peloton", "Ticketmaster",
+    "an unfamiliar online store", "a gas station I don't recognize",
+    "some subscription I don't remember", "a foreign merchant", "Temu",
+    "Shein", "AliExpress", "a hotel in another city",
+]
+
+# Held-out merchants reserved ONLY for the generalization test set (Phase 5)
+MERCHANTS_HELDOUT = [
+    "Chipotle", "REI", "Sephora", "Square checkout", "Roblox",
+    "a parking garage", "a medical clinic", "an unknown ATM withdrawal",
+]
+
+CARD_TYPES = ["Visa", "Mastercard", "Amex", "debit card", "credit card"]
+CHANNELS   = ["online", "in-store", "recurring subscription", "ATM", "phone order"]
+
+
+def sample_amount(rng: random.Random) -> str:
+    lo, hi = math.log(3), math.log(3000)
+    val = math.exp(rng.uniform(lo, hi))
+    if rng.random() < 0.15:
+        val = round(val / 10) * 10
+    return f"${val:,.2f}"
+
+
+def sample_date(rng: random.Random, ref_date=None) -> str:
+    ref = ref_date or datetime.date.today()
+    d = ref - datetime.timedelta(days=rng.randint(1, 180))
+    month = d.strftime("%B")
+    day = d.day  # int, no leading zero
+    return f"{month} {day}"  # e.g. "March 4"
+
+
+def sample_content(rng: random.Random, heldout: bool = False) -> dict:
+    pool = MERCHANTS_HELDOUT if heldout else MERCHANTS
+    return {
+        "merchant_name":    rng.choice(pool),
+        "amount":           sample_amount(rng),
+        "transaction_date": sample_date(rng),
+        "card_type":        rng.choice(CARD_TYPES),
+        "channel":          rng.choice(CHANNELS),
+    }
