@@ -8,3 +8,10 @@ evaluate_synthetic_conversations/images/*
 *.jpeg
 *.gif
 *.webp
+.DS_Store
+**/.DS_Store
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.zip
