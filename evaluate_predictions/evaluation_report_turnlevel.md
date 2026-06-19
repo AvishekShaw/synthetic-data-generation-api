@@ -108,11 +108,15 @@ Metrics computed per conversation (grouped by generation_idx), capturing cross-t
 
 _Conversation-level metrics distributions. These capture cross-turn coherence that single-turn metrics cannot measure._
 
+![23_by_conversation_type.png](images/23_by_conversation_type.png)
+
+_Per-conversation-type breakdown: BLEU, style compliance, hedge delta, pushback rate (type_b), and prior-belief rate (type_a) stratified by conversation type. Use this to assess whether fidelity gaps are driven by probe conversations vs standard ones._
+
 ---
 
 ## 6. Performance by Persona Category
 
-METEOR scores broken down by persona attribute (LoRA variants, non-EOS examples only).
+METEOR scores broken down by persona attribute (LoRA variants, non-EOS examples only). **Conversation Type** (success / type_a / type_b) is included — lower scores on probe types (type_a, type_b) indicate the model struggles to reproduce wrong-prior-belief behaviour or pushback language at the turn level.
 
 ### Communication Style
 

@@ -88,6 +88,13 @@ T2_CSV        = BASE_DIR / "conversation_predictions_t2.csv"
 CACHE_DIR     = BASE_DIR / "conv_judge_cache"
 IMAGES_DIR    = BASE_DIR / "images"
 
+# Primary data source: LoRA JSON files (contain both base + lora predictions)
+LORA_JSON_FILES = {
+    "lora_4b":  BASE_DIR / "gemma-3-4b-syn2-loraR4-loraAlpha8-checkpoint-332_predictions.json",
+    "lora_12b": BASE_DIR / "gemma-3-12b-syn2-loraR4-loraAlpha8-checkpoint-332_predictions.json",
+    "lora_27b": BASE_DIR / "gemma-3-27b-syn2-loraR4-loraAlpha8-checkpoint-332_predictions.json",
+}
+
 JUDGE_MODEL      = "claude-sonnet-4-6"
 MAX_RETRIES      = 4
 RETRY_BASE_SEC   = 2.0
@@ -587,6 +594,101 @@ def load_detailed_csv(path: Path) -> list[dict]:
     with open(path, newline="", encoding="utf-8") as fh:
         return list(csv.DictReader(fh))
 
+
+def load_from_lora_json() -> list[dict]:
+    """
+    Load all prediction records directly from the 3 LoRA JSON files.
+
+    Each JSON record contains both base_model.predicted_output and
+    lora_model.predicted_output, so we emit 2 row-dicts per record
+    (one per size: base_Xb and lora_Xb), giving 6 model variants total.
+
+    Conversation type is derived from _meta.failure_mode (takes priority)
+    then from generation_idx ranges:
+        failure_mode set         → "failure"
+        gen_idx >= 2000          → "type_b"
+        gen_idx >= 1000          → "type_a"
+        else                     → "success"
+
+    EOS turns (expected_output.strip() == "<eos>") are flagged but kept
+    in the row list; reconstruct_conversations filters them out.
+    """
+    rows: list[dict] = []
+
+    for lora_variant, path in LORA_JSON_FILES.items():
+        if not path.exists():
+            print(f"  ✗ {path.name} not found — skipping {lora_variant}")
+            continue
+
+        size = lora_variant.split("_")[1]       # "4b", "12b", "27b"
+        base_variant = f"base_{size}"
+
+        with open(path, encoding="utf-8") as f:
+            records: list[dict] = json.load(f)
+
+        for idx, r in enumerate(records):
+            meta     = r.get("_meta", {})
+            gen_idx  = meta.get("generation_idx")
+            persona  = meta.get("persona", {})
+            scenario = meta.get("scenario", {})
+            fm       = meta.get("failure_mode")
+
+            raw_expected = r.get("expected_output", "")
+            is_eos       = raw_expected.strip() == "<eos>"
+            expected     = "" if is_eos else raw_expected.replace("<eos>", "").strip()
+
+            # Derive conversation type — failure_mode wins over gen_idx range
+            if fm and str(fm) not in ("None", ""):
+                ctype = "failure"
+            elif isinstance(gen_idx, int) and gen_idx >= 2000:
+                ctype = "type_b"
+            elif isinstance(gen_idx, int) and gen_idx >= 1000:
+                ctype = "type_a"
+            else:
+                ctype = "success"
+
+            shared = dict(
+                example_idx              = idx,
+                generation_idx           = gen_idx,
+                conversation_type        = ctype,
+                failure_mode             = "" if (not fm or str(fm) == "None") else str(fm),
+                is_eos_example           = is_eos,
+                expected_output          = expected,
+                knowledge_level          = persona.get("knowledge_level", ""),
+                emotional_state          = persona.get("emotional_state", ""),
+                communication_style      = persona.get("communication_style", ""),
+                goal_clarity             = persona.get("goal_clarity", ""),
+                certainty                = scenario.get("certainty", ""),
+                information_completeness = scenario.get("information_completeness", ""),
+                merchant_name            = scenario.get("merchant_name", ""),
+                amount                   = scenario.get("amount", ""),
+                transaction_date         = scenario.get("transaction_date", ""),
+                expected_resolution      = scenario.get("expected_resolution", ""),
+                # type_a / type_b metadata not in _meta; left empty for rule-based detection
+                wrong_prior_belief       = "",
+                agent_failure_mode       = "",
+            )
+
+            rows.append({**shared,
+                "model_variant":    base_variant,
+                "model_size":       size,
+                "is_lora":          False,
+                "predicted_output": r.get("base_model", {}).get("predicted_output", ""),
+            })
+            rows.append({**shared,
+                "model_variant":    lora_variant,
+                "model_size":       size,
+                "is_lora":          True,
+                "predicted_output": r.get("lora_model", {}).get("predicted_output", ""),
+            })
+
+    n_records = len(rows) // 2  # pairs
+    print(f"  → {len(rows)} rows loaded from LoRA JSON files "
+          f"({n_records} turns × 2 model roles per file × 3 files = "
+          f"{len(rows)} rows covering 6 model variants)")
+    return rows
+
+
 def reconstruct_conversations(rows: list[dict]) -> dict[tuple[str, str], ReconvConversation]:
     """
     Group non-EOS rows by (model_variant, generation_idx), ordered by example_idx.
@@ -595,7 +697,7 @@ def reconstruct_conversations(rows: list[dict]) -> dict[tuple[str, str], ReconvC
     print("  → Reconstructing conversations from CSV rows …")
 
     # Filter to text-only turns (exclude EOS turns — no content to evaluate)
-    text_rows = [r for r in rows if str(r.get("is_eos_example", "")).strip().lower() not in ("true", "1")]
+    text_rows = [r for r in rows if not r.get("is_eos_example", False)]
 
     # Sort by (model_variant, generation_idx, example_idx)
     try:
@@ -619,14 +721,8 @@ def reconstruct_conversations(rows: list[dict]) -> dict[tuple[str, str], ReconvC
         key = (variant, gen_idx)
 
         if key not in convs:
-            # Derive conversation_type: prefer explicit CSV column, fall back to gen_idx range
-            ctype = row.get("conversation_type", "")
-            if not ctype:
-                try:
-                    g = int(gen_idx)
-                    ctype = "type_b" if g >= 2000 else ("type_a" if g >= 1000 else "success")
-                except (ValueError, TypeError):
-                    ctype = "success"
+            # conversation_type is set correctly by load_from_lora_json; just use it.
+            ctype = row.get("conversation_type", "") or "success"
 
             # user_caught_error may be stored as string "True"/"False"
             uce_raw = row.get("user_caught_error", "")
@@ -1389,16 +1485,10 @@ def call_judge_t2(client, conv: ReconvConversation, model: str) -> dict:
 def run_tier2(convs: dict, model: str, limit: Optional[int],
               force: bool) -> list[T2Result]:
     """Run Tier 2 LLM judge on all (or limited) conversations."""
-    if not _HAS_ANTHROPIC:
-        print("  ✗ anthropic package not installed — skipping Tier 2")
-        return []
-
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key:
-        print("  ✗ ANTHROPIC_API_KEY not set — skipping Tier 2")
-        return []
-
-    client = anthropic.Anthropic(api_key=api_key)
+    # Only need the client if we'll actually make API calls (i.e. cache misses exist)
+    # We check this per-conversation below; client is created lazily if needed.
+    client = None
     CACHE_DIR.mkdir(exist_ok=True)
 
     print(f"\n[TIER 2] Running LLM-as-judge ({model}) …")
@@ -1423,6 +1513,11 @@ def run_tier2(convs: dict, model: str, limit: Optional[int],
         is_cached   = cached_data is not None
 
         if not is_cached:
+            if not _HAS_ANTHROPIC or not api_key:
+                print(f"  → [{i}/{total}] {variant} / gen_idx={gen_idx}: no cache + no API — skipping")
+                continue
+            if client is None:
+                client = anthropic.Anthropic(api_key=api_key)
             print(f"  → [{i}/{total}] {variant} / gen_idx={gen_idx}: calling judge …")
             judge_response = call_judge_t2(client, conv, model)
             save_cache_t2(variant, gen_idx, judge_response)
@@ -1737,10 +1832,9 @@ def fig_t1_deltas(results: list[T1Result]):
         ("delta_words_mean",    "Δ Mean words/turn"),
         ("delta_hedge_rate",    "Δ Hedge rate"),
         ("delta_certainty_rate","Δ Certainty rate"),
-        ("delta_info_density",  "Δ Info density (T1)"),
     ]
 
-    fig, axes = plt.subplots(1, len(delta_cols), figsize=(16, 5))
+    fig, axes = plt.subplots(1, len(delta_cols), figsize=(14, 5))
     fig.suptitle("Tier 1: Predicted − Reference Deltas (lower |Δ| = higher fidelity)",
                  fontweight="bold")
 
@@ -1973,6 +2067,82 @@ def fig_t2_by_dimension(results: list[T2Result]):
     plt.close()
     print(f"  ✓ {out.name}")
 
+def fig_t2_probe_scores(results: list["T2Result"]):
+    """
+    Figure cp_07: Type-specific LLM judge scores for the three hardest
+    behavioural contracts — error detection (type_b), prior belief (type_a),
+    and dropout authenticity (failure).  Each panel shows all 6 model variants
+    averaged over the relevant conversation subset.
+    """
+    if not results:
+        return
+    _set_style()
+
+    # Filter to non-error results only
+    valid = [r for r in results if not r.parse_error]
+    if not valid:
+        return
+
+    panels = [
+        ("error_detection_score",    "type_b", "Error Detection\n(type_b, N=8)",
+         "Did the model catch and challenge\nthe planted agent error?",  "#E76F51"),
+        ("prior_belief_score",       "type_a", "Prior Belief Persistence\n(type_a, N=7)",
+         "Did the model maintain\nthe wrong prior belief?",              "#2A9D8F"),
+        ("dropout_authenticity_score","failure","Dropout Authenticity\n(failure, N=5)",
+         "Did the exit feel earned\nwith the right frustration arc?",    "#457B9D"),
+    ]
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
+    fig.suptitle(
+        "Tier 2 Judge: Type-Specific Behavioural Contract Scores (1–5)\n"
+        "1 = completely divergent from reference  ·  5 = faithfully reproduced",
+        fontweight="bold", fontsize=11,
+    )
+
+    bar_colors = {"base": "#AAAAAA", "lora": None}  # lora color per panel
+
+    for ax, (col, ctype, title, subtitle, accent) in zip(axes, panels):
+        subset = [r for r in valid if r.conversation_type == ctype]
+
+        by_variant: dict[str, list] = defaultdict(list)
+        for r in subset:
+            val = getattr(r, col, None)
+            if val and val > 0:
+                by_variant[r.model_variant].append(val)
+
+        variants = [v for v in ALL_VARIANTS if v in by_variant]
+        means    = [safe_mean(by_variant[v]) for v in variants]
+        colors   = [accent if v.startswith("lora") else "#BBBBBB" for v in variants]
+
+        x = np.arange(len(variants))
+        bars = ax.bar(x, means, color=colors, alpha=0.88, edgecolor="white", linewidth=0.5)
+
+        # Value labels on bars
+        for bar, val in zip(bars, means):
+            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.05,
+                    f"{val:.2f}", ha="center", va="bottom", fontsize=8)
+
+        ax.axhline(3, color="black", linewidth=0.8, linestyle="--", alpha=0.4, label="Midpoint (3)")
+        ax.set_xticks(x)
+        ax.set_xticklabels([v.replace("_", "\n") for v in variants], fontsize=8)
+        ax.set_ylim(1, 5.5)
+        ax.set_yticks([1, 2, 3, 4, 5])
+        ax.set_title(title, fontsize=10, fontweight="bold", pad=6)
+        ax.set_xlabel(subtitle, fontsize=8, color="#555555")
+        if ax == axes[0]:
+            ax.set_ylabel("Fidelity score (1–5)", fontsize=9)
+
+        # Shade LoRA bars lightly vs base
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+    plt.tight_layout()
+    out = IMAGES_DIR / "cp_07_t2_probe_scores.png"
+    plt.savefig(out, dpi=150, bbox_inches="tight")
+    plt.close()
+    print(f"  ✓ {out.name}")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 #  Main
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1997,13 +2167,12 @@ def main():
     print("eval_conversation_predictions.py")
     print("=" * 70)
 
-    # ── Step 1: Load detailed CSV ────────────────────────────────────────────
-    print("\n[STEP 1] Loading prediction_metrics_detailed.csv …")
-    if not DETAILED_CSV.exists():
-        print(f"  ✗ {DETAILED_CSV.name} not found. Run eval_predictions.py first.")
+    # ── Step 1: Load from LoRA JSON files (authoritative source) ────────────
+    print("\n[STEP 1] Loading predictions from LoRA JSON files …")
+    rows = load_from_lora_json()
+    if not rows:
+        print("  ✗ No rows loaded. Check that the LoRA JSON files exist in this directory.")
         return
-    rows = load_detailed_csv(DETAILED_CSV)
-    print(f"  → {len(rows)} rows loaded")
 
     # ── Step 2: Reconstruct conversations ────────────────────────────────────
     print("\n[STEP 2] Reconstructing conversations …")
@@ -2031,6 +2200,7 @@ def main():
         save_t2_csv(t2_results, T2_CSV)
         fig_t2_scores(t2_results)
         fig_t2_by_dimension(t2_results)
+        fig_t2_probe_scores(t2_results)
     else:
         print("\n[STEP 5] Tier 2 skipped (pass --judge to enable)")
 

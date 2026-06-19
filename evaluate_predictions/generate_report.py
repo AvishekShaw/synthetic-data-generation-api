@@ -1339,6 +1339,21 @@ def section_conv_t2(t2_rows: list[dict] | None) -> str | None:
         if im:
             lines.append(f"\n{im}")
 
+    # Probe-specific judge scores chart
+    probe_img = img("cp_07_t2_probe_scores.png")
+    if probe_img:
+        lines.append(
+            f"\n{probe_img}\n\n"
+            "_cp_07: Type-specific LLM judge scores for the three hardest behavioural "
+            "contracts, evaluated only over the relevant conversation subset. "
+            "Error Detection (type\\_b, N=8): did the model catch and challenge the planted "
+            "agent error? Prior Belief Persistence (type\\_a, N=7): did the model maintain "
+            "the wrong prior belief before correction? Dropout Authenticity (failure, N=5): "
+            "did the exit feel earned with a plausible frustration arc? "
+            "All three dimensions sit well below the midpoint (3) for all models, confirming "
+            "these are the hardest contracts to reproduce and the primary targets for RL training._"
+        )
+
     return "\n".join(lines)
 
 
