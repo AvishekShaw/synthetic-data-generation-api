@@ -50,7 +50,7 @@ from pathlib import Path
 
 # Allow running from repo root or from inside synthetic_data_generation/
 sys.path.insert(0, str(Path(__file__).parent))
-from content_pools import sample_content  # noqa: E402
+from content_pools import sample_content, sample_target_length  # noqa: E402
 
 
 # ─────────────────────────────────────────────
@@ -91,9 +91,12 @@ class PlantedError:
 # ─────────────────────────────────────────────
 
 PERSONAS = [
+    Persona("novice",        "calm",              "indirect", "vague"),
     Persona("novice",        "mildly_frustrated", "direct",   "clear"),
+    Persona("novice",        "escalating",        "verbose",  "clear"),
     Persona("intermediate",  "calm",              "terse",    "clear"),
     Persona("intermediate",  "calm",              "indirect", "wrong_mental_model"),
+    Persona("intermediate",  "calm",              "verbose",  "vague"),
     Persona("intermediate",  "mildly_frustrated", "direct",   "vague"),
     Persona("intermediate",  "mildly_frustrated", "terse",    "clear"),
     Persona("intermediate",  "escalating",        "direct",   "clear"),
@@ -101,6 +104,7 @@ PERSONAS = [
     Persona("expert",        "calm",              "terse",    "clear"),
     Persona("expert",        "mildly_frustrated", "direct",   "clear"),
     Persona("expert",        "escalating",        "direct",   "clear"),
+    Persona("expert",        "escalating",        "verbose",  "clear"),
 ]
 
 # 8 structural scenario templates — same as generate_conversations.py.
@@ -119,81 +123,109 @@ SCENARIOS = [
 
 
 # ─────────────────────────────────────────────
-# TYPE A: PRIOR BELIEFS  (one per scenario index)
-# Plausible misbeliefs a real banking customer might hold.
+# TYPE A: PRIOR BELIEFS POOL
+# Flat pool of plausible misbeliefs — sampled independently per conversation.
 # ─────────────────────────────────────────────
 
-PRIOR_BELIEFS = {
-    0: "You believe the dispute window is 120 days from the transaction date.",
-    1: "You believe you can dispute any charge with just a rough description — no exact merchant name needed.",
-    2: "You believe that since the merchant already refused to help, the bank is legally required to refund you immediately without further investigation.",
-    3: "You believe that for uncertain charges, you need to be 100% sure it's fraud before the bank can do anything.",
-    4: "You believe freezing your card happens instantly and automatically blocks all pending charges.",
-    5: "You believe that as a returning caller with an open case, you are entitled to speak to a supervisor immediately.",
-    6: "You believe that for charges over $500, federal law requires the bank to issue provisional credit within 24 hours.",
-    7: "You believe you need to file a police report before the bank can open any dispute investigation.",
-}
+PRIOR_BELIEFS_POOL = [
+    "You believe the dispute window is 120 days from the transaction date.",
+    "You believe you can dispute any charge with just a rough description — no exact merchant name needed.",
+    "You believe that since the merchant already refused to help, the bank is legally required to refund you immediately without further investigation.",
+    "You believe that for uncertain charges, you need to be 100% sure it's fraud before the bank can do anything.",
+    "You believe freezing your card happens instantly and automatically blocks all pending charges.",
+    "You believe that as a returning caller with an open case, you are entitled to speak to a supervisor immediately.",
+    "You believe that for charges over $500, federal law requires the bank to issue provisional credit within 24 hours.",
+    "You believe you need to file a police report before the bank can open any dispute investigation.",
+    "You believe that disputing a charge automatically gets your money back immediately while the investigation runs.",
+    "You believe the bank can only dispute a charge if you have the exact transaction amount — approximate amounts aren't accepted.",
+    "You believe that contacting the bank more than 30 days after the transaction means you've lost your right to dispute it.",
+    "You believe that cancelling your card immediately wipes out any pending unauthorized charges on the account.",
+]
 
 
 # ─────────────────────────────────────────────
-# TYPE B: PLANTED ERRORS  (one per scenario index)
-# Each maps to a specific agent failure mode.
+# TYPE B: PLANTED ERRORS POOL
+# Flat pool — sampled independently per conversation.
 # ─────────────────────────────────────────────
 
-PLANTED_ERRORS = {
-    0: PlantedError(
+PLANTED_ERRORS_POOL = [
+    PlantedError(
         "wrong_policy_fact",
         "State that the dispute window is 60 days from the transaction date. "
         "(The correct policy is 90 days.)",
         "On your first substantive response after the user explains their dispute.",
     ),
-    1: PlantedError(
+    PlantedError(
         "scope_failure",
         "State that without the exact merchant name you cannot open a dispute. "
         "(Incorrect — disputes can be opened with partial information.)",
         "When the user first mentions they don't have the exact merchant name.",
     ),
-    2: PlantedError(
+    PlantedError(
         "over_commit",
         "State that the refund will appear in their account within 24 hours. "
         "(Incorrect — investigation takes 3-5 business days minimum.)",
         "When you confirm the dispute has been opened.",
     ),
-    3: PlantedError(
+    PlantedError(
         "wrong_policy_fact",
         "State that the bank can only open a dispute if the customer is certain the "
         "charge is fraudulent — uncertain charges cannot be disputed. "
         "(Incorrect — investigation disputes for uncertain charges are fully valid.)",
         "On your second response after understanding the customer's uncertainty.",
     ),
-    4: PlantedError(
+    PlantedError(
         "contradiction",
         "First say the card freeze takes effect immediately. Then, two or more turns "
         "later, say that card freezes take 24 hours to process.",
         "Say 'immediately' early in the conversation; then contradict with '24 hours' "
         "after the customer has already acknowledged the freeze.",
     ),
-    5: PlantedError(
+    PlantedError(
         "loop",
         "Ask the customer for their full card number or account details even though "
         "they have already provided this information earlier in the conversation.",
         "After the customer has already given their card or account details, "
         "ask for them again as if you don't have them.",
     ),
-    6: PlantedError(
+    PlantedError(
         "wrong_escalation",
         "State that disputes over $1,000 cannot be processed via chat and require "
         "an in-branch visit. (Incorrect — all dispute amounts can be handled remotely.)",
-        "When the large transaction amount ($1,249.00) is first mentioned.",
+        "When the transaction amount above $1,000 is first mentioned.",
     ),
-    7: PlantedError(
+    PlantedError(
         "wrong_policy_fact",
         "State that a police report is required before the bank can open a dispute "
         "for a potentially unauthorized charge. "
         "(Incorrect — a police report is optional, not required.)",
         "On your first substantive response after the customer explains the situation.",
     ),
-}
+    PlantedError(
+        "wrong_policy_fact",
+        "State that provisional credit is only available for transactions over $100. "
+        "(Incorrect — provisional credit applies to all dispute amounts.)",
+        "When the customer asks about getting their money back during the investigation.",
+    ),
+    PlantedError(
+        "scope_failure",
+        "State that you cannot process a dispute for a charge that occurred more than "
+        "45 days ago. (Incorrect — the dispute window is 90 days.)",
+        "After the customer mentions when the transaction occurred.",
+    ),
+    PlantedError(
+        "over_commit",
+        "State that a new card will arrive in 1-2 business days. "
+        "(Incorrect — card replacement takes 5-7 business days.)",
+        "When the customer asks about getting a replacement card.",
+    ),
+    PlantedError(
+        "loop",
+        "Ask the customer to re-verify their identity (name, date of birth, last 4 of SSN) "
+        "even though they already completed verification earlier in the conversation.",
+        "After at least 3 turns have passed since the customer verified their identity.",
+    ),
+]
 
 
 # ─────────────────────────────────────────────
@@ -304,9 +336,9 @@ def generate_intent_summary(scenario: Scenario) -> str:
 
 
 def build_user_system_prompt(persona: Persona, scenario: Scenario,
-                              mode: str, scenario_idx: int) -> str:
+                              mode: str, prior_belief: str,
+                              target_length: int = 15) -> str:
     """Build the system prompt for the USER side (customer simulator)."""
-    prior_belief = PRIOR_BELIEFS[scenario_idx]
 
     base = f"""You are simulating a realistic banking customer in a live chat dispute conversation.
 
@@ -317,7 +349,7 @@ SCENARIO:
 {_scenario_description(scenario)}
 
 CORE BEHAVIORAL RULES:
-1. Messages are SHORT and informal — like texts, not emails. Typically 1-2 sentences.
+1. Messages are informal — like texts or chat, not emails. Your messages tend to run about {target_length} words; vary naturally around that — shorter for quick replies, longer when explaining context.
 2. Use language matching your financial knowledge level. Novices say "weird charge", experts say "unauthorized transaction".
 3. Include occasional typos, lowercase, skipped punctuation — but don't overdo it.
 4. Ask about ONE thing at a time. Do not give everything at once.
@@ -374,7 +406,7 @@ Do not include any other text alongside <eos>."""
     return base + type_b_addition + exit_instruction
 
 
-def build_agent_system_prompt(mode: str, scenario_idx: int) -> str:
+def build_agent_system_prompt(mode: str, planted_error: "PlantedError | None" = None) -> str:
     """Build the system prompt for the AGENT side (banking chatbot simulator)."""
     base = """You are a banking dispute resolution chatbot. Be professional, polite, and concise.
 
@@ -402,8 +434,8 @@ BEHAVIOR:
 - Confirm key details before taking irreversible actions
 - Always provide a case number when opening a dispute"""
 
-    if mode == "type_b":
-        error = PLANTED_ERRORS[scenario_idx]
+    if mode == "type_b" and planted_error is not None:
+        error = planted_error
         planted = f"""
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -487,9 +519,11 @@ def call_turn(system_prompt: str, turn_prompt: str,
 def generate_conversation_alternating(
     persona: Persona,
     scenario: Scenario,
-    scenario_idx: int,
     mode: str,
     args,
+    prior_belief: str,
+    planted_error: "PlantedError | None" = None,
+    target_length: int = 15,
     max_turns: int = 14,
 ) -> tuple[list[dict], dict]:
     """
@@ -499,8 +533,8 @@ def generate_conversation_alternating(
         messages  : list of {"role": "user"|"assistant", "content": str}
         probe_meta: dict of probing-specific _meta fields
     """
-    user_system  = build_user_system_prompt(persona, scenario, mode, scenario_idx)
-    agent_system = build_agent_system_prompt(mode, scenario_idx)
+    user_system  = build_user_system_prompt(persona, scenario, mode, prior_belief, target_length)
+    agent_system = build_agent_system_prompt(mode, planted_error)
 
     # history holds the running conversation for context injection
     history:  list[dict] = []   # {"speaker": "Customer"|"Agent", "content": str}
@@ -592,11 +626,10 @@ def generate_conversation_alternating(
         "goal_completed": goal_completed,
     }
     if mode == "type_a":
-        probe_meta["wrong_prior_belief"] = PRIOR_BELIEFS[scenario_idx]
-    elif mode == "type_b":
-        err = PLANTED_ERRORS[scenario_idx]
-        probe_meta["agent_failure_mode"]  = err.agent_failure_mode
-        probe_meta["planted_error"]       = err.description
+        probe_meta["wrong_prior_belief"] = prior_belief
+    elif mode == "type_b" and planted_error is not None:
+        probe_meta["agent_failure_mode"]  = planted_error.agent_failure_mode
+        probe_meta["planted_error"]       = planted_error.description
         probe_meta["user_caught_error"]   = user_caught_error
 
     return messages, probe_meta
@@ -805,6 +838,11 @@ def generate_all(args) -> None:
             channel=content["channel"],
         )
 
+        # Sample prior belief, planted error, and target message length independently
+        prior_belief   = rng.choice(PRIOR_BELIEFS_POOL)
+        planted_error  = rng.choice(PLANTED_ERRORS_POOL) if args.mode == "type_b" else None
+        target_length  = sample_target_length(rng, persona.communication_style)
+
         label = (
             f"[{combo_idx + 1}/{total_available}] "
             f"{persona.knowledge_level}/{persona.emotional_state} | "
@@ -815,21 +853,22 @@ def generate_all(args) -> None:
 
         # ── Dry run: print prompt sizes and planted error ──
         if args.provider == "dry_run":
-            user_sys  = build_user_system_prompt(persona, scenario, args.mode, scenario_idx)
-            agent_sys = build_agent_system_prompt(args.mode, scenario_idx)
+            user_sys  = build_user_system_prompt(persona, scenario, args.mode, prior_belief, target_length)
+            agent_sys = build_agent_system_prompt(args.mode, planted_error)
             print(f"  USER  system prompt : {len(user_sys):,} chars")
             print(f"  AGENT system prompt : {len(agent_sys):,} chars")
-            if args.mode == "type_b":
-                err = PLANTED_ERRORS[scenario_idx]
-                print(f"  Planted error       : [{err.agent_failure_mode}] {err.description[:80]}...")
+            if args.mode == "type_b" and planted_error:
+                print(f"  Planted error       : [{planted_error.agent_failure_mode}] {planted_error.description[:80]}...")
             elif args.mode == "type_a":
-                print(f"  Prior belief        : {PRIOR_BELIEFS[scenario_idx]}")
+                print(f"  Prior belief        : {prior_belief}")
             success_count += 1
             continue
 
         # ── Real generation ──
         messages, probe_meta = generate_conversation_alternating(
-            persona, scenario, scenario_idx, args.mode, args
+            persona, scenario, args.mode, args,
+            prior_belief=prior_belief, planted_error=planted_error,
+            target_length=target_length,
         )
 
         if len(messages) < 2:

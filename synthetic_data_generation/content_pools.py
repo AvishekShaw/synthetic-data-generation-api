@@ -48,6 +48,22 @@ def sample_date(rng: random.Random, ref_date=None) -> str:
     return f"{month} {day}"  # e.g. "March 4"
 
 
+def sample_target_length(rng: random.Random, communication_style: str) -> int:
+    """Return a soft per-conversation word-count target drawn from a persona-matched distribution."""
+    if communication_style == "terse":
+        return max(3, int(rng.triangular(3, 14, 6)))
+    elif communication_style == "direct":
+        return max(6, int(rng.triangular(8, 28, 15)))
+    elif communication_style == "indirect":
+        return max(12, int(rng.triangular(18, 60, 30)))
+    elif communication_style == "verbose":
+        base = int(rng.triangular(35, 72, 50))
+        if rng.random() < 0.2:
+            base = int(rng.triangular(72, 92, 80))
+        return base
+    return 15  # fallback for unknown styles
+
+
 def sample_content(rng: random.Random, heldout: bool = False) -> dict:
     pool = MERCHANTS_HELDOUT if heldout else MERCHANTS
     return {

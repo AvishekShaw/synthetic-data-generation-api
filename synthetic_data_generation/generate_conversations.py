@@ -43,7 +43,7 @@ from typing import Optional
 
 # Allow running from repo root or from inside synthetic_data_generation/
 sys.path.insert(0, str(Path(__file__).parent))
-from content_pools import sample_content  # noqa: E402
+from content_pools import sample_content, sample_target_length  # noqa: E402
 
 
 # ─────────────────────────────────────────────
@@ -77,26 +77,26 @@ class Scenario:
 # DIMENSION DEFINITIONS
 # ─────────────────────────────────────────────
 
-# 6 representative persona types — diverse enough to avoid collapse
-# without being so fine-grained that combinations explode
 PERSONAS = [
     # ── Novice ──────────────────────────────────────────────────────────
-    # Persona("novice",        "calm",              "indirect", "vague"),
+    Persona("novice",        "calm",              "indirect", "vague"),
     Persona("novice",        "mildly_frustrated", "direct",   "clear"),
-    # Persona("novice",        "escalating",        "verbose",  "clear"),
+    Persona("novice",        "escalating",        "verbose",  "clear"),
 
     # ── Intermediate ────────────────────────────────────────────────────
     Persona("intermediate",  "calm",              "terse",    "clear"),
-    Persona("intermediate",  "calm",              "indirect", "wrong_mental_model"),  # knows basics but thinks they need a police report / extra steps first
+    Persona("intermediate",  "calm",              "indirect", "wrong_mental_model"),
+    Persona("intermediate",  "calm",              "verbose",  "vague"),
     Persona("intermediate",  "mildly_frustrated", "direct",   "vague"),
-    Persona("intermediate",  "mildly_frustrated", "terse",    "clear"),               # been waiting, just wants it done, minimal words
-    Persona("intermediate",  "escalating",        "direct",   "clear"),               # knows enough to push back hard when process feels slow
+    Persona("intermediate",  "mildly_frustrated", "terse",    "clear"),
+    Persona("intermediate",  "escalating",        "direct",   "clear"),
 
     # ── Expert ──────────────────────────────────────────────────────────
     Persona("expert",        "calm",              "direct",   "clear"),
-    Persona("expert",        "calm",              "terse",    "clear"),               # Reg E aware, just files the dispute efficiently
-    Persona("expert",        "mildly_frustrated", "direct",   "clear"),               # has done this before, impatient with standard verification steps
-    Persona("expert",        "escalating",        "direct",   "clear"),               # threatens CFPB complaint, knows provisional credit timelines
+    Persona("expert",        "calm",              "terse",    "clear"),
+    Persona("expert",        "mildly_frustrated", "direct",   "clear"),
+    Persona("expert",        "escalating",        "direct",   "clear"),
+    Persona("expert",        "escalating",        "verbose",  "clear"),
 ]
 
 # 8 structural scenario templates covering distinct conversation paths.
@@ -269,7 +269,7 @@ Write a realistic multi-turn conversation between a CUSTOMER and a BANKING AGENT
 The customer is dealing with a potentially fraudulent transaction.
 
 CRITICAL RULES — based on real customer behavior:
-1. Customer messages are SHORT and informal. Like text messages, not emails.
+1. Customer messages are informal. Like text messages or chat, not emails.
 2. Customers don't use financial jargon unless they're financially sophisticated.
 3. Customers give INCOMPLETE information first, add details only when prompted.
 4. Customers ask about ONE thing at a time before moving to the next.
@@ -277,7 +277,6 @@ CRITICAL RULES — based on real customer behavior:
 6. Customers express frustration INDIRECTLY before directly.
 7. Customers sometimes don't know what they actually need ("just want this sorted").
 8. Include realistic typos, lowercase, skipped punctuation — but don't overdo it.
-9. Customer messages are typically 1-2 sentences. Rarely more.
 
 The agent is a banking chatbot that:
 - Lists card options when needed (e.g. "Chase Freedom ****1234, Chase Sapphire ****5678")
@@ -348,7 +347,7 @@ Write a realistic multi-turn conversation between a CUSTOMER and a BANKING AGENT
 The customer is dealing with a potentially fraudulent transaction.
 
 CRITICAL RULES — based on real customer behavior:
-1. Customer messages are SHORT and informal. Like text messages, not emails.
+1. Customer messages are informal. Like text messages or chat, not emails.
 2. Customers don't use financial jargon unless they're financially sophisticated.
 3. Customers give INCOMPLETE information first, add details only when prompted.
 4. Customers ask about ONE thing at a time before moving to the next.
@@ -356,7 +355,6 @@ CRITICAL RULES — based on real customer behavior:
 6. Customers express frustration INDIRECTLY before directly.
 7. Customers sometimes don't know what they actually need ("just want this sorted").
 8. Include realistic typos, lowercase, skipped punctuation — but don't overdo it.
-9. Customer messages are typically 1-2 sentences. Rarely more.
 
 The agent is a banking chatbot that:
 - Lists card options when needed (e.g. "Chase Freedom ****1234, Chase Sapphire ****5678")
@@ -377,22 +375,6 @@ Write 4-10 turns total. The conversation must end with the customer giving up,
 leaving, or disengaging — NOT with their goal resolved."""
 )
 
-# Failure mode assigned to each persona (by index in PERSONAS list).
-# Chosen for psychological plausibility: e.g. escalating personas exit via
-# escalation_exit, wrong_mental_model personas hit trust_breakdown, etc.
-PERSONA_FAILURE_MAP: dict[int, str] = {
-    0: "info_blocker",      # novice / mildly_frustrated / direct / clear
-    1: "scope_limit",       # intermediate / calm / terse / clear
-    2: "trust_breakdown",   # intermediate / calm / indirect / wrong_mental_model
-    3: "loop_exit",         # intermediate / mildly_frustrated / direct / vague
-    4: "impatience",        # intermediate / mildly_frustrated / terse / clear
-    # 5: "escalation_exit",   # intermediate / escalating / direct / clear
-    # 6: "wrong_channel",     # expert / calm / direct / clear
-    # 7: "scope_limit",       # expert / calm / terse / clear
-    # 8: "trust_breakdown",   # expert / mildly_frustrated / direct / clear
-    # 9: "escalation_exit",   # expert / escalating / direct / clear
-}
-
 # Separate completion template for failure conversations:
 # exit condition says "give up / stop" rather than "goal is complete".
 FAILURE_COMPLETION_TEMPLATE = (
@@ -411,7 +393,8 @@ FAILURE_COMPLETION_TEMPLATE = (
 
 
 def build_prompt(persona: Persona, scenario: Scenario, few_shot_examples: list[str],
-                 mode: str = "success", failure_mode: str | None = None) -> tuple[str, str]:
+                 mode: str = "success", failure_mode: str | None = None,
+                 target_length: int = 15) -> tuple[str, str]:
     """Build (system_prompt, user_prompt) for this persona × scenario combination.
 
     mode: 'success' uses the standard SYSTEM_PROMPT.
@@ -443,6 +426,7 @@ Now generate a NEW conversation with these specifications:"""
 
 CUSTOMER PROFILE:
 {_persona_description(persona)}
+- Message length: This customer's messages tend to run about {target_length} words. Vary naturally around that — shorter for quick replies, longer when explaining context.
 
 SCENARIO:
 {_scenario_description(scenario)}
@@ -743,8 +727,6 @@ def generate_all(args):
         few_shot = []
         print("No --data-path provided — generating without few-shot examples.")
 
-    # Build combinations — for failure mode we also need the persona index
-    # so we can look up PERSONA_FAILURE_MAP.
     combinations = [
         (pidx, p, s)
         for pidx, p in enumerate(PERSONAS)
@@ -824,8 +806,9 @@ def generate_all(args):
             channel=content["channel"],
         )
 
-        # Resolve failure mode for this persona (failure mode only)
-        failure_mode = PERSONA_FAILURE_MAP.get(pidx) if mode == "failure" else None
+        # Sample failure mode independently per conversation (all 8 modes reachable)
+        failure_mode = rng.choice(list(FAILURE_MODE_INSTRUCTIONS)) if mode == "failure" else None
+        target_length = sample_target_length(rng, persona.communication_style)
 
         label = (f"[{combo_idx+1}/{total_available}] "
                  f"{persona.knowledge_level}/{persona.emotional_state} | "
@@ -835,7 +818,8 @@ def generate_all(args):
         print(label)
 
         system_prompt, user_prompt = build_prompt(
-            persona, scenario, few_shot, mode=mode, failure_mode=failure_mode
+            persona, scenario, few_shot, mode=mode, failure_mode=failure_mode,
+            target_length=target_length,
         )
 
         # ── Dry run: just save the prompts ──
