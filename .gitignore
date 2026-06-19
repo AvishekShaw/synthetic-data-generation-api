@@ -1,3 +1,10 @@
 */layer2_cache/*
 */images/*
 evaluate_synthetic_conversations/images/*
+*/judge_cache/*
+*/conv_judge_cache/*
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
