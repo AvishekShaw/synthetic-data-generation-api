@@ -5,7 +5,8 @@
       "Bash(git push:*)",
       "Bash(python -c \"import evaluate_predictions.eval_predictions\")",
       "Bash(python -c \"import evaluate_predictions.eval_conversation_predictions\")",
-      "Bash(python -c \"import evaluate_predictions.eval_conversation_predictions; print\\('import OK'\\)\")"
+      "Bash(python -c \"import evaluate_predictions.eval_conversation_predictions; print\\('import OK'\\)\")",
+      "Bash(git pull *)"
     ]
   }
 }
