@@ -710,12 +710,18 @@ def generate_all(args):
     mode = getattr(args, "mode", "success")
     print(f"\n=== UserLM Synthetic Data Generator  [mode: {mode}] ===\n")
 
-    # generation_idx offsets keep each mode's conversations in a distinct range:
-    #   success  →   0 –  99,999
-    #   failure  → 100,000 – 199,999
-    #   type_a   → 200,000 – 299,999  (generate_probe_conversations.py)
-    #   type_b   → 300,000 – 399,999  (generate_probe_conversations.py)
-    idx_offset = 100_000 if mode == "failure" else 0
+    # generation_idx offsets — each mode lives in a distinct 100k range:
+    #   success        →   0 –  99,999
+    #   failure        → 100,000 – 199,999
+    #   type_a         → 200,000 – 299,999  (generate_probe_conversations.py)
+    #   type_b         → 300,000 – 399,999  (generate_probe_conversations.py)
+    #   heldout success→ 400,000 – 409,999
+    #   heldout failure→ 410,000 – 419,999
+    heldout = getattr(args, 'heldout', False)
+    if heldout:
+        idx_offset = 400_000 if mode == "success" else 410_000
+    else:
+        idx_offset = 100_000 if mode == "failure" else 0
 
     # Load few-shot examples (optional — omitted on first run)
     if args.data_path:
@@ -732,20 +738,20 @@ def generate_all(args):
         for pidx, p in enumerate(PERSONAS)
         for s in SCENARIOS
     ]
-    total_available = len(combinations)
+    n_combos = len(combinations)
 
-    if args.limit == -1:
-        limit = total_available
-        limit_label = "all"
+    # --target-conversations cycles through combinations to hit an arbitrary count;
+    # falls back to --limit (capped at n_combos) when not set.
+    if getattr(args, 'target_conversations', None):
+        target = args.target_conversations
+    elif args.limit == -1:
+        target = n_combos
     else:
-        limit = min(args.limit, total_available)
-        limit_label = str(limit)
+        target = min(args.limit, n_combos)
 
-    print(f"\nGenerating {limit_label} of {total_available} conversations "
-          f"({len(PERSONAS)} personas × {len(SCENARIOS)} scenarios)")
-    if limit < total_available:
-        print(f"  ⚠ Test mode: only generating {limit} conversations. "
-              f"Pass --limit all to generate the full set.")
+    print(f"\nGenerating {target} conversations "
+          f"({n_combos} persona×scenario combinations, cycling as needed)"
+          + (" [HELD-OUT]" if heldout else ""))
     print(f"Provider: {args.provider}")
     print(f"Output: {args.output}\n")
 
@@ -778,22 +784,17 @@ def generate_all(args):
     success_count = 0
     error_count = 0
 
-    for combo_idx, (pidx, persona, scenario) in enumerate(combinations):
-        # Stop once we've hit the limit (counting only new successes)
-        if success_count >= limit:
-            remaining = total_available - combo_idx
-            print(f"\n  Limit of {limit} reached. "
-                  f"{remaining} combination(s) remaining — run with --limit all to generate everything.")
-            break
+    for task_idx in range(target):
+        pidx, persona, scenario = combinations[task_idx % n_combos]
+        global_idx = idx_offset + task_idx
 
-        global_idx = idx_offset + combo_idx
         if global_idx in generated_indices:
-            print(f"  [{combo_idx+1}/{total_available}] Skipping (already done)")
+            print(f"  [{task_idx+1}/{target}] Skipping (already done)")
             continue
 
         # Sample content for this conversation (seeded for reproducibility)
         rng = random.Random(args.seed * 1_000_000 + global_idx)
-        content = sample_content(rng)
+        content = sample_content(rng, heldout=heldout)
         scenario = Scenario(
             certainty=scenario.certainty,
             information_completeness=scenario.information_completeness,
@@ -810,7 +811,7 @@ def generate_all(args):
         failure_mode = rng.choice(list(FAILURE_MODE_INSTRUCTIONS)) if mode == "failure" else None
         target_length = sample_target_length(rng, persona.communication_style)
 
-        label = (f"[{combo_idx+1}/{total_available}] "
+        label = (f"[{task_idx+1}/{target}] "
                  f"{persona.knowledge_level}/{persona.emotional_state} | "
                  f"{scenario.certainty}/{scenario.information_completeness} | "
                  f"{scenario.merchant_name} {scenario.amount}"
@@ -825,7 +826,7 @@ def generate_all(args):
         # ── Dry run: just save the prompts ──
         if args.provider == "dry_run":
             dry_run_file.write(f"\n{'='*60}\n")
-            dry_run_file.write(f"COMBINATION {combo_idx+1}/{total_available}\n")
+            dry_run_file.write(f"COMBINATION {task_idx+1}/{target}\n")
             dry_run_file.write(f"Persona: {asdict(persona)}\n")
             dry_run_file.write(f"Scenario: {asdict(scenario)}\n")
             if failure_mode:
@@ -889,7 +890,7 @@ def generate_all(args):
 
         # Write human-readable dump
         dump_path = write_conversation_dump(
-            dump_dir, combo_idx, persona, scenario, messages, meta_extra=meta_extra
+            dump_dir, task_idx, persona, scenario, messages, meta_extra=meta_extra
         )
 
         user_turns = sum(1 for m in messages if m["role"] == "user")
@@ -988,7 +989,29 @@ def main():
         help=(
             "How many conversations to generate. "
             "Default is 3 (test run). "
-            "Pass 'all' (or -1) to generate the full persona × scenario set."
+            "Pass 'all' (or -1) to generate the full persona × scenario set. "
+            "Overridden by --target-conversations."
+        ),
+    )
+    parser.add_argument(
+        "--target-conversations",
+        type=int,
+        default=None,
+        dest="target_conversations",
+        help=(
+            "Target number of conversations to generate. "
+            "Cycles through persona×scenario combinations as needed. "
+            "Overrides --limit."
+        ),
+    )
+    parser.add_argument(
+        "--heldout",
+        action="store_true",
+        default=False,
+        help=(
+            "Generate held-out test data using MERCHANTS_HELDOUT pool and a "
+            "disjoint date window (181–365 days ago). "
+            "generation_idx offset: success=400,000 failure=410,000."
         ),
     )
     parser.add_argument(

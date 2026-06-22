@@ -767,28 +767,39 @@ def write_conversation_dump(
 def generate_all(args) -> None:
     print(f"\n=== UserLM Probe Generator  [mode: {args.mode}] ===\n")
 
-    # generation_idx offsets keep each mode in a distinct range:
-    #   success  →   0 –  99,999  (generate_conversations.py)
-    #   failure  → 100,000 – 199,999  (generate_conversations.py)
-    #   type_a   → 200,000 – 299,999
-    #   type_b   → 300,000 – 399,999
-    idx_offset = 200_000 if args.mode == "type_a" else 300_000
+    # generation_idx offsets — each mode lives in a distinct 100k range:
+    #   success        →   0 –  99,999  (generate_conversations.py)
+    #   failure        → 100,000 – 199,999  (generate_conversations.py)
+    #   type_a         → 200,000 – 299,999
+    #   type_b         → 300,000 – 399,999
+    #   heldout type_a → 420,000 – 429,999
+    #   heldout type_b → 430,000 – 439,999
+    heldout = getattr(args, 'heldout', False)
+    if heldout:
+        idx_offset = 420_000 if args.mode == "type_a" else 430_000
+    else:
+        idx_offset = 200_000 if args.mode == "type_a" else 300_000
 
     combinations = [
-        (combo_idx, scenario_idx, persona, scenario)
-        for combo_idx, (persona, scenario_idx, scenario) in enumerate(
+        (scenario_idx, persona, scenario)
+        for persona, scenario_idx, scenario in (
             (p, si, s)
             for p in PERSONAS
             for si, s in enumerate(SCENARIOS)
         )
     ]
-    total_available = len(combinations)
+    n_combos = len(combinations)
 
-    limit = total_available if args.limit == -1 else min(args.limit, total_available)
-    limit_label = "all" if args.limit == -1 else str(limit)
+    if getattr(args, 'target_conversations', None):
+        target = args.target_conversations
+    elif args.limit == -1:
+        target = n_combos
+    else:
+        target = min(args.limit, n_combos)
 
-    print(f"Generating {limit_label} / {total_available} conversations "
-          f"({len(PERSONAS)} personas × {len(SCENARIOS)} scenarios)")
+    print(f"Generating {target} conversations "
+          f"({n_combos} persona×scenario combinations, cycling as needed)"
+          + (" [HELD-OUT]" if heldout else ""))
     print(f"Provider : {args.provider}")
     print(f"Output   : {args.output}\n")
 
@@ -814,18 +825,17 @@ def generate_all(args) -> None:
     success_count = 0
     error_count   = 0
 
-    for combo_idx, scenario_idx, persona, scenario in combinations:
-        if success_count >= limit:
-            break
+    for task_idx in range(target):
+        scenario_idx, persona, scenario = combinations[task_idx % n_combos]
+        global_idx = idx_offset + task_idx
 
-        global_idx = idx_offset + combo_idx
         if global_idx in generated_indices:
-            print(f"  [{combo_idx + 1}/{total_available}] Skipping (already done)")
+            print(f"  [{task_idx + 1}/{target}] Skipping (already done)")
             continue
 
         # Sample content for this conversation (seeded for reproducibility)
         rng = random.Random(args.seed * 1_000_000 + global_idx)
-        content = sample_content(rng)
+        content = sample_content(rng, heldout=heldout)
         scenario = Scenario(
             certainty=scenario.certainty,
             information_completeness=scenario.information_completeness,
@@ -844,7 +854,7 @@ def generate_all(args) -> None:
         target_length  = sample_target_length(rng, persona.communication_style)
 
         label = (
-            f"[{combo_idx + 1}/{total_available}] "
+            f"[{task_idx + 1}/{target}] "
             f"{persona.knowledge_level}/{persona.emotional_state} | "
             f"{scenario.merchant_name} {scenario.amount} | "
             f"scenario_{scenario_idx}"
@@ -885,7 +895,7 @@ def generate_all(args) -> None:
                 f.write(json.dumps(entry) + "\n")
 
         dump_path = write_conversation_dump(
-            dump_dir, combo_idx, persona, scenario, messages, probe_meta
+            dump_dir, task_idx, persona, scenario, messages, probe_meta
         )
 
         user_turns = sum(1 for m in messages if m["role"] == "user")
@@ -962,7 +972,23 @@ def main() -> None:
     )
     parser.add_argument(
         "--limit", default=3,
-        help="Conversations to generate. Default 3 (test). Pass 'all' for full set.",
+        help="Conversations to generate. Default 3 (test). Pass 'all' for full set. Overridden by --target-conversations.",
+    )
+    parser.add_argument(
+        "--target-conversations",
+        type=int,
+        default=None,
+        dest="target_conversations",
+        help="Target number of conversations; cycles through combinations as needed. Overrides --limit.",
+    )
+    parser.add_argument(
+        "--heldout",
+        action="store_true",
+        default=False,
+        help=(
+            "Generate held-out test data using MERCHANTS_HELDOUT pool and disjoint date window. "
+            "generation_idx offset: type_a=420,000 type_b=430,000."
+        ),
     )
     parser.add_argument(
         "--api-key", default=os.environ.get("ANTHROPIC_API_KEY"),

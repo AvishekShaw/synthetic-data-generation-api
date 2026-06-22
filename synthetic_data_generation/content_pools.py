@@ -40,9 +40,11 @@ def sample_amount(rng: random.Random) -> str:
     return f"${val:,.2f}"
 
 
-def sample_date(rng: random.Random, ref_date=None) -> str:
+def sample_date(rng: random.Random, ref_date=None, heldout: bool = False) -> str:
     ref = ref_date or datetime.date.today()
-    d = ref - datetime.timedelta(days=rng.randint(1, 180))
+    # Heldout uses a disjoint window (181–365 days ago) vs training (1–180 days ago)
+    lo, hi = (181, 365) if heldout else (1, 180)
+    d = ref - datetime.timedelta(days=rng.randint(lo, hi))
     month = d.strftime("%B")
     day = d.day  # int, no leading zero
     return f"{month} {day}"  # e.g. "March 4"
@@ -69,7 +71,7 @@ def sample_content(rng: random.Random, heldout: bool = False) -> dict:
     return {
         "merchant_name":    rng.choice(pool),
         "amount":           sample_amount(rng),
-        "transaction_date": sample_date(rng),
+        "transaction_date": sample_date(rng, heldout=heldout),
         "card_type":        rng.choice(CARD_TYPES),
         "channel":          rng.choice(CHANNELS),
     }
